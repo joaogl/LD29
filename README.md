@@ -1,8 +1,8 @@
-LD29
+LD29 Fallen
 ====
 
 This is my Entry for Ludum Dare 29 using Java. Theme: Beneath the surface.
-This is a Action/Adventure kinda game.
+Fallen a Action/Adventure kinda game.
 
 Builds for testing
 ====
