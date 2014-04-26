@@ -44,6 +44,7 @@ public class Light {
 		vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
+
 	public void shadows(List<Vector2f[]> blocks) {
 		glColorMask(false, false, false, false);
 		glStencilFunc(GL_ALWAYS, 1, 1);
@@ -72,10 +73,10 @@ public class Light {
 					glEnd();
 				}
 			}
-			glColorMask(true, true, true, true);
-			glStencilFunc(GL_EQUAL, 0, 1);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 		}
+		glColorMask(true, true, true, true);
+		glStencilFunc(GL_EQUAL, 0, 1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	}
 	
 	public void render(int shader) {
@@ -90,9 +91,9 @@ public class Light {
 		glVertex3f(GameSettings.width, 0, 0.0f);
 		glVertex3f(GameSettings.width, GameSettings.height, 0.0f);
 		glVertex3f(0, GameSettings.height, 0.0f);
-		glEnd();
-		
+		glEnd();		
 		glDisable(GL_BLEND);
+		
 		glUseProgram(0);
 		glClear(GL_STENCIL_BUFFER_BIT);
 	}

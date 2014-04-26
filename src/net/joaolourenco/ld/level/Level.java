@@ -41,13 +41,8 @@ public class Level {
 		
 		backgroundTiles = new int[width * height];
 		foregroundTiles = new int[width * height];
-		lights.add(new Light(GameSettings.width / 2, GameSettings.height / 2, 0xff));
-		lights.add(new Light(50, 50, 0xff0000));
+		lights.add(new Light(GameSettings.width / 2, GameSettings.height / 2, 0xffffff));
 		add(new Player(GameSettings.width / 2 - 32, GameSettings.height / 2 - 32));
-		
-		for (int i = 0; i < 5; i++) {
-			lights.add(new Light(random.nextInt(960), random.nextInt(540), random.nextInt(0xffffff)));
-		}
 		
 		lightShader = new Shader("shaders/tile.vert", "shaders/light.frag");
 		genRandom();
@@ -99,13 +94,15 @@ public class Level {
 		glDepthMask(false);
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
-			light.intensity = 5.0f;
+			light.intensity = 10.0f;
+			light.x = entities.get(0).getX() + 32;
+			light.y = entities.get(0).getY() + 32;
 			light.shadows(foregroundVertices);
 			light.render(lightShader.getID());
 			tile.bindUniforms(light);
 			renderBackground();
 		}
-		glEnable(GL_BLEND);
+		// glEnable(GL_BLEND);
 		wall.bindUniforms(lights);
 		renderForeground();
 		glDepthMask(true);
@@ -148,8 +145,5 @@ public class Level {
 		if (foregroundTiles[x + y * width] > 0) return wall;
 		return null;
 	}
-	/*
-	 * public int getTile(int x, int y, int level) { if (x < 0 || x >= width || y < 0 || y >= height) return 0; return level == BACKGROUND ? backgroundTiles[x + y * width] : foregroundTiles[x + y * width]; }-
-	 */
 	
 }

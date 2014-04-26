@@ -57,15 +57,6 @@ public class Main implements Runnable {
 		Display.destroy();
 	}
 	
-	public void Quad() {
-		glBegin(GL_QUADS);
-		glVertex3f(50.0f, 50.0f, 0.0f);
-		glVertex3f(350.0f, 50.0f, 0.0f);
-		glVertex3f(350.0f, 350.0f, 0.0f);
-		glVertex3f(50.0f, 350.0f, 0.0f);
-		glEnd();
-	}
-	
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		level.render();

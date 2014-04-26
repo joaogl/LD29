@@ -12,6 +12,7 @@ void main(){
 	vec4 tex = texture2D(texture, texCoords);
 	color = tex;
 	int num = 0;
+	float alpha = 1.0;
 	for (int i = 0; i < 10; i++) {
 		vec2 pos = lightPosition[i];
 		if (pos.x == 0 && pos.y == 0) continue;
@@ -31,5 +32,8 @@ void main(){
 	}		
 
 	color *= 300.0 * (num - 1) + 1;	
-	gl_FragColor = color;
+	if (tex.x == 1.0 && tex.y == 0.0 && tex.z == 1.0){
+		alpha = 0.0;
+	}	
+	gl_FragColor = vec4(color.xyz, alpha);
 }
