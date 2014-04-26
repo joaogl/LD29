@@ -1,5 +1,7 @@
 package net.joaolourenco.ld.level.tile;
 
+import org.lwjgl.input.Keyboard;
+
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
@@ -84,8 +86,12 @@ public class Tile {
 		}
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);		
+		glBindVertexArray(0);
 		shader.release();
 		glPopMatrix();
+	}
+	
+	public void update() {
+		if (net.joaolourenco.ld.input.Keyboard.keyTyped(Keyboard.KEY_R)) shader.recompile();
 	}
 }

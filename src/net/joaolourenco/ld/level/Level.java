@@ -3,6 +3,7 @@ package net.joaolourenco.ld.level;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.level.tile.Tile;
+import net.joaolourenco.ld.settings.GameSettings;
 
 public class Level {
 	
@@ -22,7 +23,7 @@ public class Level {
 	}
 	
 	public void update() {
-		
+		cliffTile.update();
 	}
 	
 	private void renderLights() {
@@ -30,11 +31,12 @@ public class Level {
 	}
 	
 	public void render() {
+		int offset = 1;
 		renderLights();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (y < 1 || y >= 7 || (x == 5 && y == 3)) cliffTile.render(x * 64, y * 64);
-				else voidTile.render(x * 64, y * 64);
+				if (y < 1 || y >= 7 || (x == 5 && y == 3)) cliffTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
+				else voidTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
 			}
 		}
 	}

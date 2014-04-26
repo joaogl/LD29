@@ -13,7 +13,6 @@ public class Main implements Runnable {
 	private boolean running = false;
 	
 	private Level level;
-	Tile tile;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -29,8 +28,7 @@ public class Main implements Runnable {
 	public void run() {
 		Display.create(GameSettings.fullname, GameSettings.width, GameSettings.height);
 		Display.initGL();
-		tile = new Tile();
-		level = new Level(9, 9);
+		level = new Level(15, 9);
 		long lastTime = System.nanoTime();
 		double ns = 1000000000.0 / 60.0;
 		double delta = 0;
@@ -71,9 +69,7 @@ public class Main implements Runnable {
 	
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		tile.render(50, 50);
-		// Quad();
-		// level.render();
+		level.render();
 	}
 	
 	public void update() {
