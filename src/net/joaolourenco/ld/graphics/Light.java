@@ -1,15 +1,8 @@
 package net.joaolourenco.ld.graphics;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glBegin;
-import static org.lwjgl.opengl.GL11.glDepthMask;
-import static org.lwjgl.opengl.GL11.glEnd;
-import static org.lwjgl.opengl.GL11.glVertex3f;
-import static org.lwjgl.opengl.GL20.glGetUniformLocation;
-import static org.lwjgl.opengl.GL20.glUniform1f;
-import static org.lwjgl.opengl.GL20.glUniform2f;
-import static org.lwjgl.opengl.GL20.glUniform3f;
-import static org.lwjgl.opengl.GL20.glUseProgram;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL15.*;
+import static org.lwjgl.opengl.GL20.*;
 import net.joaolourenco.ld.settings.GameSettings;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -41,12 +34,15 @@ public class Light {
 		glDepthMask(false);
 		glUseProgram(shader);
 		bindUniform(shader);
+		
+		glEnable(GL_BLEND);
 		glBegin(GL_QUADS);
 		glVertex3f(0, 0, 0);
 		glVertex3f(GameSettings.width, 0, 0);
 		glVertex3f(GameSettings.width, GameSettings.height, 0);
 		glVertex3f(0, GameSettings.height, 0);
 		glEnd();
+		
 		glUseProgram(0);
 		glDepthMask(true);
 	}
