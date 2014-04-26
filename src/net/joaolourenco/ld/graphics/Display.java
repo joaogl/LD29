@@ -39,7 +39,7 @@ public class Display {
 		glFrontFace(GL_CW);
 		glEnable(GL_COLOR_MATERIAL);
 		
-		Texture.load();
+		Texture.minimalisticLoad();
 	}
 	
 	public static void update() {

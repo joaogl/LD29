@@ -1,8 +1,10 @@
 package net.joaolourenco.ld;
 
 import net.joaolourenco.ld.graphics.Display;
+import net.joaolourenco.ld.gui.Intro;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.level.Level;
+import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -12,6 +14,7 @@ public class Main implements Runnable {
 	private boolean running = false;
 	
 	private Level level;
+	private Intro intro;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -27,7 +30,7 @@ public class Main implements Runnable {
 	public void run() {
 		Display.create(GameSettings.fullname, GameSettings.width, GameSettings.height);
 		Display.initGL();
-		level = new Level(15, 9);
+		intro = new Intro(this);
 		long lastTime = System.nanoTime();
 		double ns = 1000000000.0 / 60.0;
 		double delta = 0;
@@ -49,6 +52,7 @@ public class Main implements Runnable {
 			if (System.currentTimeMillis() - lastTimer > 1000) {
 				lastTimer += 1000;
 				System.out.println("FPS: " + frames + " UPS: " + updates);
+				tick();
 				updates = 0;
 				frames = 0;
 			}
@@ -57,13 +61,23 @@ public class Main implements Runnable {
 		Display.destroy();
 	}
 	
+	public void startLevel() {
+		Texture.load();
+		level = new Level(15, 9);
+	}
+	
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		level.render();
+		if (level != null) level.render();
+		else intro.render();
+	}
+	
+	public void tick() {
+		if (level == null) intro.update();
 	}
 	
 	public void update() {
 		Keyboard.update();
-		level.update();
+		if (level != null) level.update();
 	}
 }
