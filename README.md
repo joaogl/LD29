@@ -40,9 +40,9 @@ TO-DO
 - Add sounds.
 - Add the diferent player textures.
 - Setup the level loader.
-- Setup the collision detection. [HALF DONE]
 - Setup the level generator.
-- Apply the intro to the Game (only on startup).
+- Setup the collision detection. [HALF DONE]
+- Apply the intro to the Game (only on startup). [HALF DONE]
 
 TO-DO DONE
 ====
