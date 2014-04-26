@@ -57,7 +57,7 @@ public class Level {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				int tile = random.nextInt(10);
-				if (tile > 7) backgroundTiles[x + y * width] = 1;
+				if (tile < 7) backgroundTiles[x + y * width] = 1;
 				else {
 					foregroundTiles[x + y * width] = 1;
 					Vector2f[] vertices = new Vector2f[4];
@@ -94,7 +94,7 @@ public class Level {
 		glDepthMask(false);
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
-			light.intensity = 10.0f;
+			light.intensity = 5.0f;
 			light.x = entities.get(0).getX() + 32;
 			light.y = entities.get(0).getY() + 32;
 			light.shadows(foregroundVertices);
@@ -102,7 +102,6 @@ public class Level {
 			tile.bindUniforms(light);
 			renderBackground();
 		}
-		// glEnable(GL_BLEND);
 		wall.bindUniforms(lights);
 		renderForeground();
 		glDepthMask(true);
@@ -140,9 +139,9 @@ public class Level {
 	public Tile getTile(int x, int y, int level) {
 		if (x < 0 || x >= width || y < 0 || y >= height) return null;
 		if (level == BACKGROUND) {
-			if (backgroundTiles[x + y * width] > 0) return tile;
+			if (backgroundTiles[x + y * width] > 0) return wall;
 		}
-		if (foregroundTiles[x + y * width] > 0) return wall;
+		if (foregroundTiles[x + y * width] > 0) return tile;
 		return null;
 	}
 	

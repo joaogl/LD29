@@ -141,7 +141,7 @@ public class Tile {
 			colors[i + 1] = lights.get(i / 3).vc.y;
 			colors[i + 2] = lights.get(i / 3).vc.z;
 		}
-
+		
 		shader.bind();
 		int uniform = glGetUniformLocation(shader.getID(), "lightPosition");
 		glUniform2(uniform, Buffer.createFloatBuffer(positions));
@@ -154,7 +154,8 @@ public class Tile {
 		shader.release();
 	}
 	
-	public boolean solid(){
+	public boolean solid() {
 		return true;
 	}
+	
 }

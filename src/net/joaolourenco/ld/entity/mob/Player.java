@@ -91,13 +91,13 @@ public class Player extends Mob {
 		int xa = 0;
 		int ya = 0;
 		
-		if (Keyboard.keyPressed(UP) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(W) && Keyboard.keyPressed(SHIFT)) ya--;
+		if (Keyboard.keyPressed(UP) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(W) && Keyboard.keyPressed(SHIFT)) ya -= 3;
 		else if (Keyboard.keyPressed(UP) || Keyboard.keyPressed(W)) ya--;
-		else if (Keyboard.keyPressed(DOWN) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(S) && Keyboard.keyPressed(SHIFT)) ya++;
+		else if (Keyboard.keyPressed(DOWN) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(S) && Keyboard.keyPressed(SHIFT)) ya += 3;
 		else if (Keyboard.keyPressed(DOWN) || Keyboard.keyPressed(S)) ya++;
-		if (Keyboard.keyPressed(LEFT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(A) && Keyboard.keyPressed(SHIFT)) xa--;
+		if (Keyboard.keyPressed(LEFT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(A) && Keyboard.keyPressed(SHIFT)) xa -= 3;
 		else if (Keyboard.keyPressed(LEFT) || Keyboard.keyPressed(A)) xa--;
-		else if (Keyboard.keyPressed(RIGHT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(D) && Keyboard.keyPressed(SHIFT)) xa++;
+		else if (Keyboard.keyPressed(RIGHT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(D) && Keyboard.keyPressed(SHIFT)) xa += 3;
 		else if (Keyboard.keyPressed(RIGHT) || Keyboard.keyPressed(D)) xa++;
 		if (xa != 0 || ya != 0) move(xa, ya);
 	}
