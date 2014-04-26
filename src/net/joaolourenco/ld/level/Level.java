@@ -2,6 +2,7 @@ package net.joaolourenco.ld.level;
 
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
+import net.joaolourenco.ld.level.tile.GroundTile;
 import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
@@ -20,7 +21,7 @@ public class Level {
 		Texture.load();
 		light = new Light(50, 50, 0xff);
 		lightShader = new Shader("shaders/tile.vert", "shaders/light.frag");
-		cliffTile = new Tile();
+		cliffTile = new GroundTile();
 		voidTile = new Tile();
 	}
 	
@@ -33,14 +34,12 @@ public class Level {
 	}
 	
 	public void render() {
-		int offset = 10;
+		int offset = 1;
 		renderLights();
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (y < 1 || y >= 7 || (x == 5 && y == 3)) {
-					voidTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
-					cliffTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
-				} else voidTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
+				if (y < 1 || y >= 7 || (x == 5 && y == 3)) cliffTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
+				else voidTile.render((int) (x * (GameSettings.TILE_SIZE + offset)), (int) (y * (GameSettings.TILE_SIZE + offset)));
 			}
 		}
 	}

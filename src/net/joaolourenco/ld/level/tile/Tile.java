@@ -43,10 +43,10 @@ public class Tile {
 	public Tile() {
 		shader = new Shader("shaders/tile.vert", "shaders/tile.frag");
 		compile();
-		texture = Texture.CliffRock;
+		texture = Texture.Void;
 	}
 	
-	private void compile() {
+	protected void compile() {
 		vao = glGenVertexArrays();
 		glBindVertexArray(vao);
 		{
