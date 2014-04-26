@@ -36,3 +36,6 @@ TO-DO
 TO-DO DONE
 ====
 - Make the intro video.  [DONE]
+
+// Time table.
+26 - from 01:30 AM to 05:54AM

@@ -16,5 +16,11 @@ public class GameSettings {
 		// Screen Size
 		public static int width = 960;
 		public static int height = 540;
+
+	/**
+	 * --------------------- // General Game Settings // ---------------------
+	 */
+		// Tile Size
+		public static final float TILE_SIZE = 64.0f;
 	
 }

@@ -32,6 +32,7 @@ public class Display {
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CW);
 		glEnable(GL_COLOR_MATERIAL);
 	}
 	

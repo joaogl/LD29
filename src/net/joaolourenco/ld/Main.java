@@ -1,13 +1,11 @@
 package net.joaolourenco.ld;
 
-import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
-import static org.lwjgl.opengl.GL11.glClear;
 import net.joaolourenco.ld.graphics.Display;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.level.Level;
 import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.settings.GameSettings;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Main implements Runnable {
 	
@@ -15,6 +13,7 @@ public class Main implements Runnable {
 	private boolean running = false;
 	
 	private Level level;
+	Tile tile;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -30,6 +29,7 @@ public class Main implements Runnable {
 	public void run() {
 		Display.create(GameSettings.fullname, GameSettings.width, GameSettings.height);
 		Display.initGL();
+		tile = new Tile();
 		level = new Level(9, 9);
 		long lastTime = System.nanoTime();
 		double ns = 1000000000.0 / 60.0;
@@ -60,9 +60,20 @@ public class Main implements Runnable {
 		Display.destroy();
 	}
 	
+	public void Quad() {
+		glBegin(GL_QUADS);
+		glVertex3f(50.0f, 50.0f, 0.0f);
+		glVertex3f(350.0f, 50.0f, 0.0f);
+		glVertex3f(350.0f, 350.0f, 0.0f);
+		glVertex3f(50.0f, 350.0f, 0.0f);
+		glEnd();
+	}
+	
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		level.render();
+		tile.render(50, 50);
+		// Quad();
+		// level.render();
 	}
 	
 	public void update() {
