@@ -12,8 +12,8 @@ import net.joaolourenco.ld.util.Buffer;
 
 public class Texture {
 	
-	public static Texture Void = 0;
-	public static Texture CliffRock = 0;
+	public static int Void = 0;
+	public static int CliffRock = 0;
 	
 	public static void load() {
 		Void = loadTexture("res/tex/void.png");
