@@ -2,13 +2,12 @@ package net.joaolourenco.ld;
 
 import static org.lwjgl.opengl.GL11.*;
 import net.joaolourenco.ld.graphics.Display;
+import net.joaolourenco.ld.settings.GameSettings;
 
 public class Main implements Runnable {
 	
-	private int width = 960;
-	private int height = 540;
 	private Thread thread;
-	private boolean running = false;;
+	private boolean running = false;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -22,7 +21,7 @@ public class Main implements Runnable {
 	}
 	
 	public void run() {
-		Display.create("Beneath the Surface", width, height);
+		Display.create(GameSettings.fullname, GameSettings.width, GameSettings.height);
 		Display.initGL();
 		while (running) {
 			render();
