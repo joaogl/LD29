@@ -8,7 +8,7 @@ import net.joaolourenco.ld.settings.GameSettings;
 public abstract class Entity {
 	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
-	protected int x, y;
+	protected int x, y, side;
 	protected int texture;
 	protected int vao, vbo, vio, vto;
 	protected Shader shader;
@@ -38,7 +38,7 @@ public abstract class Entity {
 	
 	public void bindUniforms(Light light) {
 		shader.bind();
-		light.bindUniforms(shader.getID());
+		light.bindUniforms(shader.getID(), side);
 		shader.release();
 	}
 	

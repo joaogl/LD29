@@ -110,7 +110,7 @@ public class Tile {
 	
 	public void bindUniforms(Light light) {
 		shader.bind();
-		light.bindUniforms(shader.getID());
+		light.bindUniforms(shader.getID(), 999);
 		shader.release();
 	}
 	

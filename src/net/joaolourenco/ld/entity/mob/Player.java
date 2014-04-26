@@ -1,6 +1,5 @@
 package net.joaolourenco.ld.entity.mob;
 
-import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.resources.Texture;
@@ -18,7 +17,8 @@ public class Player extends Mob {
 	public Player(int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.texture = Texture.Player;
+		this.side = 0;
+		this.texture = Texture.PlayerNormal0;
 		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
 		compile();
 	}
@@ -81,12 +81,6 @@ public class Player extends Mob {
 		glPopMatrix();
 	}
 	
-	public void bindUniform(Light light) {
-		shader.bind();
-		light.bindUniforms(shader.getID());
-		shader.release();
-	}
-	
 	public void update() {
 		int xa = 0;
 		int ya = 0;
@@ -99,6 +93,21 @@ public class Player extends Mob {
 		else if (Keyboard.keyPressed(LEFT) || Keyboard.keyPressed(A)) xa--;
 		else if (Keyboard.keyPressed(RIGHT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(D) && Keyboard.keyPressed(SHIFT)) xa += 3;
 		else if (Keyboard.keyPressed(RIGHT) || Keyboard.keyPressed(D)) xa++;
+		if (xa > 0) {
+			this.side = 0;
+			this.texture = Texture.PlayerNormal0;
+		} else if (xa < 0) {
+			this.side = 1;
+			this.texture = Texture.PlayerNormal1;
+		}
+		if (ya > 0) {
+			this.side = 2;
+			this.texture = Texture.PlayerNormal2;
+		} else if (ya < 0) {
+			this.side = 3;
+			this.texture = Texture.PlayerNormal3;
+		}
+		
 		if (xa != 0 || ya != 0) move(xa, ya);
 	}
 }

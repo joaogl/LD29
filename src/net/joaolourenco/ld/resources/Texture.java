@@ -14,12 +14,16 @@ public class Texture {
 	
 	public static int Void = 0;
 	public static int CliffRock = 0;
-	public static int Player = 0;
+	public static int PlayerNormal0 = 0, PlayerNormal1 = 0, PlayerNormal2 = 0, PlayerNormal3 = 0;
 	
 	public static void load() {
 		Void = loadTexture("res/textures/void.png", false);
 		CliffRock = loadTexture("res/textures/rock.png", false);
-		Player = loadTexture("res/textures/entities/Player/Player.png", false);
+		
+		PlayerNormal0 = loadTexture("res/textures/entities/Player/PlayerNormal0.png", false);
+		PlayerNormal1 = loadTexture("res/textures/entities/Player/PlayerNormal1.png", false);
+		PlayerNormal2 = loadTexture("res/textures/entities/Player/PlayerNormal2.png", false);
+		PlayerNormal3 = loadTexture("res/textures/entities/Player/PlayerNormal3.png", false);
 	}
 	
 	private static int loadTexture(String path, boolean antialiase) {

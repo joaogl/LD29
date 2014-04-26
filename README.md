@@ -36,9 +36,11 @@ Builds for testing
 
 TO-DO
 ====
-- Setup the basic stuff.
+- Create menus.
+- Add sounds.
+- Add the diferent player textures.
 - Setup the level loader.
-- Setup the collision detection.
+- Setup the collision detection. [HALF DONE]
 - Setup the level generator.
 - Apply the intro to the Game (only on startup).
 
@@ -48,6 +50,7 @@ TO-DO DONE
 - Setup lightning. [DONE]
 - Setup shadows. [DONE]
 - Setup the player. [DONE]
+- Setup the basic stuff. [DONE]
 
 // Time table.
 26 - from 01:30 to 05:54

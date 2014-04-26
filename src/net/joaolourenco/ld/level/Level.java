@@ -95,6 +95,7 @@ public class Level {
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
 			light.intensity = 5.0f;
+			light.setWhiteness(0.1f);
 			light.x = entities.get(0).getX() + 32;
 			light.y = entities.get(0).getY() + 32;
 			light.shadows(foregroundVertices);

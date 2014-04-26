@@ -6,10 +6,12 @@ in vec2 texCoords;
 uniform vec2 lightPosition;
 uniform vec3 lightColor;
 uniform float lightIntensity;
+uniform float facing;
 
 void main(){
 	vec4 tex = texture2D(texture, texCoords);
 	float distance = length(lightPosition - gl_FragCoord.xy);
+	if (distance < 30 && facing == 3 || distance < 30 && facing == 1) distance = 30;
 	float attenuation = 1.0 / distance;
 	vec4 color = vec4(attenuation, attenuation, attenuation, pow(attenuation, 3)) * vec4(lightColor * lightIntensity, 1.0);
 	color = mix(tex, color, 0.2);

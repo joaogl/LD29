@@ -25,7 +25,7 @@ public class Light {
 		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
-	public void bindUniforms(int shader) {
+	public void bindUniforms(int shader, int side) {
 		int uniform = glGetUniformLocation(shader, "lightPosition");
 		glUniform2f(uniform, x, GameSettings.height - y);
 		
@@ -34,6 +34,11 @@ public class Light {
 		
 		uniform = glGetUniformLocation(shader, "lightIntensity");
 		glUniform1f(uniform, intensity);
+		
+		if (side <= 4) {
+			uniform = glGetUniformLocation(shader, "facing");
+			glUniform1f(uniform, side);
+		}
 	}
 	
 	public void setWhiteness(float whiteness) {
@@ -44,7 +49,6 @@ public class Light {
 		vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
-
 	public void shadows(List<Vector2f[]> blocks) {
 		glColorMask(false, false, false, false);
 		glStencilFunc(GL_ALWAYS, 1, 1);
@@ -82,7 +86,7 @@ public class Light {
 	public void render(int shader) {
 		glUseProgram(shader);
 		glColorMask(true, true, true, true);
-		bindUniforms(shader);
+		bindUniforms(shader, 999);
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
@@ -91,7 +95,7 @@ public class Light {
 		glVertex3f(GameSettings.width, 0, 0.0f);
 		glVertex3f(GameSettings.width, GameSettings.height, 0.0f);
 		glVertex3f(0, GameSettings.height, 0.0f);
-		glEnd();		
+		glEnd();
 		glDisable(GL_BLEND);
 		
 		glUseProgram(0);
