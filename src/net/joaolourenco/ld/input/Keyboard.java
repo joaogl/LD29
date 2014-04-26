@@ -9,7 +9,7 @@ public class Keyboard {
 	
 	public static void update() {
 		for (int i = 0; i < pressed.size(); i++) {
-			if (!keyPressed(pressed.get(i))) pressed.remove(key);
+			if (!keyPressed(pressed.get(i))) pressed.remove(new Integer(pressed.get(i)));
 		}
 	}
 	
