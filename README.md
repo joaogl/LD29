@@ -6,6 +6,7 @@ Fallen is a Action/Adventure roguelike kinda game .
 
 Builds for testing
 ====
+- Build 0.1 (BUILD-0.1.rar)
 
 **Ideas**
 ====
