@@ -1,11 +1,13 @@
 package net.joaolourenco.ld.level.tile;
 
-import org.lwjgl.input.Keyboard;
-
+import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
+
+import org.lwjgl.input.Keyboard;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -41,7 +43,7 @@ public class Tile {
 	};
 	
 	public Tile() {
-		shader = new Shader("shaders/tile.vert", "shaders/tile.frag");
+		shader = new Shader("shaders/tile.vert", "shaders/ground.frag");
 		compile();
 		texture = Texture.Void;
 	}
@@ -94,12 +96,19 @@ public class Tile {
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 		shader.release();
 		glPopMatrix();
+	}
+	
+	public void bindUniform(Light light) {
+		shader.bind();
+		light.bindUniform(shader.getID());
+		shader.release();
 	}
 	
 	public void update() {

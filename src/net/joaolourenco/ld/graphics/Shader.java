@@ -58,6 +58,10 @@ public class Shader {
 		glUseProgram(0);
 	}
 	
+	public String toString() {
+		return "Shader ID: " + getID() + "; " + vertexPath + ", " + fragmentPath;
+	}
+	
 	public int getID() {
 		return shader;
 	}
