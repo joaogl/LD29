@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL20.*;
 public class Light {
 	
 	public int x, y;
-	private Vector3f vc;
+	public Vector3f vc;
 	private int color;
 	public float intensity = GameSettings.LIGHT_INTENSITY;
 	public float radius = GameSettings.LIGHT_RADIUS;
@@ -45,21 +45,22 @@ public class Light {
 	}
 	
 	public void shadows(List<Vector2f[]> blocks) {
+		glColorMask(false, false, false, false);
+		glStencilFunc(GL_ALWAYS, 1, 1);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		Vector2f lightpos = new Vector2f(x, y);		
 		for (int j = 0; j < blocks.size(); j++) {
 			Vector2f[] vertices = blocks.get(j);
 			
-			glColorMask(false, false, false, false);
-			glStencilFunc(GL_ALWAYS, 1, 1);
-			glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 			for (int i = 0; i < vertices.length; i++) {
 				Vector2f current = vertices[i];
-				Vector2f next = vertices[(i + 1) % 4];
+				Vector2f next = vertices[(i + 1) % vertices.length];
 				Vector2f edge = Vector2f.sub(next, current, null);
 				Vector2f normal = new Vector2f(edge.y, -edge.x);
-				Vector2f dir = Vector2f.sub(current, new Vector2f(x, y), null);
+				Vector2f dir = Vector2f.sub(current, lightpos, null);
 				if (Vector2f.dot(normal, dir) > 0) {
-					Vector2f point0 = Vector2f.add(current, (Vector2f) Vector2f.sub(current, new Vector2f(x, y), null).scale(GameSettings.width), null);
-					Vector2f point1 = Vector2f.add(next, (Vector2f) Vector2f.sub(next, new Vector2f(x, y), null).scale(GameSettings.width), null);
+					Vector2f point0 = Vector2f.add(current, (Vector2f) Vector2f.sub(current, lightpos, null).scale(GameSettings.width), null);
+					Vector2f point1 = Vector2f.add(next, (Vector2f) Vector2f.sub(next, lightpos, null).scale(GameSettings.width), null);
 					float z = 0.5f;
 					glBegin(GL_QUADS);
 					{
@@ -78,7 +79,6 @@ public class Light {
 	}
 	
 	public void render(int shader) {
-		glDepthMask(false);
 		glUseProgram(shader);
 		glColorMask(true, true, true, true);
 		bindUniform(shader);
@@ -94,7 +94,6 @@ public class Light {
 		
 		glDisable(GL_BLEND);
 		glUseProgram(0);
-		glDepthMask(true);
 		glClear(GL_STENCIL_BUFFER_BIT);
 	}
 }

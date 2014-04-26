@@ -1,53 +1,27 @@
-package net.joaolourenco.ld.level.tile;
-
-import java.util.List;
+package net.joaolourenco.ld.entity.mob;
 
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
+import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
-
-import org.lwjgl.input.Keyboard;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class Tile {
+public class Player extends Mob {
 	
-	protected static final float SIZE = GameSettings.TILE_SIZE;
-	protected int vao, vbo, vio, vto;
-	protected Shader shader;
-	protected int texture;
+	int UP = org.lwjgl.input.Keyboard.KEY_UP, DOWN = org.lwjgl.input.Keyboard.KEY_DOWN, LEFT = org.lwjgl.input.Keyboard.KEY_LEFT, RIGHT = org.lwjgl.input.Keyboard.KEY_RIGHT, W = org.lwjgl.input.Keyboard.KEY_W, S = org.lwjgl.input.Keyboard.KEY_S, A = org.lwjgl.input.Keyboard.KEY_A, D = org.lwjgl.input.Keyboard.KEY_D, SHIFT = org.lwjgl.input.Keyboard.KEY_LSHIFT;
 	
-	protected float[] vertices = new float[] {
-			0.0f, 0.0f, 0.0f, //
-			SIZE, 0.0f, 0.0f, //
-			SIZE, SIZE, 0.0f, //
-			0.0f, SIZE, 0.0f //
-	};
-	
-	protected byte[] indices = new byte[] {
-			0, 1, 2, //
-			2, 3, 0 //
-	};
-	
-	protected byte[] texCoords = new byte[] {
-			0, 0, //
-			1, 0, //
-			1, 1, //
-			1, 1, //
-			0, 1, //
-			0, 0 //
-	};
-	
-	public Tile() {
-		shader = new Shader("shaders/tile.vert", "shaders/ground.frag");
+	public Player(int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.texture = Texture.Player;
+		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
 		compile();
-		texture = Texture.Void;
 	}
 	
 	protected void compile() {
@@ -73,7 +47,7 @@ public class Tile {
 			glBindBuffer(GL_ARRAY_BUFFER, vto);
 			{
 				glBufferData(GL_ARRAY_BUFFER, Buffer.createByteBuffer(texCoords), GL_STATIC_DRAW);
-				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, 1);
+				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, -1);
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
@@ -86,7 +60,7 @@ public class Tile {
 		shader.release();
 	}
 	
-	public void render(int x, int y) {
+	public void render() {
 		glPushMatrix();
 		shader.bind();
 		glBindVertexArray(vao);
@@ -115,42 +89,17 @@ public class Tile {
 	}
 	
 	public void update() {
-		if (net.joaolourenco.ld.input.Keyboard.keyTyped(Keyboard.KEY_R)) shader.recompile();
-	}
-	
-	public void bindUniform(List<Light> lights) {
-		if (lights.size() > 10) {
-			System.err.println("Too many lights.");
-			return;
-		}
-		float[] positions = new float[10 * 2];
-		float[] colors = new float[10 * 3];
-		float[] intensities = new float[10];
+		int xa = 0;
+		int ya = 0;
 		
-		for (int i = 0; i < lights.size() * 2; i += 2) {
-			positions[i] = lights.get(i >> 1).x;
-			positions[i + 1] = GameSettings.height - lights.get(i >> 1).y;
-		}
-		
-		for (int i = 0; i < lights.size(); i++) {
-			intensities[i] = lights.get(i).intensity;
-		}
-		
-		for (int i = 0; i < lights.size() * 3; i += 3) {
-			colors[i] = lights.get(i / 3).vc.x;
-			colors[i + 1] = lights.get(i / 3).vc.y;
-			colors[i + 2] = lights.get(i / 3).vc.z;
-		}
-
-		shader.bind();
-		int uniform = glGetUniformLocation(shader.getID(), "lightPosition");
-		glUniform2(uniform, Buffer.createFloatBuffer(positions));
-		
-		uniform = glGetUniformLocation(shader.getID(), "lightColor");
-		glUniform3(uniform, Buffer.createFloatBuffer(colors));
-		
-		uniform = glGetUniformLocation(shader.getID(), "lightIntensity");
-		glUniform1(uniform, Buffer.createFloatBuffer(intensities));
-		shader.release();
+		if (Keyboard.keyPressed(UP) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(W) && Keyboard.keyPressed(SHIFT)) ya--;
+		else if (Keyboard.keyPressed(UP) || Keyboard.keyPressed(W)) ya--;
+		else if (Keyboard.keyPressed(DOWN) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(S) && Keyboard.keyPressed(SHIFT)) ya++;
+		else if (Keyboard.keyPressed(DOWN) || Keyboard.keyPressed(S)) ya++;
+		if (Keyboard.keyPressed(LEFT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(A) && Keyboard.keyPressed(SHIFT)) xa--;
+		else if (Keyboard.keyPressed(LEFT) || Keyboard.keyPressed(A)) xa--;
+		else if (Keyboard.keyPressed(RIGHT) && Keyboard.keyPressed(SHIFT) || Keyboard.keyPressed(D) && Keyboard.keyPressed(SHIFT)) xa++;
+		else if (Keyboard.keyPressed(RIGHT) || Keyboard.keyPressed(D)) xa++;
+		if (xa != 0 || ya != 0) move(xa, ya);
 	}
 }

@@ -1,6 +1,7 @@
 package net.joaolourenco.ld.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
+import net.joaolourenco.ld.resources.Texture;
 
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.DisplayMode;
@@ -37,6 +38,8 @@ public class Display {
 		glEnable(GL_STENCIL_TEST);
 		glFrontFace(GL_CW);
 		glEnable(GL_COLOR_MATERIAL);
+		
+		Texture.load();
 	}
 	
 	public static void update() {

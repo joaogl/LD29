@@ -14,10 +14,12 @@ public class Texture {
 	
 	public static int Void = 0;
 	public static int CliffRock = 0;
+	public static int Player = 0;
 	
 	public static void load() {
 		Void = loadTexture("res/textures/void.png");
 		CliffRock = loadTexture("res/textures/rock.png");
+		Player = loadTexture("res/textures/entities/Player/Player.png");
 	}
 	
 	private static int loadTexture(String path) {
@@ -50,7 +52,7 @@ public class Texture {
 		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);		
+		glBindTexture(GL_TEXTURE_2D, 0);
 		return texture;
 	}
 }
