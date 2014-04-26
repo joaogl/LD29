@@ -17,6 +17,9 @@ Builds for testing
 - You only get the light from the surface or from beneath which is lava?
 
 **Final Ideas (only if I have time)**
+- Items and Inventories.
 
 TO-DO
 ====
+- Setup the basic stuff.
+- Make the intro video. 
