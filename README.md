@@ -22,4 +22,6 @@ Builds for testing
 TO-DO
 ====
 - Setup the basic stuff.
+- Setup the level loader.
+- Setup the player.
 - Make the intro video. 

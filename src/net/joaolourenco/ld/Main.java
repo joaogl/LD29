@@ -1,7 +1,10 @@
 package net.joaolourenco.ld;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_COLOR_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.GL_DEPTH_BUFFER_BIT;
+import static org.lwjgl.opengl.GL11.glClear;
 import net.joaolourenco.ld.graphics.Display;
+import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.settings.GameSettings;
 
 public class Main implements Runnable {
@@ -57,6 +60,6 @@ public class Main implements Runnable {
 	}
 	
 	public void update() {
-		
+		Keyboard.update();
 	}
 }
