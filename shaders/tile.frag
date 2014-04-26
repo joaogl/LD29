@@ -1,5 +1,9 @@
 #version 330 compatibility
 
+uniform sampler2D texture;
+
+in vec2 texCoords;
+
 void main(){
-	gl_FragColor = vec4(gl_FragCoord.x / 960.0, gl_FragCoord.y / 540.0, gl_FragCoord.y / 540.0, 1.0);
+	gl_FragColor = texture2D(texture, texCoords);
 }

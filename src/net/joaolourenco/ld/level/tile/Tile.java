@@ -3,9 +3,11 @@ package net.joaolourenco.ld.level.tile;
 import org.lwjgl.input.Keyboard;
 
 import net.joaolourenco.ld.graphics.Shader;
+import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -15,6 +17,7 @@ public class Tile {
 	protected static final float SIZE = GameSettings.TILE_SIZE;
 	protected int vao, vbo, vio, vto;
 	protected Shader shader;
+	protected int texture;
 	
 	protected float[] vertices = new float[] {
 			0.0f, 0.0f, 0.0f, //
@@ -38,8 +41,9 @@ public class Tile {
 	};
 	
 	public Tile() {
-		compile();
 		shader = new Shader("shaders/tile.vert", "shaders/tile.frag");
+		compile();
+		texture = Texture.CliffRock;
 	}
 	
 	private void compile() {
@@ -65,11 +69,17 @@ public class Tile {
 			glBindBuffer(GL_ARRAY_BUFFER, vto);
 			{
 				glBufferData(GL_ARRAY_BUFFER, Buffer.createByteBuffer(texCoords), GL_STATIC_DRAW);
-				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, 0);
+				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, -1);
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 		glBindVertexArray(0);
+		
+		glActiveTexture(GL_TEXTURE1);
+		shader.bind();
+		int uniform = glGetUniformLocation(shader.getID(), "texture");
+		glUniform1i(uniform, 1);
+		shader.release();
 	}
 	
 	public void render(int x, int y) {
@@ -80,6 +90,7 @@ public class Tile {
 		glEnableVertexAttribArray(1);
 		{
 			glTranslatef(x, y, 0);
+			glBindTexture(GL_TEXTURE_2D, texture);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

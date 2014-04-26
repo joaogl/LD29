@@ -16,7 +16,8 @@ public class Texture {
 	public static int CliffRock = 0;
 	
 	public static void load() {
-		Void = loadTexture("res/tex/void.png");
+		Void = loadTexture("res/textures/void.png");
+		CliffRock = loadTexture("res/textures/rock.png");
 	}
 	
 	private static int loadTexture(String path) {
@@ -39,18 +40,17 @@ public class Texture {
 			int r = (pixels[i] & 0xff0000) >> 16;
 			int g = (pixels[i] & 0xff00) >> 8;
 			int b = (pixels[i] & 0xff);
-			pixels[i] = b << 16 | g << 8 | r;
+			pixels[i] = a << 24 | b << 16 | g << 8 | r;
 		}
 		
 		IntBuffer buffer = Buffer.createIntBuffer(pixels);
 		
 		int texture = glGenTextures();
 		glBindTexture(GL_TEXTURE_2D, texture);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		
+		glBindTexture(GL_TEXTURE_2D, 0);		
 		return texture;
 	}
 }
