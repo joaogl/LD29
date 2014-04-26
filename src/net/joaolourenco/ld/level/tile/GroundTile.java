@@ -10,7 +10,7 @@ public class GroundTile extends Tile {
 	public GroundTile() {
 		shader = new Shader("shaders/tile.vert", "shaders/ground.frag");
 		compile();
-		texture = Texture.CliffRock;
+		texture = Texture.Void;
 	}
 	
 	public Vector3f[] getVertexPositions() {
@@ -19,5 +19,9 @@ public class GroundTile extends Tile {
 			result[i] = new Vector3f(vertices[i * 3], vertices[i * 3 + 1], vertices[i * 3 + 2]);
 		}
 		return result;
+	}
+	
+	public boolean solid() {
+		return false;
 	}
 }

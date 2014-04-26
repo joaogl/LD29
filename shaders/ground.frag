@@ -29,6 +29,7 @@ void main(){
 		
 		color /= (distance / (ints * falloff));
 	}		
-	color *= 300.0 * (num - 1) + 1;
+
+	color *= 300.0 * (num - 1) + 1;	
 	gl_FragColor = color;
 }

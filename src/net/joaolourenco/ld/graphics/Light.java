@@ -21,13 +21,13 @@ public class Light {
 	public Light(int x, int y, int color) {
 		this.x = x;
 		this.y = y;
-		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 		this.color = color;
+		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
-	public void bindUniform(int shader) {
+	public void bindUniforms(int shader) {
 		int uniform = glGetUniformLocation(shader, "lightPosition");
-		glUniform2f(uniform, x, 540.0f - y);
+		glUniform2f(uniform, x, GameSettings.height - y);
 		
 		uniform = glGetUniformLocation(shader, "lightColor");
 		glUniform3f(uniform, vc.x, vc.y, vc.z);
@@ -48,7 +48,7 @@ public class Light {
 		glColorMask(false, false, false, false);
 		glStencilFunc(GL_ALWAYS, 1, 1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		Vector2f lightpos = new Vector2f(x, y);		
+		Vector2f lightpos = new Vector2f(x, y);
 		for (int j = 0; j < blocks.size(); j++) {
 			Vector2f[] vertices = blocks.get(j);
 			
@@ -81,7 +81,7 @@ public class Light {
 	public void render(int shader) {
 		glUseProgram(shader);
 		glColorMask(true, true, true, true);
-		bindUniform(shader);
+		bindUniforms(shader);
 		
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);

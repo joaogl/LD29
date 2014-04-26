@@ -1,5 +1,6 @@
 package net.joaolourenco.ld.entity;
 
+import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.level.Level;
 import net.joaolourenco.ld.settings.GameSettings;
@@ -34,6 +35,12 @@ public abstract class Entity {
 			0, 1, //
 			0, 0 //
 	};
+	
+	public void bindUniforms(Light light) {
+		shader.bind();
+		light.bindUniforms(shader.getID());
+		shader.release();
+	}
 	
 	public abstract void update();
 	

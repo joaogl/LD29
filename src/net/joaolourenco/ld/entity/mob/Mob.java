@@ -1,6 +1,9 @@
 package net.joaolourenco.ld.entity.mob;
 
 import net.joaolourenco.ld.entity.Entity;
+import net.joaolourenco.ld.level.Level;
+import net.joaolourenco.ld.level.tile.Tile;
+import net.joaolourenco.ld.settings.GameSettings;
 
 public abstract class Mob extends Entity {
 	
@@ -18,6 +21,14 @@ public abstract class Mob extends Entity {
 	}
 	
 	public boolean collision(int xa, int ya) {
-		return false;
+		boolean solid = false;
+		for (int i = 0; i < 4; i++) {
+			int xt = ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE)) >> GameSettings.TILE_SIZE_MASK;
+			int yt = ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE)) >> GameSettings.TILE_SIZE_MASK;
+			Tile tile = level.getTile(xt, yt, Level.FOREGROUND);
+			if (tile == null) continue;
+			if (tile.solid()) solid = true;
+		}
+		return solid;
 	}
 }

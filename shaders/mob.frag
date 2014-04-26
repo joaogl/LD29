@@ -16,5 +16,9 @@ void main(){
 	float falloff = 4;
 	falloff -= distance / 25.0f / lightIntensity;
 	color /= (distance / (lightIntensity * falloff));
-	gl_FragColor = tex;
+	float alpha = 1.0;
+	if (tex.x == 1.0 && tex.y == 0.0 && tex.z == 1.0){
+		alpha = 0.0;
+	}	
+	gl_FragColor = vec4(color.xyz, alpha);
 }

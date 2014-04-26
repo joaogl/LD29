@@ -6,6 +6,6 @@ layout(location = 1) in vec2 coords;
 out vec2 texCoords;
 
 void main() {
-	gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
+	gl_Position = gl_ModelViewProjectionMatrix * position;
 	texCoords = coords;
 }

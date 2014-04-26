@@ -45,9 +45,9 @@ public class Tile {
 	};
 	
 	public Tile() {
-		shader = new Shader("shaders/tile.vert", "shaders/ground.frag");
+		shader = new Shader("shaders/tile.vert", "shaders/tile.frag");
 		compile();
-		texture = Texture.Void;
+		texture = Texture.CliffRock;
 	}
 	
 	protected void compile() {
@@ -73,7 +73,7 @@ public class Tile {
 			glBindBuffer(GL_ARRAY_BUFFER, vto);
 			{
 				glBufferData(GL_ARRAY_BUFFER, Buffer.createByteBuffer(texCoords), GL_STATIC_DRAW);
-				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, 1);
+				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, -1);
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
@@ -108,9 +108,9 @@ public class Tile {
 		glPopMatrix();
 	}
 	
-	public void bindUniform(Light light) {
+	public void bindUniforms(Light light) {
 		shader.bind();
-		light.bindUniform(shader.getID());
+		light.bindUniforms(shader.getID());
 		shader.release();
 	}
 	
@@ -118,7 +118,7 @@ public class Tile {
 		if (net.joaolourenco.ld.input.Keyboard.keyTyped(Keyboard.KEY_R)) shader.recompile();
 	}
 	
-	public void bindUniform(List<Light> lights) {
+	public void bindUniforms(List<Light> lights) {
 		if (lights.size() > 10) {
 			System.err.println("Too many lights.");
 			return;
@@ -152,5 +152,9 @@ public class Tile {
 		uniform = glGetUniformLocation(shader.getID(), "lightIntensity");
 		glUniform1(uniform, Buffer.createFloatBuffer(intensities));
 		shader.release();
+	}
+	
+	public boolean solid(){
+		return true;
 	}
 }

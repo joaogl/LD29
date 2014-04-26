@@ -20,9 +20,12 @@ import static org.lwjgl.opengl.GL11.*;
 public class Level {
 	
 	protected int width, height;
-	private Tile cliffTile, voidTile;
+	private Tile wall, tile;
 	private Shader lightShader;
 	private Random random = new Random();
+	
+	public final static int BACKGROUND = 0x0;
+	public final static int FOREGROUND = 0x1;
 	
 	private int[] backgroundTiles, foregroundTiles;
 	private List<Vector2f[]> foregroundVertices = new ArrayList<Vector2f[]>();
@@ -33,18 +36,14 @@ public class Level {
 		this.width = width;
 		this.height = height;
 		
-		cliffTile = new GroundTile();
-		voidTile = new Tile();
+		wall = new GroundTile();
+		tile = new Tile();
 		
 		backgroundTiles = new int[width * height];
 		foregroundTiles = new int[width * height];
 		lights.add(new Light(GameSettings.width / 2, GameSettings.height / 2, 0xff));
 		lights.add(new Light(50, 50, 0xff0000));
-		lights.get(0).setWhiteness(0.4f);
-		lights.get(1).setWhiteness(0.4f);
-		lights.get(0).intensity = 5.0f;
-		lights.get(1).intensity = 5.0f;
-		add(new Player(GameSettings.width / 2 + 32, GameSettings.height / 2 + 32));
+		add(new Player(GameSettings.width / 2 - 32, GameSettings.height / 2 - 32));
 		
 		for (int i = 0; i < 5; i++) {
 			lights.add(new Light(random.nextInt(960), random.nextInt(540), random.nextInt(0xffffff)));
@@ -62,15 +61,16 @@ public class Level {
 	private void genRandom() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				int tile = random.nextInt(2);
-				if (tile == 0) backgroundTiles[x + y * width] = 1;
+				int tile = random.nextInt(10);
+				if (tile > 7) backgroundTiles[x + y * width] = 1;
 				else {
 					foregroundTiles[x + y * width] = 1;
 					Vector2f[] vertices = new Vector2f[4];
-					vertices[0] = new Vector2f(x * GameSettings.TILE_SIZE, y * GameSettings.TILE_SIZE);
-					vertices[1] = new Vector2f(x * GameSettings.TILE_SIZE + GameSettings.TILE_SIZE, y * GameSettings.TILE_SIZE);
-					vertices[2] = new Vector2f(x * GameSettings.TILE_SIZE + GameSettings.TILE_SIZE, y * GameSettings.TILE_SIZE + GameSettings.TILE_SIZE);
-					vertices[3] = new Vector2f(x * GameSettings.TILE_SIZE, y * GameSettings.TILE_SIZE + GameSettings.TILE_SIZE);
+					float size = GameSettings.TILE_SIZE;
+					vertices[0] = new Vector2f(x * size, y * size);
+					vertices[1] = new Vector2f(x * size + size, y * size);
+					vertices[2] = new Vector2f(x * size + size, y * size + size);
+					vertices[3] = new Vector2f(x * size, y * size + size);
 					foregroundVertices.add(vertices);
 				}
 			}
@@ -78,17 +78,17 @@ public class Level {
 	}
 	
 	public void update() {
-		cliffTile.update();
-		voidTile.update();
+		wall.update();
+		tile.update();
 		
-		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_UP) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(1).y -= 3;
-		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_UP)) lights.get(1).y--;
-		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_DOWN) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(1).y += 3;
-		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_DOWN)) lights.get(1).y++;
-		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LEFT) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(1).x -= 3;
-		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LEFT)) lights.get(1).x--;
-		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_RIGHT) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(1).x += 3;
-		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_RIGHT)) lights.get(1).x++;
+		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_UP) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(0).y -= 3;
+		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_UP)) lights.get(0).y--;
+		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_DOWN) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(0).y += 3;
+		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_DOWN)) lights.get(0).y++;
+		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LEFT) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(0).x -= 3;
+		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LEFT)) lights.get(0).x--;
+		if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_RIGHT) && Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_LSHIFT)) lights.get(0).x += 3;
+		else if (Keyboard.keyPressed(org.lwjgl.input.Keyboard.KEY_RIGHT)) lights.get(0).x++;
 		
 		for (int i = 0; i < entities.size(); i++) {
 			entities.get(i).update();
@@ -99,27 +99,33 @@ public class Level {
 		glDepthMask(false);
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
+			light.intensity = 5.0f;
 			light.shadows(foregroundVertices);
 			light.render(lightShader.getID());
-			voidTile.bindUniform(light);
+			tile.bindUniforms(light);
 			renderBackground();
 		}
-		glDisable(GL_BLEND);
-		glDepthMask(true);
-		
-		for (int i = 0; i < entities.size(); i++) {
-			entities.get(i).render();
-		}
-		
-		cliffTile.bindUniform(lights);
+		glEnable(GL_BLEND);
+		wall.bindUniforms(lights);
 		renderForeground();
+		glDepthMask(true);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		for (int j = 0; j < lights.size(); j++) {
+			for (int i = 0; i < entities.size(); i++) {
+				entities.get(i).bindUniforms(lights.get(j));
+				entities.get(i).render();
+			}
+		}
+		glDisable(GL_BLEND);
 	}
 	
 	public void renderBackground() {
 		glEnable(GL_BLEND);
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (getTile(x, y) == 1) voidTile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+				Tile tile = getTile(x, y, BACKGROUND);
+				if (tile != null) tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
 			}
 		}
 		glDisable(GL_BLEND);
@@ -128,14 +134,22 @@ public class Level {
 	public void renderForeground() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				if (foregroundTiles[x + y * width] == 1) cliffTile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+				Tile tile = getTile(x, y, FOREGROUND);
+				if (tile != null) tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
 			}
 		}
 	}
 	
-	public int getTile(int x, int y) {
-		if (x < 0 || x >= width || y < 0 || y >= height) return 0;
-		return backgroundTiles[x + y * width];
+	public Tile getTile(int x, int y, int level) {
+		if (x < 0 || x >= width || y < 0 || y >= height) return null;
+		if (level == BACKGROUND) {
+			if (backgroundTiles[x + y * width] > 0) return tile;
+		}
+		if (foregroundTiles[x + y * width] > 0) return wall;
+		return null;
 	}
+	/*
+	 * public int getTile(int x, int y, int level) { if (x < 0 || x >= width || y < 0 || y >= height) return 0; return level == BACKGROUND ? backgroundTiles[x + y * width] : foregroundTiles[x + y * width]; }-
+	 */
 	
 }

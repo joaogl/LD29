@@ -4,7 +4,6 @@ import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.resources.Texture;
-import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -84,7 +83,7 @@ public class Player extends Mob {
 	
 	public void bindUniform(Light light) {
 		shader.bind();
-		light.bindUniform(shader.getID());
+		light.bindUniforms(shader.getID());
 		shader.release();
 	}
 	

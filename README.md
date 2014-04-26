@@ -34,18 +34,20 @@ Builds for testing
 TO-DO
 ====
 - Setup the basic stuff.
-- Setup lightning.
-- Setup shadows.
 - Setup the level loader.
+- Setup the collision detection.
 - Setup the level generator.
-- Setup the player.
-- Apply the intro to the Game.
+- Apply the intro to the Game (only on startup).
 
 TO-DO DONE
 ====
 - Make the intro video.  [DONE]
+- Setup lightning. [DONE]
+- Setup shadows. [DONE]
+- Setup the player. [DONE]
 
 // Time table.
 26 - from 01:30 to 05:54
 26 - from 08:59 to 13:47
-26 - from 14:05 to 
+26 - from 14:05 to 19:18
+26 - from 19:50 to 
