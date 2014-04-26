@@ -38,13 +38,19 @@ public class Texture {
 			int a = (pixels[i] & 0xff000000) >> 24;
 			int r = (pixels[i] & 0xff0000) >> 16;
 			int g = (pixels[i] & 0xff00) >> 8;
-			int b = (pixels[i] & 0xff) >> 4;
+			int b = (pixels[i] & 0xff);
+			pixels[i] = b << 16 | g << 8 | r;
 		}
 		
 		IntBuffer buffer = Buffer.createIntBuffer(pixels);
 		
 		int texture = glGenTextures();
+		glBindTexture(GL_TEXTURE_2D, texture);
+		glTexImage2D(GL_TEXTURE_2D, 0, 3, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, buffer);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glBindTexture(GL_TEXTURE_2D, 0);
 		
-		return 0;
+		return texture;
 	}
 }
