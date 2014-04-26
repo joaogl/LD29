@@ -3,7 +3,6 @@ package net.joaolourenco.ld;
 import net.joaolourenco.ld.graphics.Display;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.level.Level;
-import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.settings.GameSettings;
 import static org.lwjgl.opengl.GL11.*;
 

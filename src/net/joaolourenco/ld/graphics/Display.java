@@ -1,8 +1,10 @@
 package net.joaolourenco.ld.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.PixelFormat;
 
 public class Display {
 	
@@ -14,7 +16,7 @@ public class Display {
 		try {
 			org.lwjgl.opengl.Display.setDisplayMode(new DisplayMode(width, height));
 			org.lwjgl.opengl.Display.setTitle(title);
-			org.lwjgl.opengl.Display.create();
+			org.lwjgl.opengl.Display.create(new PixelFormat(0, 16, 1));
 		} catch (LWJGLException e) {
 			e.printStackTrace();
 		}
@@ -32,6 +34,7 @@ public class Display {
 		
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
+		glEnable(GL_STENCIL_TEST);
 		glFrontFace(GL_CW);
 		glEnable(GL_COLOR_MATERIAL);
 	}
