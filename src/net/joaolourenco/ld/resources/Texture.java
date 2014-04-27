@@ -15,12 +15,13 @@ public class Texture {
 	public static int Void = 0;
 	public static int CliffRock = 0;
 	public static int PlayerNormal0 = 0, PlayerNormal1 = 0, PlayerNormal2 = 0, PlayerNormal3 = 0;
-	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0;
+	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0, Menu = 0;
 	
 	public static void minimalisticLoad() {
 		Intro1 = loadTexture("res/textures/intro/1.png", false);
 		Intro2 = loadTexture("res/textures/intro/2.png", false);
 		Intro3 = loadTexture("res/textures/intro/3.png", false);
+		Menu = loadTexture("res/textures/Title.png", false);
 	}
 	
 	public static void load() {

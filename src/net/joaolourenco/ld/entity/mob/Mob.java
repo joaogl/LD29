@@ -23,8 +23,8 @@ public abstract class Mob extends Entity {
 	public boolean collision(int xa, int ya) {
 		boolean solid = false;
 		for (int i = 0; i < 4; i++) {
-			int xt = ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE)) >> GameSettings.TILE_SIZE_MASK;
-			int yt = ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE)) >> GameSettings.TILE_SIZE_MASK;
+			int xt = (int) ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
+			int yt = (int) ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
 			Tile tile = level.getTile(xt, yt, Level.FOREGROUND);
 			if (tile == null) continue;
 			if (tile.solid()) solid = true;

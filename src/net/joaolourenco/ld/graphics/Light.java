@@ -13,6 +13,7 @@ import static org.lwjgl.opengl.GL20.*;
 public class Light {
 	
 	public int x, y;
+	private int xo, yo;
 	public Vector3f vc;
 	private int color;
 	public float intensity = GameSettings.LIGHT_INTENSITY;
@@ -53,7 +54,7 @@ public class Light {
 		glColorMask(false, false, false, false);
 		glStencilFunc(GL_ALWAYS, 1, 1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		Vector2f lightpos = new Vector2f(x, y);
+		Vector2f lightpos = new Vector2f(x + xo, y + yo);
 		for (int j = 0; j < blocks.size(); j++) {
 			Vector2f[] vertices = blocks.get(j);
 			
@@ -83,6 +84,11 @@ public class Light {
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 	}
 	
+	public void setOffset(int xo, int yo) {
+		this.xo = xo;
+		this.yo = yo;
+	}
+	
 	public void render(int shader) {
 		glUseProgram(shader);
 		glColorMask(true, true, true, true);
@@ -91,10 +97,10 @@ public class Light {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_ONE, GL_ONE);
 		glBegin(GL_QUADS);
-		glVertex3f(0, 0, 0.0f);
-		glVertex3f(GameSettings.width, 0, 0.0f);
-		glVertex3f(GameSettings.width, GameSettings.height, 0.0f);
-		glVertex3f(0, GameSettings.height, 0.0f);
+		glVertex3f(0 + xo, 0 + yo, 0.0f);
+		glVertex3f(GameSettings.width + xo, 0 + yo, 0.0f);
+		glVertex3f(GameSettings.width + xo, GameSettings.height + yo, 0.0f);
+		glVertex3f(0 + xo, GameSettings.height + yo, 0.0f);
 		glEnd();
 		glDisable(GL_BLEND);
 		

@@ -19,10 +19,11 @@ public class Intro {
 	
 	public void update() {
 		this.ups++;
-		if (GameSettings.debugging) this.ups = 16;
+		if (GameSettings.debugging) this.ups = 21;
 		if (this.ups == 5) this.intro = 2;
 		else if (this.ups == 10) this.intro = 3;
-		else if (this.ups > 15) this.main.startLevel();
+		else if (this.ups == 15) this.intro = 4;
+		else if (this.ups > 20) this.main.startLevel();
 		System.out.println("UPS: " + this.ups);
 	}
 	
@@ -34,6 +35,7 @@ public class Intro {
 		if (this.intro == 1) glBindTexture(GL_TEXTURE_2D, Texture.Intro1);
 		else if (this.intro == 2) glBindTexture(GL_TEXTURE_2D, Texture.Intro2);
 		else if (this.intro == 3) glBindTexture(GL_TEXTURE_2D, Texture.Intro3);
+		else if (this.intro == 4) glBindTexture(GL_TEXTURE_2D, Texture.Menu);
 		glBegin(GL_QUADS);
 		{
 			glTexCoord2f(0f, 0f);

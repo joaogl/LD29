@@ -1,8 +1,10 @@
 package net.joaolourenco.ld.entity.mob;
 
+import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.resources.Texture;
+import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -14,9 +16,10 @@ public class Player extends Mob {
 	
 	int UP = org.lwjgl.input.Keyboard.KEY_UP, DOWN = org.lwjgl.input.Keyboard.KEY_DOWN, LEFT = org.lwjgl.input.Keyboard.KEY_LEFT, RIGHT = org.lwjgl.input.Keyboard.KEY_RIGHT, W = org.lwjgl.input.Keyboard.KEY_W, S = org.lwjgl.input.Keyboard.KEY_S, A = org.lwjgl.input.Keyboard.KEY_A, D = org.lwjgl.input.Keyboard.KEY_D, SHIFT = org.lwjgl.input.Keyboard.KEY_LSHIFT;
 	
-	public Player(int x, int y) {
+	public Player(int x, int y, Light light) {
 		this.x = x;
 		this.y = y;
+		this.light = light;
 		this.side = 0;
 		this.texture = Texture.PlayerNormal0;
 		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
@@ -109,5 +112,21 @@ public class Player extends Mob {
 		}
 		
 		if (xa != 0 || ya != 0) move(xa, ya);
+		level.setOffset((int) (x - GameSettings.width / 2), (int) (y - GameSettings.height / 2));
+	}
+	
+	public void move(int xa, int ya) {
+		if (xa != 0 && ya != 0) {
+			move(xa, 0);
+			move(0, ya);
+			return;
+		}
+		
+		if (!collision(xa, ya)) {
+			x += xa;
+			y += ya;
+			light.x = x + 32 - level.getXOffset();
+			light.y = y + 32 - level.getYOffset();
+		}
 	}
 }

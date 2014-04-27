@@ -59,4 +59,5 @@ TO-DO DONE
 26 - from 01:30 to 05:54
 26 - from 08:59 to 13:47
 26 - from 14:05 to 19:18
-26 - from 19:50 to 
+26 - from 19:50 to 23:52
+27 - from 04:05 to 

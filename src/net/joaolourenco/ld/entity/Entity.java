@@ -13,6 +13,7 @@ public abstract class Entity {
 	protected int vao, vbo, vio, vto;
 	protected Shader shader;
 	protected Level level;
+	protected Light light;
 	private boolean removed = false;
 	
 	protected float[] vertices = new float[] {
@@ -56,6 +57,10 @@ public abstract class Entity {
 	
 	public void init(Level level) {
 		this.level = level;
+		if (light != null) {
+			light.x = x + 32 - level.getXOffset();
+			light.y = y + 32 - level.getYOffset();
+		}
 	}
 	
 	public int getX() {
