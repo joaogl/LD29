@@ -10,7 +10,6 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Font {
 	
-	private int list = 0;
 	private int[] texIDs;
 	private int size = 128;
 	private Shader shader;
@@ -18,8 +17,8 @@ public class Font {
 			"NOPQRSTUVWXYZ" + //
 			"abcdefghijklm" + //
 			"nopqrstuvwxyz" + //
-			"01234567989!?." + //
-			",-_";
+			"0123456789?!." + //
+			"-,_";
 	
 	protected int vao, vbo, vio, vto;
 	
@@ -99,7 +98,7 @@ public class Font {
 			int currentChar = text.charAt(i);
 			int index = chars.indexOf(currentChar);
 			if (index >= 0 && currentChar != ' ') {
-				if (currentChar == 'p') yOffset += 40;
+				if (currentChar == 'p' || currentChar == 'g' || currentChar == 'j' || currentChar == 'q' || currentChar == 'y' || currentChar == ',') yOffset += 40;
 				glPushMatrix();
 				glLoadIdentity();
 				glScalef(scale, scale, 0);

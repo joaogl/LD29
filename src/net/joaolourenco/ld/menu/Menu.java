@@ -12,7 +12,7 @@ public class Menu {
 	}
 	
 	public void render() {
-		font.drawString("AaBbCc, 123!", 50, 50, 10, -20);
+		font.drawString("Oq, AjGyNp", 50, 50, 10, -20);
 	}
 	
 }

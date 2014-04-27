@@ -75,8 +75,8 @@ public class Level {
 		
 		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
 		lights.add(l);
-		add(new Player(1344, 1280, l));
-		// add(new Player(120, 120, l));
+		// add(new Player(1344, 1280, l));
+		add(new Player(120, 120, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
 		extraLevels = new float[width * height];

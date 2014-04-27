@@ -6,7 +6,7 @@ public class GameSettings {
 	 * --------------------- // General Game Settings // ---------------------
 	 */
 		// Game version
-		public static String version = "Pre-Release 0.1.6";
+		public static String version = "Pre-Release 0.1.7";
 		
 		// Game Name
 		public static String name = "Fallen";
@@ -18,7 +18,7 @@ public class GameSettings {
 		public static int height = 540;
 		
 		// Debug
-		public static boolean debugging = false;
+		public static boolean debugging = true;
 	
 	/**
 	 * --------------------- // General Tiles Settings // ---------------------
