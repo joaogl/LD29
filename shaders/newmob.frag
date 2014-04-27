@@ -6,6 +6,7 @@ in vec2 texCoords;
 uniform vec2 lightPosition[10];
 uniform vec3 lightColor[10];
 uniform float lightIntensity[10];
+uniform float facing;
 
 void main(){
 	vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
@@ -20,17 +21,21 @@ void main(){
 		float ints = lightIntensity[i];
 	
 		float distance = length(pos - gl_FragCoord.xy);
+		if (distance < 30 && facing == 3 || distance < 30 && facing == 1) distance = 30;
 		float attenuation = 1.0 / distance;
 		
 		float falloff = 80; // 40
 		falloff -= distance / 25.0f / ints;
 		
-		color *= vec4(attenuation - 0.01, attenuation - 0.01, attenuation - 0.01, pow(attenuation, 3)) * vec4((col / distance * 15) * ints, 1.0) + 0.01;
+		color *= vec4(attenuation, attenuation, attenuation, pow(attenuation, 3)) * vec4((col / distance * 15) * ints, 1.0) + 0.01;
 		
 		color /= (distance / (ints * falloff));
 	}		
-
-	color *= 100.0 * pow(8.0 * num, float(num - 1)) + 1;
-	//color *= 300.0 * (num - 1) + 1;	
-	gl_FragColor = color;
+	color *= 300.0 * (num - 1) + 1;	
+	
+	float alpha = 1.0;
+	if (tex.x == 1.0 && tex.y == 0.0 && tex.z == 1.0){
+		alpha = 0.0;
+	}	
+	gl_FragColor = vec4(color.xyz, alpha);
 }

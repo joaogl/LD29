@@ -22,7 +22,8 @@ public class Player extends Mob {
 		this.light = light;
 		this.side = 0;
 		this.texture = Texture.PlayerNormal0;
-		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
+		if (GameSettings.NEW_MOB_LIB) this.shader = new Shader("shaders/tile.vert", "shaders/newmob.frag");
+		else this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
 		compile();
 	}
 	

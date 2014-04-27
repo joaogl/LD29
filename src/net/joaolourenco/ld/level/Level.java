@@ -71,7 +71,7 @@ public class Level {
 		
 		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
 		lights.add(l);
-		add(new Player(300, GameSettings.height / 2 - 32, null));
+		add(new Player(300, GameSettings.height / 2 - 32, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
 	}
@@ -86,8 +86,10 @@ public class Level {
 			pixels = new int[width * height];
 			image.getRGB(0, 0, width, height, pixels, 0, width);
 			for (int i = 0; i < width * height; i++) {
-				if (pixels[i] != 0xFFFF00FF) {
-					lights.add(new Light(((i % width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, ((i / width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, pixels[i]));
+				if (pixels[i] != 0xff000000) {
+					float intensity = (pixels[i] & 0xff000000) >> 24;
+					if (intensity < 0) intensity += 0x7f;
+					lights.add(new Light(((i % width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, ((i / width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, pixels[i], intensity / 12));
 				}
 			}
 		} catch (IOException e) {
@@ -189,11 +191,19 @@ public class Level {
 		glDepthMask(true);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		for (int j = 0; j < lights.size(); j++) {
+		if (GameSettings.NEW_MOB_LIB) {
 			for (int i = 0; i < entities.size(); i++) {
-				entities.get(i).bindUniforms(lights.get(j));
+				entities.get(i).bindUniforms(lights);
 				entities.get(i).render();
 			}
+		} else {
+			for (int j = 0; j < lights.size(); j++) {
+				for (int i = 0; i < entities.size(); i++) {
+					entities.get(i).bindUniforms(lights.get(j));
+					entities.get(i).render();
+				}
+			}
+			
 		}
 		glDisable(GL_BLEND);
 	}
@@ -244,8 +254,5 @@ public class Level {
 		if (id == -1) return null;
 		return ids[id];
 	}
-	/*
-	 * public Tile getTile(int x, int y, int level) { if (x < 0 || x >= width || y < 0 || y >= height) return null; int id = 0; if (level == BACKGROUND) id = backgroundTiles[x + y * width]; else id = foregroundTiles[x + y * width]; if (id == -1) return null; else return ids[id]; }
-	 */
 	
 }

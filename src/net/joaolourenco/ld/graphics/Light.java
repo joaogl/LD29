@@ -24,9 +24,16 @@ public class Light {
 		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
+	public Light(int x, int y, int color, float inte) {
+		this.x = x;
+		this.y = y;
+		this.color = color;
+		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
+		this.intensity = inte;
+	}
+	
 	public void bindUniforms(int shader, int side) {
 		int uniform = glGetUniformLocation(shader, "lightPosition");
-		// glUniform2f(uniform, x, GameSettings.height - y);
 		glUniform2f(uniform, x - xOffset, GameSettings.height - y + yOffset);
 		
 		uniform = glGetUniformLocation(shader, "lightColor");
@@ -55,11 +62,12 @@ public class Light {
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		Vector2f lightpos = new Vector2f(x, y);
 		int x0 = xOffset >> GameSettings.TILE_SIZE_MASK;
-		int x1 = (xOffset >> GameSettings.TILE_SIZE_MASK) + 16;
+		int x1 = (xOffset >> GameSettings.TILE_SIZE_MASK) + 16; // + 16
 		int y0 = yOffset >> GameSettings.TILE_SIZE_MASK;
-		int y1 = (yOffset >> GameSettings.TILE_SIZE_MASK) + 10;
-		for (int y = y0; y < y1; y++) {
-			for (int x = x0; x < x1; x++) {
+		int y1 = (yOffset >> GameSettings.TILE_SIZE_MASK) + 10; // + 10
+		int check = 50;
+		for (int y = y0 - check; y < y1 + check; y++) {
+			for (int x = x0 - check; x < x1 + check; x++) {
 				if (x < 0 || x >= width || y < 0 || y >= height) continue;
 				Vector2f[] vertices = foregrounds[x + y * width];
 				for (int i = 0; i < vertices.length; i++) {
