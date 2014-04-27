@@ -22,7 +22,7 @@ public class Player extends Mob {
 		this.y = y;
 		this.light = light;
 		this.side = 0;
-		this.state = 3;
+		this.state = 1;
 		changeTexture(true);
 		this.texture = Texture.PlayerHurt0;
 		if (GameSettings.NEW_MOB_LIB) this.shader = new Shader("shaders/tile.vert", "shaders/newmob.frag");

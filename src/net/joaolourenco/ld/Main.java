@@ -1,9 +1,10 @@
 package net.joaolourenco.ld;
 
 import net.joaolourenco.ld.graphics.Display;
-import net.joaolourenco.ld.gui.Intro;
+import net.joaolourenco.ld.graphics.Intro;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.level.Level;
+import net.joaolourenco.ld.menu.Menu;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import static org.lwjgl.opengl.GL11.*;
@@ -15,6 +16,8 @@ public class Main implements Runnable {
 	
 	private Level level;
 	private Intro intro;
+	
+	private Menu menu;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -37,6 +40,7 @@ public class Main implements Runnable {
 		long lastTimer = System.currentTimeMillis();
 		int frames = 0;
 		int updates = 0;
+		menu = new Menu();
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -70,6 +74,7 @@ public class Main implements Runnable {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (level != null) level.render();
 		else intro.render();
+		menu.render();
 	}
 	
 	public void tick() {

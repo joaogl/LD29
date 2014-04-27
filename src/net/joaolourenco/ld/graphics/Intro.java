@@ -1,4 +1,4 @@
-package net.joaolourenco.ld.gui;
+package net.joaolourenco.ld.graphics;
 
 import static org.lwjgl.opengl.GL11.*;
 import net.joaolourenco.ld.Main;

@@ -6,6 +6,10 @@ Fallen is a Action/Adventure roguelike kinda game .
 
 Builds for testing
 ====
+- Build 0.1.6 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.6.rar). <br>
+	Fixed a few bugs.
+	Added player effects on shadows.
+	Added fonts.
 - Build 0.1.5 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.5.rar). <br>
 	Fixed a few bugs.
 	Added Lava.
@@ -65,4 +69,6 @@ TO-DO DONE
 26 - from 08:59 to 13:47
 26 - from 14:05 to 19:18
 26 - from 19:50 to 23:52
-27 - from 04:05 to 
+   26 = 19:07 of 24, left 4:53
+27 - from 04:05 to 13:39
+27 - from 13:53 to 

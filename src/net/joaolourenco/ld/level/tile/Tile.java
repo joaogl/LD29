@@ -27,6 +27,9 @@ public class Tile {
 	protected int texture, tileInUse;
 	protected Random random = new Random();
 	
+	private float extraLevel = 0.0f;
+	private int step = 0;
+	
 	protected float[] vertices = new float[] {
 			0.0f, 0.0f, 0.0f, //
 			SIZE, 0.0f, 0.0f, //
@@ -94,31 +97,10 @@ public class Tile {
 		glBindVertexArray(0);
 	}
 	
-	public void render(int x, int y) {
-		glPushMatrix();
-		shader.bind();
-		glBindVertexArray(vao);
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		{
-			glTranslatef(x, y, 0);
-			glBindTexture(GL_TEXTURE_2D, texture);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-			
-		}
-		glDisableVertexAttribArray(1);
-		glDisableVertexAttribArray(0);
-		glBindVertexArray(0);
-		shader.release();
-		glPopMatrix();
-	}
-	
 	public void bindUniforms(Light light) {
 		shader.bind();
 		light.bindUniforms(shader.getID(), 999);
+		shader.setUniform1f("extraLevel", this.extraLevel);
 		shader.release();
 	}
 	
@@ -127,6 +109,27 @@ public class Tile {
 		int uniform = shader.getUniform("tileInUse");
 		shader.setUniformf(uniform, tileInUse);
 		shader.release();
+		/*
+		 * float sub = (float) random.nextFloat(); int div = random.nextInt(50); if (this.extraLevel < 1f && this.extraLevel >= 0f && (sub / div) > 0f && (sub / div) < 1f) this.extraLevel += sub / div; else this.extraLevel = 0.0f;
+		 */
+		// setExtraLevel(0f);
+	}
+	
+	public void setExtraLevel(float extraLevel) {
+		if (extraLevel < 0f) this.extraLevel = 0f;
+		else if (extraLevel > 1f) this.extraLevel = 1f;
+		else this.extraLevel = extraLevel;
+	}
+	
+	public void increaseExtraLevel(float ammount, boolean stop) {
+		if (!stop) {
+			if (this.extraLevel + ammount >= 1.0f) this.step = 1;
+			else if (this.extraLevel + ammount <= 0.0f) this.step = 2;
+			if (this.step == 1) this.extraLevel -= ammount;
+			else this.extraLevel += ammount;
+		} else {
+			if (this.extraLevel + ammount <= 1.0f) this.extraLevel += ammount;
+		}
 	}
 	
 	public void bindUniforms(List<Light> lights) {
@@ -170,9 +173,43 @@ public class Tile {
 		
 		glActiveTexture(GL_TEXTURE1);
 		shader.bind();
+		
 		int uniform = glGetUniformLocation(shader.getID(), "texture");
 		glUniform1i(uniform, 1);
+		
+		glActiveTexture(GL_TEXTURE2);
+		uniform = glGetUniformLocation(shader.getID(), "extraTexture");
+		glUniform1i(uniform, 2);
 		shader.release();
+	}
+	
+	public void render(int x, int y, float extra) {
+		setExtraLevel(extra);
+		glPushMatrix();
+		shader.bind();
+		glBindVertexArray(vao);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		{
+			glTranslatef(x, y, 0);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, texture);
+			glActiveTexture(GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, Texture.Lava);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			
+			/*
+			 * glTranslatef(x, y, 0); glBindTexture(GL_TEXTURE_2D, texture); glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio); glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0); glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); glBindTexture(GL_TEXTURE_2D, 0);
+			 */
+		}
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(0);
+		glBindVertexArray(0);
+		shader.release();
+		glPopMatrix();
 	}
 	
 	public boolean solid() {

@@ -1,7 +1,8 @@
 package net.joaolourenco.ld.graphics;
 
-import net.joaolourenco.ld.level.Level;
-import net.joaolourenco.ld.level.tile.ForeTile;
+import java.util.List;
+
+import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.settings.GameSettings;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -58,7 +59,7 @@ public class Light {
 		vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
-	public void shadows(Vector2f[][] foregrounds, int width, int height) {
+	public void shadows(Vector2f[][] foregrounds, List<Entity> entities, int width, int height) {
 		glColorMask(false, false, false, false);
 		glStencilFunc(GL_ALWAYS, 1, 1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
@@ -94,9 +95,41 @@ public class Light {
 						
 					}
 				}
-				
 			}
 		}
+		
+		for (int j = 0; j < entities.size(); j++) {
+			Entity e = entities.get(j);
+			Vector2f[] vertices = new Vector2f[] {
+					new Vector2f(e.getX(), e.getY()), //
+					new Vector2f(e.getX() + GameSettings.TILE_SIZE, e.getY()), //
+					new Vector2f(e.getX() + GameSettings.TILE_SIZE, e.getY() + GameSettings.TILE_SIZE), //
+					new Vector2f(e.getX(), e.getY() + GameSettings.TILE_SIZE), //
+			};
+			for (int i = 0; i < vertices.length; i++) {
+				Vector2f current = vertices[i];
+				if (current == null) break;
+				Vector2f next = vertices[(i + 1) % vertices.length];
+				Vector2f edge = Vector2f.sub(next, current, null);
+				Vector2f normal = new Vector2f(edge.y, -edge.x);
+				Vector2f dir = Vector2f.sub(current, lightpos, null);
+				if (Vector2f.dot(normal, dir) > 0) {
+					Vector2f point0 = Vector2f.add(current, (Vector2f) Vector2f.sub(current, lightpos, null).scale(GameSettings.width), null);
+					Vector2f point1 = Vector2f.add(next, (Vector2f) Vector2f.sub(next, lightpos, null).scale(GameSettings.width), null);
+					float z = 0.5f;
+					glBegin(GL_QUADS);
+					{
+						glVertex3f(current.x, current.y, z);
+						glVertex3f(point0.x, point0.y, z);
+						glVertex3f(point1.x, point1.y, z);
+						glVertex3f(next.x, next.y, z);
+					}
+					glEnd();
+					
+				}
+			}
+		}
+		
 		glColorMask(true, true, true, true);
 		glStencilFunc(GL_EQUAL, 0, 1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);

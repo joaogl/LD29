@@ -41,6 +41,10 @@ public class Level {
 	
 	public Tile[] ids = new Tile[4];
 	
+	public float[] extraLevels, extraIncreaseRate;
+	
+	protected int time = 0;
+	
 	public Level(int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -72,8 +76,14 @@ public class Level {
 		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
 		lights.add(l);
 		add(new Player(1344, 1280, l));
+		// add(new Player(120, 120, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
+		extraLevels = new float[width * height];
+		extraIncreaseRate = new float[width * height];
+		
+		for (int i = 0; i < extraIncreaseRate.length; i++)
+			extraIncreaseRate[i] = random.nextFloat() * 0.0001f;
 	}
 	
 	private void loadLights(String path) {
@@ -174,6 +184,17 @@ public class Level {
 			entities.get(i).update();
 		for (int i = 0; i < ids.length; i++)
 			ids[i].update();
+		
+		time++;
+		increaseExtraLevels();
+	}
+	
+	private void increaseExtraLevels() {
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				extraLevels[x + y * width] += extraIncreaseRate[x + y * width];
+			}
+		}
 	}
 	
 	public void render() {
@@ -183,7 +204,7 @@ public class Level {
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
 			light.setOffset(xOffset, yOffset);
-			light.shadows(foregroundVertices, width, height);
+			light.shadows(foregroundVertices, entities, width, height);
 			light.render(lightShader.getID());
 			renderBackground(light);
 		}
@@ -219,7 +240,7 @@ public class Level {
 				Tile tile = getTile(x, y, BACKGROUND);
 				if (tile != null) {
 					tile.bindUniforms(light);
-					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK, extraLevels[x + y * width]);
 				}
 			}
 		}
@@ -236,7 +257,7 @@ public class Level {
 				Tile tile = getTile(x, y, FOREGROUND);
 				if (tile != null) {
 					tile.bindUniforms(lights);
-					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK, 0.0f);
 				}
 			}
 		}
