@@ -9,6 +9,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.entity.mob.Player;
 import net.joaolourenco.ld.graphics.Light;
@@ -44,6 +45,8 @@ public class Level {
 	public float[] extraLevels, extraIncreaseRate;
 	
 	protected int time = 0;
+	protected float extraLevel = 0;
+	private String path, lightPath;
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -62,9 +65,9 @@ public class Level {
 	}
 	
 	public Level(String path, String lightPath) {
-		load(path);
-		loadLights(lightPath);
-		init();
+		this.path = path;
+		this.lightPath = lightPath;
+		createLevel();
 	}
 	
 	private void init() {
@@ -136,9 +139,10 @@ public class Level {
 		}
 	}
 	
-	private void add(Entity e) {
-		entities.add(e);
-		e.init(this);
+	private void createLevel() {
+		load(path);
+		loadLights(lightPath);
+		init();
 	}
 	
 	private void genRandom() {
@@ -166,6 +170,11 @@ public class Level {
 		foregroundVertices[x + y * width] = vertices;
 	}
 	
+	private void add(Entity e) {
+		entities.add(e);
+		e.init(this);
+	}
+	
 	public void setOffset(int xOffset, int yOffset) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
@@ -184,17 +193,25 @@ public class Level {
 			entities.get(i).update();
 		for (int i = 0; i < ids.length; i++)
 			ids[i].update();
-		
 		time++;
+		if (extraLevel / 100 > 100) {
+			extraLevel = 0.0f;
+			lights.clear();
+			entities.clear();
+			createLevel();
+			State.setState(State.MENU);
+		}
 		increaseExtraLevels();
 	}
 	
 	private void increaseExtraLevels() {
-		for (int y = 0; y < height; y++) {
-			for (int x = 0; x < width; x++) {
-				extraLevels[x + y * width] += extraIncreaseRate[x + y * width];
-			}
-		}
+		// extraLevel = 99 * 1000;
+		float speed = 3.0f;
+		if (extraLevel / 100 > 40 && extraLevel / 100 < 60) speed = 0.5f;
+		extraLevel += random.nextFloat() * speed;
+		/*
+		 * for (int y = 0; y < height; y++) { for (int x = 0; x < width; x++) { extraLevels[x + y * width] += extraIncreaseRate[x + y * width]; } }
+		 */
 	}
 	
 	public void render() {

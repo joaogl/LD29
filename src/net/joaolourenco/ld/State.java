@@ -6,6 +6,7 @@ public class State {
 	public static final int MENU = 0x1;
 	public static final int ABOUT = 0x2;
 	public static final int GAME = 0x3;
+	public static final int GAMEOVER = 0x4;
 	
 	private static int current = MENU;
 	
@@ -22,6 +23,7 @@ public class State {
 		else if (current == MENU) return "MENU";
 		else if (current == ABOUT) return "ABOUT";
 		else if (current == GAME) return "GAME";
+		else if (current == GAMEOVER) return "GAMEOVER";
 		else return "Unkown";
 	}
 	

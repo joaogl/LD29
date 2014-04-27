@@ -19,6 +19,7 @@ public class Menu {
 	protected int background, option;
 	protected int selected = 0;
 	protected int[][] pos = new int[3][2];
+	protected boolean first = false;
 	private Main main;
 	
 	public Menu(Main main) {
@@ -85,7 +86,7 @@ public class Menu {
 	}
 	
 	public void tick() {
-		
+		first = true;
 	}
 	
 	public void update() {
@@ -95,7 +96,7 @@ public class Menu {
 		else if (selected > MAX_SELECTED) this.selected = MAX_SELECTED;
 		
 		if (this.selected == 0 && (Keyboard.keyTyped(Keyboard.ENTER) || Keyboard.keyTyped(Keyboard.SPACE))) {
-			main.startLevel();
+			if (main.level == null) main.startLevel();
 			State.setState(State.GAME);
 		} else if (this.selected == 1 && (Keyboard.keyTyped(Keyboard.ENTER) || Keyboard.keyTyped(Keyboard.SPACE))) {
 			State.setState(State.ABOUT);
@@ -109,8 +110,14 @@ public class Menu {
 		glDepthMask(false);
 		glLoadIdentity();
 		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE0);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		if (first) {
+			glActiveTexture(GL_TEXTURE1);
+			first = false;
+		} else glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, this.texture);
+		glLoadIdentity();
+		glColor4f(1f, 1f, 1f, 0f);
 		glCallList(background);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		
@@ -131,6 +138,7 @@ public class Menu {
 			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		glDisable(GL_TEXTURE_2D);
+		glDisable(GL_BLEND);
 	}
 	
 }

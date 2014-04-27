@@ -51,6 +51,9 @@ public class IntroMenu extends Menu {
 		} else if (this.tick >= 498 && this.tick <= 502) {
 			stopped = false;
 			goingUp = true;
+		} else if (this.tick >= 648 && this.tick <= 748) {
+			stopped = false;
+			goingUp = false;
 		}
 		System.out.println("Tick: " + this.tick + " Int: " + inten);
 	}
@@ -84,7 +87,6 @@ public class IntroMenu extends Menu {
 		glEnable(GL_BLEND);
 		glEnable(GL_TEXTURE_2D);
 		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
-		
 		if (this.tick >= 0 && this.tick <= 150) {
 			glLoadIdentity();
 			glColor4f(inten, inten, inten, inten);
@@ -115,8 +117,14 @@ public class IntroMenu extends Menu {
 			glBindTexture(GL_TEXTURE_2D, Texture.Intro3);
 			glCallList(background);
 			glBindTexture(GL_TEXTURE_2D, 0);
-		} else if (this.tick > 650) State.setState(State.MENU);
-
+		} else if (this.tick > 650 && this.tick <= 750) {
+			glLoadIdentity();
+			glColor4f(inten, inten, inten, inten);
+			glBindTexture(GL_TEXTURE_2D, Texture.Intro3);
+			glCallList(background);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		} else if (this.tick > 750) State.setState(State.MENU);
+		
 		glColor4f(1f, 1f, 1f, 1f);
 		glDisable(GL_BLEND);
 		glDisable(GL_TEXTURE_2D);

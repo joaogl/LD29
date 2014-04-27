@@ -17,7 +17,7 @@ public class Main implements Runnable {
 	private Thread thread;
 	private boolean running = false;
 	
-	private Level level;
+	public Level level;
 	
 	private List<Menu> menus = new ArrayList<Menu>();
 	
@@ -45,8 +45,7 @@ public class Main implements Runnable {
 		menus.add(new IntroMenu());
 		menus.add(new Menu(this));
 		menus.add(new AboutMenu());
-		if (GameSettings.debugging) State.setState(State.INTRO);
-		else State.setState(State.MENU);
+		State.setState(State.INTRO);
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -65,8 +64,8 @@ public class Main implements Runnable {
 				updates = 0;
 				frames = 0;
 			}
-			if (System.currentTimeMillis() - lastTimer2 > 50) {
-				lastTimer2 += 50;
+			if (System.currentTimeMillis() - lastTimer2 > 25) {
+				lastTimer2 += 25;
 				if (State.getState() == State.INTRO) menus.get(State.INTRO).tick();
 			}
 			if (Display.close()) running = false;

@@ -75,4 +75,4 @@ TO-DO DONE
    26 = 19:07 of 24, left 4:53
 27 - from 04:05 to 13:39
 27 - from 13:53 to 20:33
-27 - from 20:44 to 
+27 - from 20:44 to 23:54

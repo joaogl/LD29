@@ -1,5 +1,6 @@
 package net.joaolourenco.ld.entity.mob;
 
+import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.input.Keyboard;
@@ -14,7 +15,6 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Player extends Mob {
 	
-	int UP = org.lwjgl.input.Keyboard.KEY_UP, DOWN = org.lwjgl.input.Keyboard.KEY_DOWN, LEFT = org.lwjgl.input.Keyboard.KEY_LEFT, RIGHT = org.lwjgl.input.Keyboard.KEY_RIGHT, W = org.lwjgl.input.Keyboard.KEY_W, S = org.lwjgl.input.Keyboard.KEY_S, A = org.lwjgl.input.Keyboard.KEY_A, D = org.lwjgl.input.Keyboard.KEY_D, SHIFT = org.lwjgl.input.Keyboard.KEY_LSHIFT;
 	protected int state; // 1 - Normal; 2 - with bandages; 3 - hurt;
 	
 	public Player(int x, int y, Light light) {
@@ -109,7 +109,7 @@ public class Player extends Mob {
 		float ya = 0;
 		float speed = 0;
 		
-		if (Keyboard.keyPressed(SHIFT)) {
+		if (Keyboard.keyPressed(Keyboard.SHIFT)) {
 			if (this.state == 3) speed = 1f;
 			else if (this.state == 2) speed = 2f;
 			else if (this.state == 1) speed = 3f;
@@ -119,10 +119,11 @@ public class Player extends Mob {
 			else if (this.state == 1) speed = 1f;
 		}
 		
-		if (Keyboard.keyPressed(UP) || Keyboard.keyPressed(W)) ya -= speed;
-		else if (Keyboard.keyPressed(DOWN) || Keyboard.keyPressed(S)) ya += speed;
-		if (Keyboard.keyPressed(LEFT) || Keyboard.keyPressed(A)) xa -= speed;
-		else if (Keyboard.keyPressed(RIGHT) || Keyboard.keyPressed(D)) xa += speed;
+		if (Keyboard.keyPressed(Keyboard.UP) || Keyboard.keyPressed(Keyboard.W)) ya -= speed;
+		else if (Keyboard.keyPressed(Keyboard.DOWN) || Keyboard.keyPressed(Keyboard.S)) ya += speed;
+		if (Keyboard.keyPressed(Keyboard.LEFT) || Keyboard.keyPressed(Keyboard.A)) xa -= speed;
+		else if (Keyboard.keyPressed(Keyboard.RIGHT) || Keyboard.keyPressed(Keyboard.D)) xa += speed;
+		if (Keyboard.keyPressed(Keyboard.ESCAPE)) State.setState(State.MENU);
 		
 		if (xa > 0) this.side = 0;
 		else if (xa < 0) this.side = 1;

@@ -16,10 +16,7 @@ public class GameSettings {
 		// Screen Size
 		public static int width = 960;
 		public static int height = 540;
-		
-		// Debug
-		public static boolean debugging = true;
-	
+			
 	/**
 	 * --------------------- // General Tiles Settings // ---------------------
 	 */
