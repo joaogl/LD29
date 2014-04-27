@@ -6,6 +6,11 @@ Fallen is a Action/Adventure roguelike kinda game .
 
 Builds for testing
 ====
+- Build 0.1.5 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.5.rar). <br>
+	Fixed a few bugs.
+	Added Lava.
+	Added Floor loader.
+	Added more player animations.
 - Build 0.1.4 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.4.rar). <br> 
 	Added intro.
 	Fixed a few bugs.
