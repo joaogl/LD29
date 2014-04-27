@@ -6,10 +6,8 @@ import java.util.Random;
 
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.entity.mob.Player;
-import net.joaolourenco.ld.graphics.Camera;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
-import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.level.tile.GroundTile;
 import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.settings.GameSettings;
@@ -106,8 +104,8 @@ public class Level {
 	}
 	
 	public void render() {
-		Camera.move(-xOffset, -yOffset);
-		Camera.render();
+		glLoadIdentity();
+		glTranslatef(-xOffset, -yOffset, 0);
 		glDepthMask(false);
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
