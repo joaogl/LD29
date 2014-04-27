@@ -54,7 +54,7 @@ public class Tile {
 		texture = Texture.Void;
 		bugValue = -1;
 	}
-
+	
 	public Tile(int texture) {
 		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
 		compile();
@@ -134,8 +134,8 @@ public class Tile {
 		float[] intensities = new float[10];
 		
 		for (int i = 0; i < lights.size() * 2; i += 2) {
-			positions[i] = lights.get(i >> 1).x;
-			positions[i + 1] = GameSettings.height - lights.get(i >> 1).y;
+			positions[i] = lights.get(i >> 1).x - lights.get(i >> 1).getXOffset();
+			positions[i + 1] = GameSettings.height - lights.get(i >> 1).y + lights.get(i >> 1).getYOffset();
 		}
 		
 		for (int i = 0; i < lights.size(); i++) {

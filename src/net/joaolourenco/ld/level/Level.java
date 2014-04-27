@@ -57,8 +57,9 @@ public class Level {
 		genRandom();
 	}
 	
-	public Level(String path) {
+	public Level(String path, String lightPath) {
 		load(path);
+		loadLights(lightPath);
 		init();
 	}
 	
@@ -68,10 +69,30 @@ public class Level {
 		ids[ForeTile.LAVA] = new LavaTile();
 		ids[ForeTile.GROUND] = new Tile(Texture.Ground);
 		
-		lights.add(new Light(510, GameSettings.height / 2 + 30, 0xffffff));
-		add(new Player(300, GameSettings.height / 2 - 32, lights.get(0)));
+		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
+		lights.add(l);
+		add(new Player(300, GameSettings.height / 2 - 32, null));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
+	}
+	
+	private void loadLights(String path) {
+		BufferedImage image;
+		int[] pixels = null;
+		try {
+			image = ImageIO.read(new FileInputStream("res/textures/floors/" + path));
+			this.width = image.getWidth();
+			this.height = image.getHeight();
+			pixels = new int[width * height];
+			image.getRGB(0, 0, width, height, pixels, 0, width);
+			for (int i = 0; i < width * height; i++) {
+				if (pixels[i] != 0xFFFF00FF) {
+					lights.add(new Light(((i % width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, ((i / width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, pixels[i]));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void load(String path) {

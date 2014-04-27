@@ -125,8 +125,10 @@ public class Player extends Mob {
 		if (!collision(xa, ya)) {
 			x += xa;
 			y += ya;
-			light.x = x + 32 - level.getXOffset();
-			light.y = y + 32 - level.getYOffset();
+			if (light != null) {
+				light.x = x + 32;
+				light.y = y + 32;
+			}
 		}
 	}
 }

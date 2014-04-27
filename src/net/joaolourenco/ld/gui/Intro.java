@@ -9,6 +9,7 @@ public class Intro {
 	
 	private int intro;
 	private int ups;
+	private int i1 = 5, i2 = 5, i3 = 5, i4 = 2;
 	private Main main;
 	
 	public Intro(Main main) {
@@ -20,10 +21,10 @@ public class Intro {
 	public void update() {
 		this.ups++;
 		if (GameSettings.debugging) this.ups = 21;
-		if (this.ups == 5) this.intro = 2;
-		else if (this.ups == 10) this.intro = 3;
-		else if (this.ups == 15) this.intro = 4;
-		else if (this.ups > 20) this.main.startLevel();
+		if (this.ups == i1) this.intro = 2;
+		else if (this.ups == (i1 + i2)) this.intro = 3;
+		else if (this.ups == (i1 + i2 + i3)) this.intro = 4;
+		else if (this.ups > (i1 + i2 + i3 + i4)) this.main.startLevel();
 		System.out.println("UPS: " + this.ups);
 	}
 	

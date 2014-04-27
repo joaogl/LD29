@@ -26,7 +26,8 @@ public class Light {
 	
 	public void bindUniforms(int shader, int side) {
 		int uniform = glGetUniformLocation(shader, "lightPosition");
-		glUniform2f(uniform, x, GameSettings.height - y);
+		// glUniform2f(uniform, x, GameSettings.height - y);
+		glUniform2f(uniform, x - xOffset, GameSettings.height - y + yOffset);
 		
 		uniform = glGetUniformLocation(shader, "lightColor");
 		glUniform3f(uniform, vc.x, vc.y, vc.z);
@@ -52,7 +53,7 @@ public class Light {
 		glColorMask(false, false, false, false);
 		glStencilFunc(GL_ALWAYS, 1, 1);
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		Vector2f lightpos = new Vector2f(x + xOffset, y + yOffset);
+		Vector2f lightpos = new Vector2f(x, y);
 		int x0 = xOffset >> GameSettings.TILE_SIZE_MASK;
 		int x1 = (xOffset >> GameSettings.TILE_SIZE_MASK) + 16;
 		int y0 = yOffset >> GameSettings.TILE_SIZE_MASK;
@@ -113,5 +114,13 @@ public class Light {
 		
 		glUseProgram(0);
 		glClear(GL_STENCIL_BUFFER_BIT);
+	}
+	
+	public int getXOffset() {
+		return this.xOffset;
+	}
+	
+	public int getYOffset() {
+		return this.yOffset;
 	}
 }

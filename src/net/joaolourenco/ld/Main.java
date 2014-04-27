@@ -63,7 +63,7 @@ public class Main implements Runnable {
 	
 	public void startLevel() {
 		Texture.load();
-		level = new Level("Test.png");
+		level = new Level("Test.png", "Test_light.png");
 	}
 	
 	public void render() {
