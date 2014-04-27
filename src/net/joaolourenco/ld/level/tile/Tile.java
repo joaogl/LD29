@@ -16,9 +16,10 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Tile {
 	
-	public static final byte FLOOR = 0x0;
+	public static final byte VOID = 0x0;
 	public static final byte WALL = 0x1;
 	public static final byte LAVA = 0x2;
+	public static final byte GROUND = 0x3;
 	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
 	protected int vao, vbo, vio, vto, bugValue;
@@ -48,9 +49,16 @@ public class Tile {
 	};
 	
 	public Tile() {
-		createShader(new Shader("shaders/tile.vert", "shaders/tile.frag"));
+		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
 		compile();
 		texture = Texture.Void;
+		bugValue = -1;
+	}
+
+	public Tile(int texture) {
+		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
+		compile();
+		this.texture = texture;
 		bugValue = -1;
 	}
 	

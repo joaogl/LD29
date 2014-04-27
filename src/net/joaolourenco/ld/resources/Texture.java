@@ -12,7 +12,7 @@ import net.joaolourenco.ld.util.Buffer;
 
 public class Texture {
 	
-	public static int Void = 0, RockCliff = 0, Lava = 0;
+	public static int Void = 0, RockCliff = 0, Lava = 0, Ground = 0;
 	public static int PlayerNormal0 = 0, PlayerNormal1 = 0, PlayerNormal2 = 0, PlayerNormal3 = 0;
 	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0, Menu = 0;
 	
@@ -27,6 +27,7 @@ public class Texture {
 		Void = loadTexture("res/textures/void.png", false);
 		RockCliff = loadTexture("res/textures/rock.png", false);
 		Lava = loadTexture("res/textures/lava.png", false);
+		Ground = loadTexture("res/textures/ground.png", false);
 		
 		PlayerNormal0 = loadTexture("res/textures/entities/Player/PlayerNormal0.png", false);
 		PlayerNormal1 = loadTexture("res/textures/entities/Player/PlayerNormal1.png", false);

@@ -17,6 +17,7 @@ import net.joaolourenco.ld.level.tile.ForeTile;
 import net.joaolourenco.ld.level.tile.LavaTile;
 import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.level.tile.WallTile;
+import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -38,7 +39,7 @@ public class Level {
 	private List<Light> lights = new ArrayList<Light>();
 	private List<Entity> entities = new ArrayList<Entity>();
 	
-	private Tile[] ids = new Tile[3];
+	private Tile[] ids = new Tile[4];
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -62,12 +63,13 @@ public class Level {
 	}
 	
 	private void init() {
-		ids[ForeTile.FLOOR] = new Tile();
+		ids[ForeTile.VOID] = new Tile();
 		ids[ForeTile.WALL] = new WallTile();
 		ids[ForeTile.LAVA] = new LavaTile();
+		ids[ForeTile.GROUND] = new Tile(Texture.Ground);
 		
-		lights.add(new Light(10, 10, 0xffffff));
-		add(new Player(GameSettings.width / 2 - 32, GameSettings.height / 2, lights.get(0)));
+		lights.add(new Light(300, GameSettings.height / 2 - 3, 0xffffff));
+		add(new Player(300, GameSettings.height / 2 - 32, lights.get(0)));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
 	}
@@ -96,7 +98,8 @@ public class Level {
 		for (int i = 0; i < width * height; i++) {
 			if (pixels[i] == 0xFF7F7244) createForegroundTile(i % width, i / width, ForeTile.WALL);
 			else if (pixels[i] == 0xFFFF3200) createBackgroundTile(i % width, i / width, ForeTile.LAVA);
-			else createBackgroundTile(i % width, i / width, ForeTile.FLOOR);
+			else if (pixels[i] == 0xFFCDB76D) createBackgroundTile(i % width, i / width, ForeTile.GROUND);
+			else createBackgroundTile(i % width, i / width, ForeTile.VOID);
 		}
 	}
 	
