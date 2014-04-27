@@ -12,7 +12,8 @@ import net.joaolourenco.ld.util.Buffer;
 public abstract class Entity {
 	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
-	protected int x, y, side;
+	protected float x, y;
+	protected int side;
 	protected int texture;
 	protected int vao, vbo, vio, vto;
 	protected Shader shader;
@@ -98,17 +99,17 @@ public abstract class Entity {
 	public void init(Level level) {
 		this.level = level;
 		if (light != null) {
-			light.x = x + 32;
-			light.y = y + 32;
+			light.x = (int) (x + 32);
+			light.y = (int) (y + 32);
 		}
 	}
 	
 	public int getX() {
-		return x;
+		return (int) x;
 	}
 	
 	public int getY() {
-		return y;
+		return (int) y;
 	}
 	
 }

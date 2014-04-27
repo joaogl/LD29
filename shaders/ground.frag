@@ -7,6 +7,8 @@ uniform vec2 lightPosition;
 uniform vec3 lightColor;
 uniform float lightIntensity;
 
+uniform float tileInUse;
+
 void main(){
 	vec4 tex = texture2D(texture, texCoords);
 	vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
@@ -22,5 +24,6 @@ void main(){
 	color *= vec4(attenuation, attenuation, attenuation, pow(attenuation, 3)) * vec4((lightColor / distance * 15) * lightIntensity, 1.0) + 0.01;
 	
 	color /= (distance / (lightIntensity * falloff));	
+	if (tileInUse == 3) color = color + vec4(0.025, 0.025, 0.025, 0.025);
 	gl_FragColor = color;
 }

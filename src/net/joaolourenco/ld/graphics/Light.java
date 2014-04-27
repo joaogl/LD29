@@ -1,5 +1,7 @@
 package net.joaolourenco.ld.graphics;
 
+import net.joaolourenco.ld.level.Level;
+import net.joaolourenco.ld.level.tile.ForeTile;
 import net.joaolourenco.ld.settings.GameSettings;
 
 import org.lwjgl.util.vector.Vector2f;

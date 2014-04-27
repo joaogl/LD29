@@ -5,7 +5,7 @@ import net.joaolourenco.ld.resources.Texture;
 public class WallTile extends ForeTile {
 	
 	public WallTile() {
-		super(Texture.RockCliff, 0);
+		super(Texture.RockCliff, 0, ForeTile.WALL);
 	}
 	
 }

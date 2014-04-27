@@ -24,7 +24,7 @@ public class Tile {
 	protected static final float SIZE = GameSettings.TILE_SIZE;
 	protected int vao, vbo, vio, vto, bugValue;
 	protected Shader shader;
-	protected int texture;
+	protected int texture, tileInUse;
 	protected Random random = new Random();
 	
 	protected float[] vertices = new float[] {
@@ -51,15 +51,17 @@ public class Tile {
 	public Tile() {
 		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
 		compile();
-		texture = Texture.Void;
-		bugValue = -1;
+		this.texture = Texture.Void;
+		this.tileInUse = 0;
+		this.bugValue = -1;
 	}
 	
-	public Tile(int texture) {
+	public Tile(int texture, int tile) {
 		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
 		compile();
 		this.texture = texture;
-		bugValue = -1;
+		this.tileInUse = tile;
+		this.bugValue = -1;
 	}
 	
 	protected void compile() {
@@ -121,7 +123,10 @@ public class Tile {
 	}
 	
 	public void update() {
-		
+		shader.bind();
+		int uniform = shader.getUniform("tileInUse");
+		shader.setUniformf(uniform, tileInUse);
+		shader.release();
 	}
 	
 	public void bindUniforms(List<Light> lights) {
@@ -171,6 +176,7 @@ public class Tile {
 	}
 	
 	public boolean solid() {
+		if (this.tileInUse == 0) return true;
 		return false;
 	}
 	

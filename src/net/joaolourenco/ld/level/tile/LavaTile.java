@@ -8,7 +8,7 @@ public class LavaTile extends ForeTile {
 	private float time = 0.0f, xx, yy;
 	
 	public LavaTile() {
-		super(Texture.Lava);
+		super(Texture.Lava, ForeTile.LAVA);
 		createShader(new Shader("shaders/tile.vert", "shaders/lava.frag"));
 		this.xx = random.nextFloat();
 		this.yy = random.nextFloat();

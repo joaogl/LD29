@@ -25,12 +25,12 @@ void main(){
 		float falloff = 80; // 40
 		falloff -= distance / 25.0f / ints;
 		
-		color *= vec4(attenuation - 0.01, attenuation - 0.01, attenuation - 0.01, pow(attenuation, 3)) * vec4((col / distance * 15) * ints, 1.0) + 0.01;
+		color *= vec4(attenuation, attenuation, attenuation, pow(attenuation, 3)) * vec4((col / distance * 15) * ints, 1.0) + 0.01;
 		
 		color /= (distance / (ints * falloff));
 	}		
 
-	color *= 100.0 * pow(8.0 * num, float(num - 1)) + 1;
+	color *= 30.0 * pow(0.5 * num, float(num - 1)) + 1;
 	//color *= 300.0 * (num - 1) + 1;	
 	gl_FragColor = color;
 }

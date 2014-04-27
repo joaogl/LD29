@@ -34,12 +34,12 @@ public class Level {
 	public final static int FOREGROUND = 0x1;
 	protected int xOffset, yOffset;
 	
-	private int[] backgroundTiles, foregroundTiles;
+	public int[] backgroundTiles, foregroundTiles;
 	private Vector2f[][] foregroundVertices;
 	private List<Light> lights = new ArrayList<Light>();
 	private List<Entity> entities = new ArrayList<Entity>();
 	
-	private Tile[] ids = new Tile[4];
+	public Tile[] ids = new Tile[4];
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -67,11 +67,11 @@ public class Level {
 		ids[ForeTile.VOID] = new Tile();
 		ids[ForeTile.WALL] = new WallTile();
 		ids[ForeTile.LAVA] = new LavaTile();
-		ids[ForeTile.GROUND] = new Tile(Texture.Ground);
+		ids[ForeTile.GROUND] = new Tile(Texture.Ground, ForeTile.GROUND);
 		
 		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
 		lights.add(l);
-		add(new Player(300, GameSettings.height / 2 - 32, l));
+		add(new Player(1344, 1280, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
 	}

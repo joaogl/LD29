@@ -1,28 +1,23 @@
 package net.joaolourenco.ld.level.tile;
 
 import net.joaolourenco.ld.graphics.Shader;
-import net.joaolourenco.ld.resources.Texture;
 
 import org.lwjgl.util.vector.Vector3f;
 
 public class ForeTile extends Tile {
 	
-	public ForeTile() {
+	public ForeTile(int tex, int tile) {
 		createShader(new Shader("shaders/tile.vert", "shaders/walls.frag"));
 		compile();
-		this.texture = Texture.RockCliff;
-	}
-	
-	public ForeTile(int tex) {
-		createShader(new Shader("shaders/tile.vert", "shaders/walls.frag"));
-		compile();
+		this.tileInUse = tile;
 		this.texture = tex;
 	}
 	
-	public ForeTile(int tex, int i) {
+	public ForeTile(int tex, int i, int tile) {
 		createShader(new Shader("shaders/tile.vert", "shaders/walls.frag"));
 		this.bugValue = i;
 		compile();
+		this.tileInUse = tile;
 		this.texture = tex;
 	}
 	

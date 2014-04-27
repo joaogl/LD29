@@ -14,6 +14,7 @@ public class Texture {
 	
 	public static int Void = 0, RockCliff = 0, Lava = 0, Ground = 0;
 	public static int PlayerNormal0 = 0, PlayerNormal1 = 0, PlayerNormal2 = 0, PlayerNormal3 = 0;
+	public static int PlayerHurt0 = 0, PlayerHurt1 = 0, PlayerHurt2 = 0, PlayerHurt3 = 0;
 	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0, Menu = 0;
 	
 	public static void minimalisticLoad() {
@@ -33,6 +34,11 @@ public class Texture {
 		PlayerNormal1 = loadTexture("res/textures/entities/Player/PlayerNormal1.png", false);
 		PlayerNormal2 = loadTexture("res/textures/entities/Player/PlayerNormal2.png", false);
 		PlayerNormal3 = loadTexture("res/textures/entities/Player/PlayerNormal3.png", false);
+		
+		PlayerHurt0 = loadTexture("res/textures/entities/Player/PlayerHurt0_0.png", false);
+		PlayerHurt1 = loadTexture("res/textures/entities/Player/PlayerHurt1_0.png", false);
+		PlayerHurt2 = loadTexture("res/textures/entities/Player/PlayerHurt2_0.png", false);
+		PlayerHurt3 = loadTexture("res/textures/entities/Player/PlayerHurt3_0.png", false);
 	}
 	
 	private static int loadTexture(String path, boolean antialiase) {

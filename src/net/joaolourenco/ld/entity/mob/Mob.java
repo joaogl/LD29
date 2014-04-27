@@ -7,7 +7,7 @@ import net.joaolourenco.ld.settings.GameSettings;
 
 public abstract class Mob extends Entity {
 	
-	public void move(int xa, int ya) {
+	public void move(float xa, float ya) {
 		if (xa != 0 && ya != 0) {
 			move(xa, 0);
 			move(0, ya);
@@ -17,10 +17,14 @@ public abstract class Mob extends Entity {
 		if (!collision(xa, ya)) {
 			x += xa;
 			y += ya;
+			if (light != null) {
+				light.x = (int) (x + 32);
+				light.y = (int) (y + 32);
+			}
 		}
 	}
 	
-	public boolean collision(int xa, int ya) {
+	public boolean collision(float xa, float ya) {
 		boolean solid = false;
 		for (int i = 0; i < 4; i++) {
 			int xt = (int) ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
