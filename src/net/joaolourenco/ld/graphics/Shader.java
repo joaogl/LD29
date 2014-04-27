@@ -58,6 +58,32 @@ public class Shader {
 		glUseProgram(0);
 	}
 	
+	public int getUniform(String name) {
+		return glGetUniformLocation(shader, name);
+	}
+	
+	public void setUniform1f(String name, float value) {
+		bind();
+		glUniform1f(getUniform(name), value);
+		release();
+	}
+	
+	public void setUniform2f(String name, float x, float y) {
+		bind();
+		glUniform2f(getUniform(name), x, y);
+		release();
+	}
+	
+	public void setUniform3f(String name, float x, float y, float z) {
+		bind();
+		glUniform3f(getUniform(name), x, y, z);
+		release();
+	}
+	
+	public void setUniformf(int location, float value) {
+		glUniform1f(location, value);
+	}
+	
 	public String toString() {
 		return "Shader ID: " + getID() + "; " + vertexPath + ", " + fragmentPath;
 	}

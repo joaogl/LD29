@@ -18,7 +18,7 @@ public class GameSettings {
 		public static int height = 540;
 		
 		// Debug
-		public static boolean debugging = false;
+		public static boolean debugging = true;
 		public static boolean bugged = true;
 	
 	/**

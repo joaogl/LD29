@@ -1,15 +1,13 @@
 package net.joaolourenco.ld.level.tile;
 
 import java.util.List;
+import java.util.Random;
 
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
-
-import org.lwjgl.input.Keyboard;
-
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
 import static org.lwjgl.opengl.GL15.*;
@@ -26,6 +24,7 @@ public class Tile {
 	protected int vao, vbo, vio, vto, bugValue;
 	protected Shader shader;
 	protected int texture;
+	protected Random random = new Random();
 	
 	protected float[] vertices = new float[] {
 			0.0f, 0.0f, 0.0f, //
@@ -114,7 +113,7 @@ public class Tile {
 	}
 	
 	public void update() {
-		if (net.joaolourenco.ld.input.Keyboard.keyTyped(Keyboard.KEY_R)) shader.recompile();
+		
 	}
 	
 	public void bindUniforms(List<Light> lights) {
