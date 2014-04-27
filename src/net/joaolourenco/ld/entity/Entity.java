@@ -58,8 +58,8 @@ public abstract class Entity {
 	public void init(Level level) {
 		this.level = level;
 		if (light != null) {
-			light.x = x + 32 - level.getXOffset();
-			light.y = y + 32 - level.getYOffset();
+			light.x = x + 210 - level.getXOffset();
+			light.y = y + 65 - level.getYOffset();
 		}
 	}
 	

@@ -68,7 +68,7 @@ public class Level {
 		ids[ForeTile.LAVA] = new LavaTile();
 		ids[ForeTile.GROUND] = new Tile(Texture.Ground);
 		
-		lights.add(new Light(300, GameSettings.height / 2 - 3, 0xffffff));
+		lights.add(new Light(510, GameSettings.height / 2 + 30, 0xffffff));
 		add(new Player(300, GameSettings.height / 2 - 32, lights.get(0)));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
