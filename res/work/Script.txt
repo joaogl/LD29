@@ -1,0 +1,61 @@
+Medic (Start):
+"Hey, I found you pretty banged up back there.
+I've done my best to bandage you up, but...
+The world above has pretty much fallen apart.
+You're going to have to survive down here.
+You'll have to be careful though, there are a lot
+of sketchy people. But some will probably want
+to try and help you out. To survive, there are
+a lot of areas in this cave network that people
+inhabited and stored supplies. If you can find
+some stuff, you should be alright. The farther
+you get through here, however, the more people
+there seems to be. I'm going to join you, so let's
+see how far we can get."
+
+Medic (Level 2 Start):
+"Alright, you're fully healed, and I think you
+can survive on your own. I'm going to leave you
+now. Good luck."
+
+TipGuys:
+"Medics are the guys with white shirts with red
+crosses on them. They can heal you every now and then!"
+"Warriors have armor on. If you can befriend one,
+he will help you during fights!"
+"Scavengers can rob people and find hidden supply
+caches. They're sometimes the most helfull, but
+also sometimes the most devastating if they rob you
+instead."
+"Some chests are locked. Chances are, someone in the
+area will have a key though."
+"Anyone you meet can either be hostile, friendly, or
+neutral. You can change a neutral or friendly persons
+mind about you though, so be careful, especially if you
+choose to rob a neutral person of their belongings."
+"You can only have one extra person in your party at a
+time."
+
+General (Meet Friendly):
+"Hey, need someone to help you out in your travels?"
+"Hello friend. Need a partner?"
+"Need a hand on your adventure?"
+
+Medic (Meet Friendly):
+"Need a healer with you?"
+"Think you could use some extra health?"
+
+Warrior (Meet Friendly):
+"Need some muscle with you?"
+"Need a hand with any future battles?"
+
+Scavenger (Meet Friendly):
+"Need some help finding stuff?"
+"I can provide some services if you need them."
+
+General (Meet Hostile:
+"You're in the wrong neck of the woods, friend."
+"Get out of here, before I make you."
+"You're gonna be real sorry for coming here."
+"Get that guy!"
+"Kill him!"

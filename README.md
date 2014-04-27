@@ -9,6 +9,7 @@ Builds for testing
 - Build 0.2. <br>
 	Finished Intro.
 	Added Menus.
+	Added Gameover.
 - Build 0.1.6 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.6.rar). <br>
 	Fixed a few bugs.
 	Added player effects on shadows.
