@@ -41,11 +41,9 @@ TO-DO
 ====
 - Create menus.
 - Add sounds.
-- Add the diferent player textures.
-- Setup the level loader.
 - Setup the level generator.
-- Setup the collision detection. [HALF DONE]
 - Apply the intro to the Game (only on startup). [HALF DONE]
+- Add the diferent player textures. [HALF DONE]
 
 TO-DO DONE
 ====
@@ -54,6 +52,8 @@ TO-DO DONE
 - Setup shadows. [DONE]
 - Setup the player. [DONE]
 - Setup the basic stuff. [DONE]
+- Setup the collision detection. [DONE]
+- Setup the level loader. [DONE]
 
 // Time table.
 26 - from 01:30 to 05:54

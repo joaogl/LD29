@@ -18,8 +18,12 @@ import static org.lwjgl.opengl.GL30.*;
 
 public class Tile {
 	
+	public static final byte FLOOR = 0x0;
+	public static final byte WALL = 0x1;
+	public static final byte LAVA = 0x2;
+	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
-	protected int vao, vbo, vio, vto;
+	protected int vao, vbo, vio, vto, bugValue;
 	protected Shader shader;
 	protected int texture;
 	
@@ -45,9 +49,10 @@ public class Tile {
 	};
 	
 	public Tile() {
-		shader = new Shader("shaders/tile.vert", "shaders/tile.frag");
+		createShader(new Shader("shaders/tile.vert", "shaders/tile.frag"));
 		compile();
-		texture = Texture.CliffRock;
+		texture = Texture.Void;
+		bugValue = -1;
 	}
 	
 	protected void compile() {
@@ -78,12 +83,6 @@ public class Tile {
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
 		glBindVertexArray(0);
-		
-		glActiveTexture(GL_TEXTURE1);
-		shader.bind();
-		int uniform = glGetUniformLocation(shader.getID(), "texture");
-		glUniform1i(uniform, 1);
-		shader.release();
 	}
 	
 	public void render(int x, int y) {
@@ -154,8 +153,18 @@ public class Tile {
 		shader.release();
 	}
 	
+	public void createShader(Shader shader) {
+		this.shader = shader;
+		
+		glActiveTexture(GL_TEXTURE1);
+		shader.bind();
+		int uniform = glGetUniformLocation(shader.getID(), "texture");
+		glUniform1i(uniform, 1);
+		shader.release();
+	}
+	
 	public boolean solid() {
-		return true;
+		return false;
 	}
 	
 }

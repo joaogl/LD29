@@ -1,15 +1,22 @@
 package net.joaolourenco.ld.level;
 
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.entity.mob.Player;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
-import net.joaolourenco.ld.level.tile.GroundTile;
+import net.joaolourenco.ld.level.tile.ForeTile;
+import net.joaolourenco.ld.level.tile.LavaTile;
 import net.joaolourenco.ld.level.tile.Tile;
+import net.joaolourenco.ld.level.tile.WallTile;
 import net.joaolourenco.ld.settings.GameSettings;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -19,7 +26,6 @@ import static org.lwjgl.opengl.GL11.*;
 public class Level {
 	
 	protected int width, height;
-	private Tile wall, tile;
 	private Shader lightShader;
 	private Random random = new Random();
 	
@@ -28,32 +34,70 @@ public class Level {
 	protected int xOffset, yOffset;
 	
 	private int[] backgroundTiles, foregroundTiles;
-	private List<Vector2f[]> foregroundVertices = new ArrayList<Vector2f[]>();
+	private Vector2f[][] foregroundVertices;
 	private List<Light> lights = new ArrayList<Light>();
 	private List<Entity> entities = new ArrayList<Entity>();
+	
+	private Tile[] ids = new Tile[3];
 	
 	public Level(int width, int height) {
 		this.width = width;
 		this.height = height;
-		
-		wall = new GroundTile();
-		tile = new Tile();
-		
 		backgroundTiles = new int[width * height];
-		foregroundTiles = new int[width * height];
-		lights.add(new Light(GameSettings.width / 2, GameSettings.height / 2, 0xffffff));
-		add(new Player(GameSettings.width / 2, GameSettings.height / 2, lights.get(0)));
-		
-		lightShader = new Shader("shaders/tile.vert", "shaders/light.frag");
-		// genRandom();
 		for (int i = 0; i < backgroundTiles.length; i++) {
-			backgroundTiles[i] = 1;
+			backgroundTiles[i] = -1;
 		}
-		createForegroundTile(3, 1);
-		createForegroundTile(3, 3);
-		createForegroundTile(3, 4);
-		createForegroundTile(3, 5);
-		createForegroundTile(3, 6);
+		foregroundTiles = new int[width * height];
+		for (int i = 0; i < foregroundTiles.length; i++) {
+			foregroundTiles[i] = -1;
+		}
+		foregroundVertices = new Vector2f[width * height][4];
+		init();
+		genRandom();
+	}
+	
+	public Level(String path) {
+		load(path);
+		init();
+	}
+	
+	private void init() {
+		ids[ForeTile.FLOOR] = new Tile();
+		ids[ForeTile.WALL] = new WallTile();
+		ids[ForeTile.LAVA] = new LavaTile();
+		
+		lights.add(new Light(10, 10, 0xffffff));
+		add(new Player(GameSettings.width / 2 - 32, GameSettings.height / 2, lights.get(0)));
+		
+		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
+	}
+	
+	private void load(String path) {
+		BufferedImage image;
+		int[] pixels = null;
+		try {
+			image = ImageIO.read(new FileInputStream("res/textures/floors/" + path));
+			this.width = image.getWidth();
+			this.height = image.getHeight();
+			pixels = new int[width * height];
+			image.getRGB(0, 0, width, height, pixels, 0, width);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		backgroundTiles = new int[width * height];
+		for (int i = 0; i < backgroundTiles.length; i++) {
+			backgroundTiles[i] = -1;
+		}
+		foregroundTiles = new int[width * height];
+		for (int i = 0; i < foregroundTiles.length; i++) {
+			foregroundTiles[i] = -1;
+		}
+		foregroundVertices = new Vector2f[width * height][4];
+		for (int i = 0; i < width * height; i++) {
+			if (pixels[i] == 0xFF7F7244) createForegroundTile(i % width, i / width, ForeTile.WALL);
+			else if (pixels[i] == 0xFFFF3200) createBackgroundTile(i % width, i / width, ForeTile.LAVA);
+			else createBackgroundTile(i % width, i / width, ForeTile.FLOOR);
+		}
 	}
 	
 	private void add(Entity e) {
@@ -64,22 +108,26 @@ public class Level {
 	private void genRandom() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
-				int tile = random.nextInt(10);
-				if (tile < 7) backgroundTiles[x + y * width] = 1;
-				else createForegroundTile(x, y);
+				int tile = random.nextInt(20);
+				if (tile < 18) backgroundTiles[x + y * width] = 1;
+				else createForegroundTile(x, y, ForeTile.WALL);
 			}
 		}
 	}
 	
-	private void createForegroundTile(int x, int y) {
-		foregroundTiles[x + y * width] = 1;
+	private void createBackgroundTile(int x, int y, int type) {
+		backgroundTiles[x + y * width] = type;
+	}
+	
+	private void createForegroundTile(int x, int y, int type) {
+		foregroundTiles[x + y * width] = type;
 		Vector2f[] vertices = new Vector2f[4];
 		float size = GameSettings.TILE_SIZE;
 		vertices[0] = new Vector2f(x * size, y * size);
 		vertices[1] = new Vector2f(x * size + size, y * size);
 		vertices[2] = new Vector2f(x * size + size, y * size + size);
 		vertices[3] = new Vector2f(x * size, y * size + size);
-		foregroundVertices.add(vertices);
+		foregroundVertices[x + y * width] = vertices;
 	}
 	
 	public void setOffset(int xOffset, int yOffset) {
@@ -96,11 +144,10 @@ public class Level {
 	}
 	
 	public void update() {
-		wall.update();
-		tile.update();
-		
 		for (int i = 0; i < entities.size(); i++)
 			entities.get(i).update();
+		for (int i = 0; i < ids.length; i++)
+			ids[i].update();
 	}
 	
 	public void render() {
@@ -110,12 +157,10 @@ public class Level {
 		for (int i = 0; i < lights.size(); i++) {
 			Light light = lights.get(i);
 			light.setOffset(xOffset, yOffset);
-			light.shadows(foregroundVertices);
+			light.shadows(foregroundVertices, width, height);
 			light.render(lightShader.getID());
-			tile.bindUniforms(light);
-			renderBackground();
+			renderBackground(light);
 		}
-		wall.bindUniforms(lights);
 		renderForeground();
 		glDepthMask(true);
 		glEnable(GL_BLEND);
@@ -129,7 +174,7 @@ public class Level {
 		glDisable(GL_BLEND);
 	}
 	
-	public void renderBackground() {
+	public void renderBackground(Light light) {
 		glEnable(GL_BLEND);
 		int x0 = xOffset >> GameSettings.TILE_SIZE_MASK;
 		int x1 = (xOffset >> GameSettings.TILE_SIZE_MASK) + 16;
@@ -138,7 +183,10 @@ public class Level {
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
 				Tile tile = getTile(x, y, BACKGROUND);
-				if (tile != null) tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+				if (tile != null) {
+					tile.bindUniforms(light);
+					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+				}
 			}
 		}
 		glDisable(GL_BLEND);
@@ -152,18 +200,28 @@ public class Level {
 		for (int y = y0; y < y1; y++) {
 			for (int x = x0; x < x1; x++) {
 				Tile tile = getTile(x, y, FOREGROUND);
-				if (tile != null) tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+				if (tile != null) {
+					tile.bindUniforms(lights);
+					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK);
+				}
 			}
 		}
 	}
 	
 	public Tile getTile(int x, int y, int level) {
 		if (x < 0 || x >= width || y < 0 || y >= height) return null;
+		int id = 0;
 		if (level == BACKGROUND) {
-			if (backgroundTiles[x + y * width] > 0) return wall;
+			id = backgroundTiles[x + y * width];
+			if (id == -1) return null;
+			return ids[id];
 		}
-		if (foregroundTiles[x + y * width] > 0) return tile;
-		return null;
+		id = foregroundTiles[x + y * width];
+		if (id == -1) return null;
+		return ids[id];
 	}
+	/*
+	 * public Tile getTile(int x, int y, int level) { if (x < 0 || x >= width || y < 0 || y >= height) return null; int id = 0; if (level == BACKGROUND) id = backgroundTiles[x + y * width]; else id = foregroundTiles[x + y * width]; if (id == -1) return null; else return ids[id]; }
+	 */
 	
 }

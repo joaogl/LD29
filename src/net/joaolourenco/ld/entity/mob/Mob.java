@@ -26,6 +26,8 @@ public abstract class Mob extends Entity {
 			int xt = (int) ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
 			int yt = (int) ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
 			Tile tile = level.getTile(xt, yt, Level.FOREGROUND);
+			if (tile != null && tile.solid()) solid = true;
+			tile = level.getTile(xt, yt, Level.BACKGROUND);
 			if (tile == null) continue;
 			if (tile.solid()) solid = true;
 		}
