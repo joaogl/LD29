@@ -19,13 +19,6 @@ public class Intro {
 	}
 	
 	public void update() {
-		this.ups++;
-		if (GameSettings.debugging) this.ups = 21;
-		if (this.ups == i1) this.intro = 2;
-		else if (this.ups == (i1 + i2)) this.intro = 3;
-		else if (this.ups == (i1 + i2 + i3)) this.intro = 4;
-		else if (this.ups > (i1 + i2 + i3 + i4)) this.main.startLevel();
-		System.out.println("UPS: " + this.ups);
 	}
 	
 	public void render() {

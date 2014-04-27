@@ -22,6 +22,9 @@ public class Texture {
 	public static int PlayerNormal0 = 0, PlayerNormal1 = 0, PlayerNormal2 = 0, PlayerNormal3 = 0;
 	public static int PlayerHurt0 = 0, PlayerHurt1 = 0, PlayerHurt2 = 0, PlayerHurt3 = 0;
 	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0, Menu = 0;
+	public static int Play = 0, PlayH = 0;
+	public static int About = 0, AboutH = 0;
+	public static int Quit = 0, QuitH = 0;
 	
 	private static List<Integer> textures = new ArrayList<Integer>();
 	
@@ -30,6 +33,12 @@ public class Texture {
 		Intro2 = loadTexture("res/textures/intro/2.png", false);
 		Intro3 = loadTexture("res/textures/intro/3.png", false);
 		Menu = loadTexture("res/textures/Title.png", false);
+		Play = loadTexture("res/textures/Play.png", false);
+		PlayH = loadTexture("res/textures/PlayH.png", false);
+		About = loadTexture("res/textures/About.png", false);
+		AboutH = loadTexture("res/textures/AboutH.png", false);
+		Quit = loadTexture("res/textures/Quit.png", false);
+		QuitH = loadTexture("res/textures/QuitH.png", false);
 	}
 	
 	public static void load() {

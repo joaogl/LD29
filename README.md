@@ -6,6 +6,9 @@ Fallen is a Action/Adventure roguelike kinda game .
 
 Builds for testing
 ====
+- Build 0.2. <br>
+	Finished Intro.
+	Added Menus.
 - Build 0.1.6 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.6.rar). <br>
 	Fixed a few bugs.
 	Added player effects on shadows.
@@ -51,7 +54,6 @@ TO-DO
 - Create menus.
 - Add sounds.
 - Setup the level generator.
-- Apply the intro to the Game (only on startup). [HALF DONE]
 - Add the diferent player textures. [HALF DONE]
 
 TO-DO DONE
@@ -63,6 +65,7 @@ TO-DO DONE
 - Setup the basic stuff. [DONE]
 - Setup the collision detection. [DONE]
 - Setup the level loader. [DONE]
+- Apply the intro to the Game (only on startup). [DONE]
 
 // Time table.
 26 - from 01:30 to 05:54
@@ -71,4 +74,5 @@ TO-DO DONE
 26 - from 19:50 to 23:52
    26 = 19:07 of 24, left 4:53
 27 - from 04:05 to 13:39
-27 - from 13:53 to 
+27 - from 13:53 to 20:33
+27 - from 20:44 to 

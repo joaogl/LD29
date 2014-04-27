@@ -25,8 +25,7 @@ public class Player extends Mob {
 		this.state = 1;
 		changeTexture(true);
 		this.texture = Texture.PlayerHurt0;
-		if (GameSettings.NEW_MOB_LIB) this.shader = new Shader("shaders/tile.vert", "shaders/newmob.frag");
-		else this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
+		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
 		compile();
 	}
 	

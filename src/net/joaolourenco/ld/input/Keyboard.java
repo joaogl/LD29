@@ -7,6 +7,11 @@ public class Keyboard {
 	
 	private static List<Integer> pressed = new ArrayList<Integer>();
 	
+	public static int UP = org.lwjgl.input.Keyboard.KEY_UP;
+	public static int DOWN = org.lwjgl.input.Keyboard.KEY_DOWN;
+	public static int ENTER = org.lwjgl.input.Keyboard.KEY_RETURN;
+	public static int SPACE = org.lwjgl.input.Keyboard.KEY_SPACE;
+	
 	public static void update() {
 		for (int i = 0; i < pressed.size(); i++) {
 			if (!keyPressed(pressed.get(i))) pressed.remove(new Integer(pressed.get(i)));

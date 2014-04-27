@@ -6,7 +6,7 @@ public class GameSettings {
 	 * --------------------- // General Game Settings // ---------------------
 	 */
 		// Game version
-		public static String version = "Pre-Release 0.1.7";
+		public static String version = "Pre-Release 0.2";
 		
 		// Game Name
 		public static String name = "Fallen";
