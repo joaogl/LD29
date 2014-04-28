@@ -15,6 +15,7 @@ public class State {
 	}
 	
 	public static void setState(int state) {
+		if (state == INTRO) Main.menu.play();
 		current = state;
 	}
 	

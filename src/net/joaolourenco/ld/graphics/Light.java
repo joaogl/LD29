@@ -19,6 +19,7 @@ public class Light {
 	private int color;
 	public float intensity = GameSettings.LIGHT_INTENSITY;
 	public float radius = GameSettings.LIGHT_RADIUS;
+	public float dir = 0.0F;
 	
 	public Light(int x, int y, int color) {
 		this.x = x;
@@ -68,7 +69,7 @@ public class Light {
 		int x1 = (xOffset >> GameSettings.TILE_SIZE_MASK) + 16; // + 16
 		int y0 = yOffset >> GameSettings.TILE_SIZE_MASK;
 		int y1 = (yOffset >> GameSettings.TILE_SIZE_MASK) + 10; // + 10
-		int check = 50;
+		int check = 20;
 		for (int y = y0 - check; y < y1 + check; y++) {
 			for (int x = x0 - check; x < x1 + check; x++) {
 				if (x < 0 || x >= width || y < 0 || y >= height) continue;

@@ -7,7 +7,7 @@ uniform vec2 lightPosition[10];
 uniform vec3 lightColor[10];
 uniform float lightIntensity[10];
 
-void main(){
+void main() {
 	vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
 	vec4 tex = texture2D(texture, texCoords);
 	color = tex;
@@ -18,19 +18,18 @@ void main(){
 		num++;
 		vec3 col = lightColor[i];
 		float ints = lightIntensity[i];
-	
+		
 		float distance = length(pos - gl_FragCoord.xy);
 		float attenuation = 1.0 / distance;
 		
-		float falloff = 80; // 40
+		float falloff = 40;
 		falloff -= distance / 25.0f / ints;
+		
 		
 		color *= vec4(attenuation, attenuation, attenuation, pow(attenuation, 3)) * vec4((col / distance * 15) * ints, 1.0) + 0.01;
 		
 		color /= (distance / (ints * falloff));
-	}		
-
-	color *= 30.0 * pow(0.5 * num, float(num - 1)) + 1;
-	//color *= 300.0 * (num - 1) + 1;	
-	gl_FragColor = color;
+	}
+	color *= 100.0 * pow(166.0, float(num - 1)) + 1;
+	gl_FragColor = color; 
 }

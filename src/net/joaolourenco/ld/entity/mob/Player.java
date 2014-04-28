@@ -69,7 +69,7 @@ public class Player extends Mob {
 			glBindBuffer(GL_ARRAY_BUFFER, vto);
 			{
 				glBufferData(GL_ARRAY_BUFFER, Buffer.createByteBuffer(texCoords), GL_STATIC_DRAW);
-				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, -1);
+				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, 1);
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}
@@ -90,6 +90,7 @@ public class Player extends Mob {
 		glEnableVertexAttribArray(1);
 		{
 			glTranslatef(x, y, 0);
+			glActiveTexture(GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, texture);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);

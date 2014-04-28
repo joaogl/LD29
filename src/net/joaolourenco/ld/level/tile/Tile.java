@@ -198,6 +198,7 @@ public class Tile {
 			glBindTexture(GL_TEXTURE_2D, Texture.Lava);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vio);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
+			glActiveTexture(GL_TEXTURE1);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			

@@ -9,6 +9,7 @@ import net.joaolourenco.ld.level.Level;
 import net.joaolourenco.ld.menu.AboutMenu;
 import net.joaolourenco.ld.menu.IntroMenu;
 import net.joaolourenco.ld.menu.Menu;
+import net.joaolourenco.ld.resources.Sound;
 import net.joaolourenco.ld.settings.GameSettings;
 import static org.lwjgl.opengl.GL11.*;
 
@@ -20,6 +21,8 @@ public class Main implements Runnable {
 	public Level level;
 	
 	private List<Menu> menus = new ArrayList<Menu>();
+	
+	public static Sound menu;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -45,6 +48,7 @@ public class Main implements Runnable {
 		menus.add(new IntroMenu());
 		menus.add(new Menu(this));
 		menus.add(new AboutMenu());
+		menu = new Sound("res/sound/themes/back1.mp3");
 		State.setState(State.INTRO);
 		while (running) {
 			long now = System.nanoTime();
@@ -70,6 +74,7 @@ public class Main implements Runnable {
 			}
 			if (Display.close()) running = false;
 		}
+		Sound.stopALl();
 		Display.destroy();
 		System.exit(0);
 	}

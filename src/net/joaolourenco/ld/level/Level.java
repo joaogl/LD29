@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.entity.mob.Player;
+import net.joaolourenco.ld.graphics.Font;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.level.tile.ForeTile;
@@ -47,6 +48,7 @@ public class Level {
 	protected int time = 0;
 	protected float extraLevel = 0;
 	private String path, lightPath;
+	private Font font;
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -75,6 +77,7 @@ public class Level {
 		ids[ForeTile.WALL] = new WallTile();
 		ids[ForeTile.LAVA] = new LavaTile();
 		ids[ForeTile.GROUND] = new Tile(Texture.Ground, ForeTile.GROUND);
+		font = new Font();
 		
 		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
 		lights.add(l);
@@ -139,6 +142,51 @@ public class Level {
 		}
 	}
 	
+	public List<Light> getLights(int x, int y, int dira) {
+		List<Light> lights = new ArrayList<Light>();
+		int dir = 0;
+		for (int i = 0; i < this.lights.size(); i++) {
+			Light light = this.lights.get(i);
+			float e0 = light.y - 20;
+			float e1 = light.x + 20;
+			float e2 = light.y + 20;
+			float e3 = light.x - 20;
+			if (e3 < x + 64) {
+				if (e1 > x) {
+					if (e0 < y + 64) {
+						if (e2 > y) lights.add(light);
+					}
+				}
+			}
+			Vector2f lightPos = new Vector2f(light.x, light.y);
+			
+			float distance = 20.0f;
+			if (distance(lightPos, new Vector2f(x + 32.0F, y + 64.0F)) < distance) {
+				distance = distance(lightPos, new Vector2f(x + 32.0F, y + 64.0F));
+				dir = 2;
+			}
+			if (distance(lightPos, new Vector2f(x + 32.0F, y)) < distance) {
+				distance = distance(lightPos, new Vector2f(x + 32.0F, y));
+				dir = 0;
+			}
+			if (distance(lightPos, new Vector2f(x, y + 32.0F)) < distance) {
+				distance = distance(lightPos, new Vector2f(x, y + 32.0F));
+				dir = 3;
+			}
+			if (distance(lightPos, new Vector2f(x + 64.0F, y + 32.0F)) < distance) {
+				dir = 1;
+			}
+			light.dir = dir;
+		}
+		return lights;
+	}
+	
+	private float distance(Vector2f a, Vector2f b) {
+		float x = a.x - b.x;
+		float y = a.y - b.y;
+		return (float) Math.sqrt(x * x + y * y);
+	}
+	
 	private void createLevel() {
 		load(path);
 		loadLights(lightPath);
@@ -195,17 +243,14 @@ public class Level {
 			ids[i].update();
 		time++;
 		if (extraLevel / 100 > 100) {
-			extraLevel = 0.0f;
-			lights.clear();
-			entities.clear();
-			createLevel();
+			reset();
 			State.setState(State.MENU);
 		}
 		increaseExtraLevels();
 	}
 	
 	private void increaseExtraLevels() {
-		// extraLevel = 99 * 1000;
+		extraLevel = 99 * 100;
 		float speed = 3.0f;
 		if (extraLevel / 100 > 40 && extraLevel / 100 < 60) speed = 0.5f;
 		extraLevel += random.nextFloat() * speed;
@@ -244,6 +289,8 @@ public class Level {
 			
 		}
 		glDisable(GL_BLEND);
+		font.drawString((int) extraLevel / 100 + "%", 20, 20, 6, -5);
+		System.out.println((int) extraLevel / 100 + "%");
 	}
 	
 	public void renderBackground(Light light) {
@@ -257,7 +304,7 @@ public class Level {
 				Tile tile = getTile(x, y, BACKGROUND);
 				if (tile != null) {
 					tile.bindUniforms(light);
-					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK, extraLevels[x + y * width]);
+					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK, extraLevel);
 				}
 			}
 		}
@@ -291,6 +338,13 @@ public class Level {
 		id = foregroundTiles[x + y * width];
 		if (id == -1) return null;
 		return ids[id];
+	}
+	
+	public void reset() {
+		extraLevel = 0.0f;
+		lights.clear();
+		entities.clear();
+		createLevel();
 	}
 	
 }

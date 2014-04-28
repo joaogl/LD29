@@ -46,7 +46,7 @@ public class Font {
 	public Font() {
 		texIDs = Texture.loadFont("res/font.png", 13, 6, size);
 		compile();
-		shader = new Shader("shaders/tile.vert", "shaders/font.frag");
+		shader = new Shader("shaders/font.vert", "shaders/font.frag");
 		shader.bind();
 		int uniform = shader.getUniform("texture");
 		glUniform1i(uniform, 3);
