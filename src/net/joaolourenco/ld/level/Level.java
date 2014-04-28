@@ -193,7 +193,7 @@ public class Level {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			if (e == entity) continue;
-			float dist = distance(new Vector2f(e.getX(), e.getY()), new Vector2f(entity.getX(), entity.getY()));
+			float dist = distance(e, entity);
 			if (dist < 100) target.add(entity);
 		}
 		return target;
@@ -202,6 +202,18 @@ public class Level {
 	public float distance(Vector2f a, Vector2f b) {
 		float x = a.x - b.x;
 		float y = a.y - b.y;
+		return (float) Math.sqrt(x * x + y * y);
+	}
+	
+	public float distance(Vector2f a, Entity b) {
+		float x = a.x - b.getX();
+		float y = a.y - b.getY();
+		return (float) Math.sqrt(x * x + y * y);
+	}
+	
+	public float distance(Entity a, Entity b) {
+		float x = a.getX() - b.getX();
+		float y = a.getY() - b.getY();
 		return (float) Math.sqrt(x * x + y * y);
 	}
 	

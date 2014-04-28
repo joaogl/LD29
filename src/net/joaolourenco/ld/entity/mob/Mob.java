@@ -62,8 +62,8 @@ public abstract class Mob extends Entity {
 		Entity e;
 		for (int j = 0; j < ent.size(); j++) {
 			e = ent.get(j);
-			d = level.distance(new Vector2f(x + xa, y + ya), new Vector2f(e.getX(), e.getY()));
-			if (d <= 64) return true;
+			d = level.distance(new Vector2f(x + xa, y + ya), e);
+			if (d <= 70) return true;
 		}
 		return solid;
 	}
