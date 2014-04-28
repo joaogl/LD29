@@ -18,6 +18,7 @@ Builds for testing
 	Light is now on the player's hand. <br>
 	Added all the player textures. <br>
 	Added the first bot! <br>
+	Added collision between entities! <br>
 - Build 0.1.6 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.6.rar). <br>
 	Fixed a few bugs. <br>
 	Added player effects on shadows. <br>
@@ -74,20 +75,6 @@ TO-DO
 - Add level generation.
 - Add chests.
 
-TO-DO DONE
-====
-- Make the intro video.  [DONE]
-- Setup lightning. [DONE]
-- Setup shadows. [DONE]
-- Setup the player. [DONE]
-- Setup the basic stuff. [DONE]
-- Setup the collision detection. [DONE]
-- Setup the level loader. [DONE]
-- Apply the intro to the Game (only on startup). [DONE]
-- Add sounds. [DONE]
-- Create menus. [DONE]
-- Move entities textures to Arrays. [DONE]
-
 // Time table. <br>
 26 - from 01:30 to 05:54 <br>
 26 - from 08:59 to 13:47 <br>
@@ -101,3 +88,5 @@ TO-DO DONE
 28 - from 03:04 to 07:45 <br>
 28 - from 03:04 to 07:45 <br>
 28 - from 12:56 to 13:59 <br>
+28 - from 12:56 to 13:59 <br>
+28 - from 14:37 to <br>

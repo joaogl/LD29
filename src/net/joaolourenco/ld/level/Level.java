@@ -85,7 +85,7 @@ public class Level {
 		Light l = new Light(0xffFFFFC2);
 		lights.add(l);
 		add(new Player(1344, 1280, l));
-		add(new Medic(1344, 1280, null));
+		add(new Medic(1908, 1884, null));
 		// add(new Player(120, 120, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
@@ -188,7 +188,18 @@ public class Level {
 		return lights;
 	}
 	
-	protected float distance(Vector2f a, Vector2f b) {
+	public List<Entity> getEntities(Entity e) {
+		List<Entity> target = new ArrayList<Entity>();
+		for (int i = 0; i < entities.size(); i++) {
+			Entity entity = entities.get(i);
+			if (e == entity) continue;
+			float dist = distance(new Vector2f(e.getX(), e.getY()), new Vector2f(entity.getX(), entity.getY()));
+			if (dist < 100) target.add(entity);
+		}
+		return target;
+	}
+	
+	public float distance(Vector2f a, Vector2f b) {
 		float x = a.x - b.x;
 		float y = a.y - b.y;
 		return (float) Math.sqrt(x * x + y * y);

@@ -2,6 +2,8 @@ package net.joaolourenco.ld.entity.mob;
 
 import java.util.List;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.level.Level;
@@ -50,10 +52,18 @@ public abstract class Mob extends Entity {
 			int xt = (int) ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
 			int yt = (int) ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
 			Tile tile = level.getTile(xt, yt, Level.FOREGROUND);
-			if (tile != null && tile.solid()) solid = true;
+			if (tile != null && tile.solid()) return true;
 			tile = level.getTile(xt, yt, Level.BACKGROUND);
 			if (tile == null) continue;
-			if (tile.solid()) solid = true;
+			if (tile.solid()) return true;
+		}
+		List<Entity> ent = level.getEntities(this);
+		float d;
+		Entity e;
+		for (int j = 0; j < ent.size(); j++) {
+			e = ent.get(j);
+			d = level.distance(new Vector2f(x + xa, y + ya), new Vector2f(e.getX(), e.getY()));
+			if (d <= 64) return true;
 		}
 		return solid;
 	}

@@ -20,7 +20,7 @@ public class Player extends Mob {
 		this.y = y;
 		this.light = light;
 		this.side = 0;
-		this.state = 1;
+		this.state = 0;
 		changeTexture(0);
 		this.texture = Texture.Player[this.state][this.side][0];
 		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
