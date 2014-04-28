@@ -24,6 +24,7 @@ import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.level.tile.WallTile;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
+import net.joaolourenco.ld.util.MathUtil;
 import net.joaolourenco.ld.util.Vector;
 
 import org.lwjgl.util.vector.Vector2f;
@@ -171,19 +172,19 @@ public class Level {
 			Vector2f lightPos = new Vector2f(light.x, light.y);
 			
 			float distance = 20.0f;
-			if (distance(lightPos, new Vector2f(x + 32.0F, y + 64.0F)) < distance) {
-				distance = distance(lightPos, new Vector2f(x + 32.0F, y + 64.0F));
+			if (MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y + 64.0F)) < distance) {
+				distance = MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y + 64.0F));
 				dir = 2;
 			}
-			if (distance(lightPos, new Vector2f(x + 32.0F, y)) < distance) {
-				distance = distance(lightPos, new Vector2f(x + 32.0F, y));
+			if (MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y)) < distance) {
+				distance = MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y));
 				dir = 0;
 			}
-			if (distance(lightPos, new Vector2f(x, y + 32.0F)) < distance) {
-				distance = distance(lightPos, new Vector2f(x, y + 32.0F));
+			if (MathUtil.getDistance(lightPos, new Vector2f(x, y + 32.0F)) < distance) {
+				distance = MathUtil.getDistance(lightPos, new Vector2f(x, y + 32.0F));
 				dir = 3;
 			}
-			if (distance(lightPos, new Vector2f(x + 64.0F, y + 32.0F)) < distance) {
+			if (MathUtil.getDistance(lightPos, new Vector2f(x + 64.0F, y + 32.0F)) < distance) {
 				dir = 1;
 			}
 			light.dir = dir;
@@ -196,34 +197,10 @@ public class Level {
 		for (int i = 0; i < entities.size(); i++) {
 			Entity entity = entities.get(i);
 			if (e == entity) continue;
-			float dist = distance(e, entity);
+			float dist = MathUtil.getDistance(e, entity);
 			if (dist < 100) target.add(entity);
 		}
 		return target;
-	}
-	
-	public float distance(Vector2f a, Vector2f b) {
-		float x = a.x - b.x;
-		float y = a.y - b.y;
-		return (float) Math.sqrt(x * x + y * y);
-	}
-	
-	public float distance(Vector a, Vector b) {
-		float x = a.getX() - b.getX();
-		float y = a.getY() - b.getY();
-		return (float) Math.sqrt(x * x + y * y);
-	}
-	
-	public float distance(Vector2f a, Entity b) {
-		float x = a.x - b.getX();
-		float y = a.y - b.getY();
-		return (float) Math.sqrt(x * x + y * y);
-	}
-	
-	public float distance(Entity a, Entity b) {
-		float x = a.getX() - b.getX();
-		float y = a.getY() - b.getY();
-		return (float) Math.sqrt(x * x + y * y);
 	}
 	
 	protected void createLevel() {
@@ -379,7 +356,7 @@ public class Level {
 	public List<Node> findPath(Vector start, Vector goal) {
 		List<Node> openList = new ArrayList<Node>();
 		List<Node> closedList = new ArrayList<Node>();
-		Node current = new Node(start, null, 0, distance(start, goal));
+		Node current = new Node(start, null, 0, MathUtil.getDistance(start, goal));
 		openList.add(current);
 		while (openList.size() > 0) {
 			Collections.sort(openList, nodeSorter);
@@ -406,8 +383,8 @@ public class Level {
 				if (at == null) continue;
 				if (at.solid()) continue;
 				Vector a = new Vector(x + xi, y + yi);
-				double gCost = current.gCost + distance(current.tile, a);
-				double hCost = distance(a, goal);
+				double gCost = current.gCost + (MathUtil.getDistance(current.tile, a) == 1 ? 1 : 0.95);
+				double hCost = MathUtil.getDistance(a, goal);
 				Node node = new Node(a, current, gCost, hCost);
 				if (vecInList(closedList, a) && gCost >= node.gCost) continue;
 				if (!vecInList(openList, a) || gCost < node.gCost) openList.add(node);

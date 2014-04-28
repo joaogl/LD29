@@ -6,6 +6,7 @@ import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.settings.GameSettings;
+import net.joaolourenco.ld.util.MathUtil;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -61,7 +62,7 @@ public abstract class Mob extends Entity {
 		Entity e;
 		for (int j = 0; j < ent.size(); j++) {
 			e = ent.get(j);
-			d = level.distance(new Vector2f(x + xa, y + ya), e);
+			d = MathUtil.getDistance(new Vector2f(x + xa, y + ya), e);
 			if (d <= 75) return true;
 		}
 		return solid;

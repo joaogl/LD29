@@ -21,7 +21,7 @@ public class FirstLevel extends Level {
 			reset();
 			State.setState(State.MENU);
 		}
-		increaseExtraLevels();
+		// SincreaseExtraLevels();
 		
 		if (timer == 0) {
 			if (player.light.intensity >= 2f) player.light.intensity -= 0.005f;
