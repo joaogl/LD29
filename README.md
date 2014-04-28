@@ -19,6 +19,9 @@ Builds for testing
 	Added all the player textures. <br>
 	Added the first bot! <br>
 	Added collision between entities! <br>
+	Added A* Algorithm. <br>
+	Fixed some fragments. <br>
+	Collision tweaked. <br>
 - Build 0.1.6 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.6.rar). <br>
 	Fixed a few bugs. <br>
 	Added player effects on shadows. <br>
@@ -61,7 +64,7 @@ Builds for testing
 
 TO-DO
 ====
-- Add goto function on entities.
+- Add goto function on entities. [HALF-DONE]
 - Add Beds.
 - Add Dialogs.
 - Add action dialogs.
