@@ -16,6 +16,8 @@ Builds for testing
 	Lights are now movable. <br>
 	Texture bugs fixed. (FINALLY) <br>
 	Light is now on the player's hand. <br>
+	Added all the player textures. <br>
+	Added the first bot! <br>
 - Build 0.1.6 (https://github.com/joaogl/LD29/raw/master/builds/BUILD-0.1.6.rar). <br>
 	Fixed a few bugs. <br>
 	Added player effects on shadows. <br>
@@ -58,8 +60,19 @@ Builds for testing
 
 TO-DO
 ====
-- Setup the level generator.
-- Add the diferent player textures. [HALF DONE]
+- Add goto function on entities.
+- Add Beds.
+- Add Dialogs.
+- Add action dialogs.
+- Add all entities and their talks.
+- Add life.
+- Add fight system.
+- Add healing methods.
+- Add kills / life used / life healed.
+- Make top score.
+- Add itens.
+- Add level generation.
+- Add chests.
 
 TO-DO DONE
 ====
@@ -73,6 +86,7 @@ TO-DO DONE
 - Apply the intro to the Game (only on startup). [DONE]
 - Add sounds. [DONE]
 - Create menus. [DONE]
+- Move entities textures to Arrays. [DONE]
 
 // Time table. <br>
 26 - from 01:30 to 05:54 <br>
@@ -83,4 +97,7 @@ TO-DO DONE
 27 - from 04:05 to 13:39 <br>
 27 - from 13:53 to 20:33 <br>
 27 - from 20:44 to 23:54 <br>
-28 - from 03:04 to <br>
+   27 =  of 24, left <br>
+28 - from 03:04 to 07:45 <br>
+28 - from 03:04 to 07:45 <br>
+28 - from 12:56 to 13:59 <br>

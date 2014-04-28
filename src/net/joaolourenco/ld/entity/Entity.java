@@ -1,17 +1,19 @@
 package net.joaolourenco.ld.entity;
 
 import java.util.List;
+import java.util.Random;
 
-import static org.lwjgl.opengl.GL20.*;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.level.Level;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
+import static org.lwjgl.opengl.GL20.*;
 
 public abstract class Entity {
 	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
+	protected int state; // 0 - Normal; 1 - with bandages; 2 - hurt;
 	protected float x, y;
 	protected int side;
 	protected int texture;
@@ -20,6 +22,8 @@ public abstract class Entity {
 	protected Level level;
 	public Light light;
 	private boolean removed = false;
+	protected boolean frozen = false;
+	protected Random random = new Random();
 	
 	protected float[] vertices = new float[] {
 			0.0f, 0.0f, 0.0f, //
@@ -84,12 +88,28 @@ public abstract class Entity {
 		shader.release();
 	}
 	
+	public void tick() {
+		
+	}
+	
 	public abstract void update();
 	
 	public abstract void render();
 	
 	public boolean isRemoved() {
 		return removed;
+	}
+	
+	public boolean isFrozen() {
+		return frozen;
+	}
+	
+	public void freeze() {
+		frozen = true;
+	}
+	
+	public void unFreeze() {
+		frozen = false;
 	}
 	
 	public void remove() {
@@ -99,6 +119,20 @@ public abstract class Entity {
 	public void init(Level level) {
 		this.level = level;
 		adjustLight();
+	}
+	
+	public float getSpeed(boolean running) {
+		float speed = 0;
+		if (running) {
+			if (this.state == 2) speed = 1f;
+			else if (this.state == 1) speed = 2f;
+			else if (this.state == 0) speed = 3f;
+		} else {
+			if (this.state == 2) speed = 0.5f;
+			else if (this.state == 1) speed = 0.5f;
+			else if (this.state == 0) speed = 1.0f;
+		}
+		return speed;
 	}
 	
 	protected void adjustLight() {

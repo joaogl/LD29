@@ -25,6 +25,7 @@ void main(){
 	falloff -= distance / 25.0f / lightIntensity;
 	color /= (distance / (lightIntensity * falloff));	
 	
-	if (tileInUse == 3) color = color + vec4(0.025, 0.025, 0.025, 0.025);
+	if (tileInUse == 3 && lightIntensity > 1.5f) color = color + vec4(0.025, 0.025, 0.025, 0.025);
+	else if (tileInUse == 3) color = color + vec4(0.025 * lightIntensity, 0.025 * lightIntensity, 0.025 * lightIntensity, 0.025 * lightIntensity);
 	gl_FragColor = color;
 }

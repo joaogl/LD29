@@ -20,6 +20,7 @@ public class Tile {
 	public static final byte WALL = 0x1;
 	public static final byte LAVA = 0x2;
 	public static final byte GROUND = 0x3;
+	public static final byte GROUND_COLLIDABLE = 0x4;
 	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
 	protected int vao, vbo, vio, vto, bugValue;
@@ -55,6 +56,14 @@ public class Tile {
 		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
 		compile();
 		this.texture = Texture.Void;
+		this.tileInUse = 0;
+		this.bugValue = -1;
+	}
+	
+	public Tile(int tex) {
+		createShader(new Shader("shaders/tile.vert", "shaders/ground.frag"));
+		compile();
+		this.texture = tex;
 		this.tileInUse = 0;
 		this.bugValue = -1;
 	}
@@ -214,7 +223,7 @@ public class Tile {
 	}
 	
 	public boolean solid() {
-		if (this.tileInUse == 0) return true;
+		if (this.tileInUse == VOID) return true;
 		return false;
 	}
 	

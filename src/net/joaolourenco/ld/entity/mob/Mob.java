@@ -23,10 +23,9 @@ public abstract class Mob extends Entity {
 			xa /= val;
 			ya /= val;
 		}
-		if (!collision(xa, ya)) {
+		if (!collision(xa, ya) && !frozen) {
 			x += xa;
 			y += ya;
-			adjustLight();
 		}
 	}
 	

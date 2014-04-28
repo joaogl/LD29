@@ -1,11 +1,8 @@
 package net.joaolourenco.ld.entity.mob;
 
-import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
-import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.resources.Texture;
-import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -13,14 +10,16 @@ import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public class Player extends Mob {
+public class Medic extends Mob {
 	
-	public Player(int x, int y, Light light) {
+	int Mside = random.nextInt(4);
+	
+	public Medic(int x, int y, Light light) {
 		this.x = x;
 		this.y = y;
+		this.state = 0;
 		this.light = light;
 		this.side = 0;
-		this.state = 1;
 		changeTexture(0);
 		this.texture = Texture.Player[this.state][this.side][0];
 		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
@@ -91,20 +90,22 @@ public class Player extends Mob {
 		glPopMatrix();
 	}
 	
+	public void tick() {
+		int move = random.nextInt(100);
+		if (move > 50) {
+			Mside = random.nextInt(4);
+		} else Mside = 4;
+	}
+	
 	public void update() {
-		light.intensity = 5f;
 		float xa = 0;
 		float ya = 0;
-		float speed = 0;
+		float speed = getSpeed(false);
 		
-		if (Keyboard.keyPressed(Keyboard.SHIFT)) speed = getSpeed(true);
-		else speed = getSpeed(false);
-		
-		if (Keyboard.keyPressed(Keyboard.UP) || Keyboard.keyPressed(Keyboard.W)) ya -= speed;
-		else if (Keyboard.keyPressed(Keyboard.DOWN) || Keyboard.keyPressed(Keyboard.S)) ya += speed;
-		if (Keyboard.keyPressed(Keyboard.LEFT) || Keyboard.keyPressed(Keyboard.A)) xa -= speed;
-		else if (Keyboard.keyPressed(Keyboard.RIGHT) || Keyboard.keyPressed(Keyboard.D)) xa += speed;
-		if (Keyboard.keyPressed(Keyboard.ESCAPE)) State.setState(State.MENU);
+		if (Mside == 0) ya -= speed;
+		else if (Mside == 1) ya += speed;
+		if (Mside == 2) xa -= speed;
+		else if (Mside == 3) xa += speed;
 		
 		if (xa > 0) this.side = 0;
 		else if (xa < 0) this.side = 1;
@@ -113,7 +114,6 @@ public class Player extends Mob {
 		changeTexture(0);
 		
 		if (xa != 0 || ya != 0) move(xa, ya);
-		level.setOffset((int) (x - GameSettings.width / 2), (int) (y - GameSettings.height / 2));
 		adjustLight();
 	}
 	

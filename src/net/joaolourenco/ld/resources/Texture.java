@@ -19,12 +19,12 @@ import static org.lwjgl.opengl.GL11.*;
 public class Texture {
 	
 	public static int Void = 0, RockCliff = 0, Lava = 0, Ground = 0;
-	public static int PlayerNormal0 = 0, PlayerNormal1 = 0, PlayerNormal2 = 0, PlayerNormal3 = 0;
-	public static int PlayerHurt0 = 0, PlayerHurt1 = 0, PlayerHurt2 = 0, PlayerHurt3 = 0;
 	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0, Menu = 0;
 	public static int Play = 0, PlayH = 0;
 	public static int About = 0, AboutH = 0;
 	public static int Quit = 0, QuitH = 0;
+	
+	public static int[][][] Player = new int[3][4][3];
 	
 	private static List<Integer> textures = new ArrayList<Integer>();
 	
@@ -47,15 +47,17 @@ public class Texture {
 		Lava = loadTexture("res/textures/lava.png", false);
 		Ground = loadTexture("res/textures/ground.png", false);
 		
-		PlayerNormal0 = loadTexture("res/textures/entities/Player/PlayerNormal0.png", false);
-		PlayerNormal1 = loadTexture("res/textures/entities/Player/PlayerNormal1.png", false);
-		PlayerNormal2 = loadTexture("res/textures/entities/Player/PlayerNormal2.png", false);
-		PlayerNormal3 = loadTexture("res/textures/entities/Player/PlayerNormal3.png", false);
-		
-		PlayerHurt0 = loadTexture("res/textures/entities/Player/PlayerHurt0_0.png", false);
-		PlayerHurt1 = loadTexture("res/textures/entities/Player/PlayerHurt1_0.png", false);
-		PlayerHurt2 = loadTexture("res/textures/entities/Player/PlayerHurt2_0.png", false);
-		PlayerHurt3 = loadTexture("res/textures/entities/Player/PlayerHurt3_0.png", false);
+		String begin = null;
+		for (int s = 0; s < 3; s++) {
+			if (s == 0) begin = "N";
+			else if (s == 1) begin = "B";
+			else if (s == 2) begin = "H";
+			for (int i = 0; i < 4; i++) {
+				for (int ii = 0; ii < 3; ii++) {
+					Player[s][i][ii] = loadTexture("res/textures/entities/Player/" + begin + "_" + i + "_" + ii + ".png", false);
+				}
+			}
+		}
 	}
 	
 	private static int loadTexture(String path, boolean antialiase) {

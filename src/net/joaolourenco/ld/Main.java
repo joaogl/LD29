@@ -66,6 +66,7 @@ public class Main implements Runnable {
 			if (System.currentTimeMillis() - lastTimer > 1000) {
 				lastTimer += 1000;
 				System.out.println("FPS: " + frames + " UPS: " + updates + " State: " + State.getStateString());
+				tick();
 				updates = 0;
 				frames = 0;
 			}
@@ -81,7 +82,11 @@ public class Main implements Runnable {
 	}
 	
 	public void startLevel() {
-		level = new FirstLevel("Test.png", "Test_light.png");
+		level = new FirstLevel("Test.png", null);
+	}
+	
+	public void tick() {
+		if (State.getState() == State.GAME) level.tick();
 	}
 	
 	public void render() {

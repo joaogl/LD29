@@ -11,9 +11,11 @@ import javax.imageio.ImageIO;
 
 import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.entity.Entity;
+import net.joaolourenco.ld.entity.mob.Medic;
 import net.joaolourenco.ld.entity.mob.Player;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
+import net.joaolourenco.ld.level.tile.CollidableGround;
 import net.joaolourenco.ld.level.tile.ForeTile;
 import net.joaolourenco.ld.level.tile.LavaTile;
 import net.joaolourenco.ld.level.tile.Tile;
@@ -28,25 +30,26 @@ import static org.lwjgl.opengl.GL11.*;
 public class Level {
 	
 	protected int width, height;
-	private Shader lightShader;
-	private Random random = new Random();
+	protected Shader lightShader;
+	protected Random random = new Random();
+	public Player player;
 	
 	public final static int BACKGROUND = 0x0;
 	public final static int FOREGROUND = 0x1;
 	protected int xOffset, yOffset;
 	
 	public int[] backgroundTiles, foregroundTiles;
-	private Vector2f[][] foregroundVertices;
-	private List<Light> lights = new ArrayList<Light>();
-	private List<Entity> entities = new ArrayList<Entity>();
+	protected Vector2f[][] foregroundVertices;
+	protected List<Light> lights = new ArrayList<Light>();
+	protected List<Entity> entities = new ArrayList<Entity>();
 	
-	public Tile[] ids = new Tile[4];
+	public Tile[] ids = new Tile[5];
 	
 	public float[] extraLevels, extraIncreaseRate;
 	
 	protected int time = 0;
 	protected float extraLevel = 0;
-	private String path, lightPath;
+	protected String path, lightPath;
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -62,23 +65,27 @@ public class Level {
 		foregroundVertices = new Vector2f[width * height][4];
 		init();
 		genRandom();
+		if (getPlayer() != null) player = (Player) getPlayer();
 	}
 	
 	public Level(String path, String lightPath) {
 		this.path = path;
 		this.lightPath = lightPath;
 		createLevel();
+		if (getPlayer() != null) player = (Player) getPlayer();
 	}
 	
-	private void init() {
+	protected void init() {
 		ids[ForeTile.VOID] = new Tile();
 		ids[ForeTile.WALL] = new WallTile();
 		ids[ForeTile.LAVA] = new LavaTile();
 		ids[ForeTile.GROUND] = new Tile(Texture.Ground, ForeTile.GROUND);
+		ids[ForeTile.GROUND_COLLIDABLE] = new CollidableGround();
 		
-		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
+		Light l = new Light(0xffFFFFC2);
 		lights.add(l);
 		add(new Player(1344, 1280, l));
+		add(new Medic(1344, 1280, null));
 		// add(new Player(120, 120, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
@@ -89,28 +96,30 @@ public class Level {
 			extraIncreaseRate[i] = random.nextFloat() * 0.0001f;
 	}
 	
-	private void loadLights(String path) {
-		BufferedImage image;
-		int[] pixels = null;
-		try {
-			image = ImageIO.read(new FileInputStream("res/textures/floors/" + path));
-			this.width = image.getWidth();
-			this.height = image.getHeight();
-			pixels = new int[width * height];
-			image.getRGB(0, 0, width, height, pixels, 0, width);
-			for (int i = 0; i < width * height; i++) {
-				if (pixels[i] != 0xff000000) {
-					float intensity = (pixels[i] & 0xff000000) >> 24;
-					if (intensity < 0) intensity += 0x7f;
-					lights.add(new Light(((i % width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, ((i / width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, pixels[i], intensity / 12));
+	protected void loadLights(String path) {
+		if (path != null) {
+			BufferedImage image;
+			int[] pixels = null;
+			try {
+				image = ImageIO.read(new FileInputStream("res/textures/floors/" + path));
+				this.width = image.getWidth();
+				this.height = image.getHeight();
+				pixels = new int[width * height];
+				image.getRGB(0, 0, width, height, pixels, 0, width);
+				for (int i = 0; i < width * height; i++) {
+					if (pixels[i] != 0xff000000) {
+						float intensity = (pixels[i] & 0xff000000) >> 24;
+						if (intensity < 0) intensity += 0x7f;
+						lights.add(new Light(((i % width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, ((i / width) << GameSettings.TILE_SIZE_MASK) + (int) (GameSettings.TILE_SIZE) >> 1, pixels[i], intensity / 12));
+					}
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	
-	private void load(String path) {
+	protected void load(String path) {
 		BufferedImage image;
 		int[] pixels = null;
 		try {
@@ -135,6 +144,7 @@ public class Level {
 			if (pixels[i] == 0xFF7F7244) createForegroundTile(i % width, i / width, ForeTile.WALL);
 			else if (pixels[i] == 0xFFFF3200) createBackgroundTile(i % width, i / width, ForeTile.LAVA);
 			else if (pixels[i] == 0xFFCDB76D) createBackgroundTile(i % width, i / width, ForeTile.GROUND);
+			else if (pixels[i] == 0xFF90CC6E) createBackgroundTile(i % width, i / width, ForeTile.GROUND_COLLIDABLE);
 			else createBackgroundTile(i % width, i / width, ForeTile.VOID);
 		}
 	}
@@ -178,19 +188,19 @@ public class Level {
 		return lights;
 	}
 	
-	private float distance(Vector2f a, Vector2f b) {
+	protected float distance(Vector2f a, Vector2f b) {
 		float x = a.x - b.x;
 		float y = a.y - b.y;
 		return (float) Math.sqrt(x * x + y * y);
 	}
 	
-	private void createLevel() {
+	protected void createLevel() {
 		load(path);
 		loadLights(lightPath);
 		init();
 	}
 	
-	private void genRandom() {
+	protected void genRandom() {
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
 				int tile = random.nextInt(20);
@@ -200,11 +210,11 @@ public class Level {
 		}
 	}
 	
-	private void createBackgroundTile(int x, int y, int type) {
+	protected void createBackgroundTile(int x, int y, int type) {
 		backgroundTiles[x + y * width] = type;
 	}
 	
-	private void createForegroundTile(int x, int y, int type) {
+	protected void createForegroundTile(int x, int y, int type) {
 		foregroundTiles[x + y * width] = type;
 		Vector2f[] vertices = new Vector2f[4];
 		float size = GameSettings.TILE_SIZE;
@@ -215,7 +225,7 @@ public class Level {
 		foregroundVertices[x + y * width] = vertices;
 	}
 	
-	private void add(Entity e) {
+	protected void add(Entity e) {
 		entities.add(e);
 		e.init(this);
 	}
@@ -246,7 +256,7 @@ public class Level {
 		increaseExtraLevels();
 	}
 	
-	private void increaseExtraLevels() {
+	protected void increaseExtraLevels() {
 		// extraLevel = 99 * 100;
 		float speed = 3.0f;
 		if (extraLevel / 100 > 40 && extraLevel / 100 < 60) speed = 0.2f;
@@ -254,6 +264,11 @@ public class Level {
 		/*
 		 * for (int y = 0; y < height; y++) { for (int x = 0; x < width; x++) { extraLevels[x + y * width] += extraIncreaseRate[x + y * width]; } }
 		 */
+	}
+	
+	public void tick() {
+		for (int i = 0; i < entities.size(); i++)
+			entities.get(i).tick();
 	}
 	
 	public void render() {
@@ -320,6 +335,13 @@ public class Level {
 				}
 			}
 		}
+	}
+	
+	public Entity getPlayer() {
+		for (int i = 0; i < entities.size(); i++) {
+			if (entities.get(i) != null && entities.get(i) instanceof Player) return entities.get(i);
+		}
+		return null;
 	}
 	
 	public Tile getTile(int x, int y, int level) {

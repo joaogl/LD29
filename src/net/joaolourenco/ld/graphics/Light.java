@@ -28,6 +28,13 @@ public class Light {
 		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
 	}
 	
+	public Light(int color) {
+		this.x = 0;
+		this.y = 0;
+		this.color = color;
+		this.vc = new Vector3f(((color & 0xff0000) >> 16) / 255.0f + radius, ((color & 0xff00) >> 8) / 255.0f + radius, (color & 0xff) / 255.0f + radius);
+	}
+	
 	public Light(int x, int y, int color, float inte) {
 		this.x = x;
 		this.y = y;
