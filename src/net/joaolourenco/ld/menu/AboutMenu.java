@@ -1,6 +1,8 @@
 package net.joaolourenco.ld.menu;
 
+import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.graphics.Font;
+import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.resources.Texture;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -14,7 +16,7 @@ public class AboutMenu extends Menu {
 	}
 	
 	public void update() {
-		
+		if (Keyboard.keyTyped(Keyboard.ENTER) || Keyboard.keyTyped(Keyboard.SPACE)) State.setState(State.MENU);
 	}
 	
 	protected void create() {

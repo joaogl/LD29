@@ -39,6 +39,7 @@ public class Sound {
 				}
 				player.stop();
 				player.setCycleCount(MediaPlayer.INDEFINITE);
+				player.setVolume(player.getVolume() / 64);
 				player.play();
 			}
 		}.start();

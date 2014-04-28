@@ -18,7 +18,7 @@ public class Font {
 			"abcdefghijklm" + //
 			"nopqrstuvwxyz" + //
 			"0123456789?!." + //
-			"-,_";
+			"-,_%";
 	
 	protected int vao, vbo, vio, vto;
 	
@@ -77,7 +77,7 @@ public class Font {
 			glBindBuffer(GL_ARRAY_BUFFER, vto);
 			{
 				glBufferData(GL_ARRAY_BUFFER, Buffer.createByteBuffer(texCoords), GL_STATIC_DRAW);
-				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, -1);
+				glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, false, 0, 1);
 			}
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 		}

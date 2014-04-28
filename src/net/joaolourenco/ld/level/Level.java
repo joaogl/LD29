@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import net.joaolourenco.ld.State;
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.entity.mob.Player;
-import net.joaolourenco.ld.graphics.Font;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
 import net.joaolourenco.ld.level.tile.ForeTile;
@@ -48,7 +47,6 @@ public class Level {
 	protected int time = 0;
 	protected float extraLevel = 0;
 	private String path, lightPath;
-	private Font font;
 	
 	public Level(int width, int height) {
 		this.width = width;
@@ -77,12 +75,11 @@ public class Level {
 		ids[ForeTile.WALL] = new WallTile();
 		ids[ForeTile.LAVA] = new LavaTile();
 		ids[ForeTile.GROUND] = new Tile(Texture.Ground, ForeTile.GROUND);
-		font = new Font();
 		
 		Light l = new Light(510, GameSettings.height / 2 + 30, 0xffffff);
 		lights.add(l);
-		// add(new Player(1344, 1280, l));
-		add(new Player(120, 120, l));
+		add(new Player(1344, 1280, l));
+		// add(new Player(120, 120, l));
 		
 		lightShader = new Shader("shaders/light.vert", "shaders/light.frag");
 		extraLevels = new float[width * height];
@@ -250,9 +247,9 @@ public class Level {
 	}
 	
 	private void increaseExtraLevels() {
-		extraLevel = 99 * 100;
+		// extraLevel = 99 * 100;
 		float speed = 3.0f;
-		if (extraLevel / 100 > 40 && extraLevel / 100 < 60) speed = 0.5f;
+		if (extraLevel / 100 > 40 && extraLevel / 100 < 60) speed = 0.2f;
 		extraLevel += random.nextFloat() * speed;
 		/*
 		 * for (int y = 0; y < height; y++) { for (int x = 0; x < width; x++) { extraLevels[x + y * width] += extraIncreaseRate[x + y * width]; } }
@@ -289,8 +286,6 @@ public class Level {
 			
 		}
 		glDisable(GL_BLEND);
-		font.drawString((int) extraLevel / 100 + "%", 20, 20, 6, -5);
-		System.out.println((int) extraLevel / 100 + "%");
 	}
 	
 	public void renderBackground(Light light) {
@@ -304,7 +299,7 @@ public class Level {
 				Tile tile = getTile(x, y, BACKGROUND);
 				if (tile != null) {
 					tile.bindUniforms(light);
-					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK, extraLevel);
+					tile.render(x << GameSettings.TILE_SIZE_MASK, y << GameSettings.TILE_SIZE_MASK, 0/*-extraLevel*/);
 				}
 			}
 		}

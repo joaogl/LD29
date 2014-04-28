@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.joaolourenco.ld.graphics.Display;
 import net.joaolourenco.ld.input.Keyboard;
+import net.joaolourenco.ld.level.FirstLevel;
 import net.joaolourenco.ld.level.Level;
 import net.joaolourenco.ld.menu.AboutMenu;
 import net.joaolourenco.ld.menu.IntroMenu;
@@ -22,7 +23,7 @@ public class Main implements Runnable {
 	
 	private List<Menu> menus = new ArrayList<Menu>();
 	
-	public static Sound menu;
+	public static Sound menu, game;
 	
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -80,7 +81,7 @@ public class Main implements Runnable {
 	}
 	
 	public void startLevel() {
-		level = new Level("Test.png", "Test_light.png");
+		level = new FirstLevel("Test.png", "Test_light.png");
 	}
 	
 	public void render() {

@@ -25,9 +25,7 @@ public class IntroMenu extends Menu {
 	}
 	
 	public void update() {
-		if (Keyboard.keyTyped(Keyboard.ENTER) || Keyboard.keyTyped(Keyboard.SPACE)) {
-			State.setState(State.MENU);
-		}
+		if (Keyboard.keyTyped(Keyboard.ENTER) || Keyboard.keyTyped(Keyboard.SPACE)) State.setState(State.MENU);
 	}
 	
 	public void tick() {

@@ -84,6 +84,7 @@ public class Player extends Mob {
 	
 	public void render() {
 		glPushMatrix();
+		glEnable(GL_BLEND);
 		shader.bind();
 		glBindVertexArray(vao);
 		glEnableVertexAttribArray(0);
@@ -96,12 +97,12 @@ public class Player extends Mob {
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
-			
 		}
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(0);
 		glBindVertexArray(0);
 		shader.release();
+		glDisable(GL_BLEND);
 		glPopMatrix();
 	}
 	
@@ -134,6 +135,21 @@ public class Player extends Mob {
 		
 		if (xa != 0 || ya != 0) move(xa, ya);
 		level.setOffset((int) (x - GameSettings.width / 2), (int) (y - GameSettings.height / 2));
+	}
+	
+	protected void adjustLight() {
+		if (light != null) {
+			if (side == 1 || side == 0) {
+				light.x = (int) (x + 5);
+				light.y = (int) (y + 45);
+			} else if (side == 2) {
+				light.x = (int) (x + 5);
+				light.y = (int) (y + 45);
+			} else if (side == 3) {
+				light.x = (int) (x + 60);
+				light.y = (int) (y + 45);
+			}
+		}
 	}
 	
 }

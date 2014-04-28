@@ -69,7 +69,7 @@ public class Light {
 		int x1 = (xOffset >> GameSettings.TILE_SIZE_MASK) + 16; // + 16
 		int y0 = yOffset >> GameSettings.TILE_SIZE_MASK;
 		int y1 = (yOffset >> GameSettings.TILE_SIZE_MASK) + 10; // + 10
-		int check = 20;
+		int check = 50;
 		for (int y = y0 - check; y < y1 + check; y++) {
 			for (int x = x0 - check; x < x1 + check; x++) {
 				if (x < 0 || x >= width || y < 0 || y >= height) continue;
@@ -101,6 +101,7 @@ public class Light {
 		
 		for (int j = 0; j < entities.size(); j++) {
 			Entity e = entities.get(j);
+			if (e.light != null && e.light == this) break;
 			Vector2f[] vertices = new Vector2f[] {
 					new Vector2f(e.getX(), e.getY()), //
 					new Vector2f(e.getX() + GameSettings.TILE_SIZE, e.getY()), //
@@ -126,7 +127,6 @@ public class Light {
 						glVertex3f(next.x, next.y, z);
 					}
 					glEnd();
-					
 				}
 			}
 		}

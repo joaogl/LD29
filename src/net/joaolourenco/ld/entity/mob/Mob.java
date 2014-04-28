@@ -16,18 +16,17 @@ public abstract class Mob extends Entity {
 			move(0, ya);
 			return;
 		}
-		
 		if (light((int) xa, (int) ya, this.side)) {
-			xa /= 2;
-			ya /= 2;
+			int val = 2;
+			if ((xa <= 1f && xa != 0) || (ya <= 1f && ya != 0) || (xa <= 0f && xa != 0) || (ya <= 0f && ya != 0)) val = 2;
+			else val = 4;
+			xa /= val;
+			ya /= val;
 		}
 		if (!collision(xa, ya)) {
 			x += xa;
 			y += ya;
-			if (light != null) {
-				light.x = (int) (x + 32);
-				light.y = (int) (y + 32);
-			}
+			adjustLight();
 		}
 	}
 	
@@ -35,12 +34,15 @@ public abstract class Mob extends Entity {
 		List<Light> lights = level.getLights((int) x, (int) y, dir);
 		if (lights.size() <= 0) return false;
 		Light light = lights.get(0);
-		if (light.intensity > 30) return false;
-		if (light.dir == 3) light.x--;
-		else if (light.dir == 1) light.x++;
-		else if (light.dir == 0) light.y--;
-		else if (light.dir == 2) light.y++;
-		return true;
+		if (light != this.light) {
+			if (light.intensity > 30) return false;
+			if (light.dir == 3) light.x--;
+			else if (light.dir == 1) light.x++;
+			else if (light.dir == 0) light.y--;
+			else if (light.dir == 2) light.y++;
+			return true;
+		}
+		return false;
 	}
 	
 	public boolean collision(float xa, float ya) {
