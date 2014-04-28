@@ -31,7 +31,7 @@ public class FirstLevel extends Level {
 				player.freeze();
 			}
 		} else if (timer == 1) {
-			if (player.light.intensity <= 1.5f) player.light.intensity += 0.005f;
+			if (player.light.intensity <= 3f) player.light.intensity += 0.005f;
 			else stage = 3;
 		}
 	}

@@ -4,6 +4,8 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +24,7 @@ import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.level.tile.WallTile;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
+import net.joaolourenco.ld.util.Vector;
 
 import org.lwjgl.util.vector.Vector2f;
 
@@ -205,6 +208,12 @@ public class Level {
 		return (float) Math.sqrt(x * x + y * y);
 	}
 	
+	public float distance(Vector a, Vector b) {
+		float x = a.getX() - b.getX();
+		float y = a.getY() - b.getY();
+		return (float) Math.sqrt(x * x + y * y);
+	}
+	
 	public float distance(Vector2f a, Entity b) {
 		float x = a.x - b.getX();
 		float y = a.y - b.getY();
@@ -276,7 +285,7 @@ public class Level {
 			reset();
 			State.setState(State.MENU);
 		}
-		increaseExtraLevels();
+		// increaseExtraLevels();
 	}
 	
 	protected void increaseExtraLevels() {
@@ -367,6 +376,61 @@ public class Level {
 		return null;
 	}
 	
+	public List<Node> findPath(Vector start, Vector goal) {
+		List<Node> openList = new ArrayList<Node>();
+		List<Node> closedList = new ArrayList<Node>();
+		Node current = new Node(start, null, 0, distance(start, goal));
+		openList.add(current);
+		while (openList.size() > 0) {
+			Collections.sort(openList, nodeSorter);
+			current = openList.get(0);
+			if (current.tile.equals(goal)) {
+				List<Node> path = new ArrayList<Node>();
+				while (current.parent != null) {
+					path.add(current);
+					current = current.parent;
+				}
+				openList.clear();
+				closedList.clear();
+				return path;
+			}
+			openList.remove(current);
+			closedList.add(current);
+			for (int i = 0; i < 9; i++) {
+				if (i == 4) continue;
+				int x = (int) current.tile.getX();
+				int y = (int) current.tile.getY();
+				int xi = (i % 3) - 1;
+				int yi = (i / 3) - 1;
+				Tile at = getTile(x + xi, y + yi);
+				if (at == null) continue;
+				if (at.solid()) continue;
+				Vector a = new Vector(x + xi, y + yi);
+				double gCost = current.gCost + distance(current.tile, a);
+				double hCost = distance(a, goal);
+				Node node = new Node(a, current, gCost, hCost);
+				if (vecInList(closedList, a) && gCost >= node.gCost) continue;
+				if (!vecInList(openList, a) || gCost < node.gCost) openList.add(node);
+			}
+		}
+		closedList.clear();
+		return null;
+	}
+	
+	private boolean vecInList(List<Node> list, Vector vector) {
+		for (Node n : list)
+			if (n.tile.equals(vector)) return true;
+		return false;
+	}
+	
+	private Comparator<Node> nodeSorter = new Comparator<Node>() {
+		public int compare(Node n0, Node n1) {
+			if (n1.fCost < n0.fCost) return +1;
+			if (n1.fCost > n0.fCost) return -1;
+			return 0;
+		}
+	};
+	
 	public Tile getTile(int x, int y, int level) {
 		if (x < 0 || x >= width || y < 0 || y >= height) return null;
 		int id = 0;
@@ -378,6 +442,15 @@ public class Level {
 		id = foregroundTiles[x + y * width];
 		if (id == -1) return null;
 		return ids[id];
+	}
+	
+	public Tile getTile(int x, int y) {
+		if (x < 0 || x >= width || y < 0 || y >= height) return null;
+		int id0 = backgroundTiles[x + y * width];
+		int id1 = foregroundTiles[x + y * width];
+		if (id0 > 0) return ids[id0];
+		else if (id1 > 0) return ids[id1];
+		return ids[ForeTile.VOID];
 	}
 	
 	public void reset() {

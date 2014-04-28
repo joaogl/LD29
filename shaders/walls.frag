@@ -22,13 +22,13 @@ void main() {
 		float distance = length(pos - gl_FragCoord.xy);
 		float attenuation = 1.0 / distance;
 		
-		float falloff = 80;
+		float falloff = 40;
 		falloff -= distance / 25.0f / ints;		
 		
 		color *= vec4(attenuation, attenuation, attenuation, pow(attenuation, 3)) * vec4((col / distance * 15) * ints, 1.0) + 0.01;
 		
 		color /= (distance / (ints * falloff));
 	}
-	color *= 100.0 * pow(166.0, float(num - 1)) + 1;
+	color *= 30.0 * pow(166.0, float(num - 1)) + 1;
 	gl_FragColor = color; 
 }

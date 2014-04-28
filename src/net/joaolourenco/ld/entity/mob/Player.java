@@ -20,7 +20,7 @@ public class Player extends Mob {
 		this.y = y;
 		this.light = light;
 		this.side = 0;
-		this.state = 0;
+		this.state = 2;
 		changeTexture(0);
 		this.texture = Texture.Player[this.state][this.side][0];
 		this.shader = new Shader("shaders/tile.vert", "shaders/mob.frag");
@@ -106,10 +106,7 @@ public class Player extends Mob {
 		else if (Keyboard.keyPressed(Keyboard.RIGHT) || Keyboard.keyPressed(Keyboard.D)) xa += speed;
 		if (Keyboard.keyPressed(Keyboard.ESCAPE)) State.setState(State.MENU);
 		
-		if (xa > 0) this.side = 0;
-		else if (xa < 0) this.side = 1;
-		if (ya > 0) this.side = 2;
-		else if (ya < 0) this.side = 3;
+		getSide(xa, ya);
 		changeTexture(0);
 		
 		if (xa != 0 || ya != 0) move(xa, ya);

@@ -17,6 +17,7 @@ public class Keyboard {
 	public static int S = org.lwjgl.input.Keyboard.KEY_S;
 	public static int A = org.lwjgl.input.Keyboard.KEY_A;
 	public static int D = org.lwjgl.input.Keyboard.KEY_D;
+	public static int R = org.lwjgl.input.Keyboard.KEY_R;
 	
 	private static List<Integer> pressed = new ArrayList<Integer>();
 	

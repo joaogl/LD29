@@ -2,21 +2,21 @@ package net.joaolourenco.ld.entity.mob;
 
 import java.util.List;
 
-import org.lwjgl.util.vector.Vector2f;
-
 import net.joaolourenco.ld.entity.Entity;
 import net.joaolourenco.ld.graphics.Light;
-import net.joaolourenco.ld.level.Level;
 import net.joaolourenco.ld.level.tile.Tile;
 import net.joaolourenco.ld.settings.GameSettings;
 
+import org.lwjgl.util.vector.Vector2f;
+
 public abstract class Mob extends Entity {
 	
-	public void move(float xa, float ya) {
+	public boolean move(float xa, float ya) {
+		boolean moved = false;
 		if (xa != 0 && ya != 0) {
 			move(xa, 0);
 			move(0, ya);
-			return;
+			return false;
 		}
 		if (light((int) xa, (int) ya, this.side)) {
 			int val = 2;
@@ -28,7 +28,9 @@ public abstract class Mob extends Entity {
 		if (!collision(xa, ya) && !frozen) {
 			x += xa;
 			y += ya;
+			moved = true;
 		}
+		return moved;
 	}
 	
 	private boolean light(int xa, int ya, int dir) {
@@ -49,13 +51,10 @@ public abstract class Mob extends Entity {
 	public boolean collision(float xa, float ya) {
 		boolean solid = false;
 		for (int i = 0; i < 4; i++) {
-			int xt = (int) ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
-			int yt = (int) ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 4)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
-			Tile tile = level.getTile(xt, yt, Level.FOREGROUND);
+			int xt = (int) ((x + xa) + i % 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 3)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
+			int yt = (int) ((y + ya) + i / 2 * (int) (GameSettings.TILE_SIZE - (GameSettings.TILE_SIZE / 3)) + (GameSettings.TILE_SIZE / 8)) >> GameSettings.TILE_SIZE_MASK;
+			Tile tile = level.getTile(xt, yt);
 			if (tile != null && tile.solid()) return true;
-			tile = level.getTile(xt, yt, Level.BACKGROUND);
-			if (tile == null) continue;
-			if (tile.solid()) return true;
 		}
 		List<Entity> ent = level.getEntities(this);
 		float d;
@@ -63,7 +62,7 @@ public abstract class Mob extends Entity {
 		for (int j = 0; j < ent.size(); j++) {
 			e = ent.get(j);
 			d = level.distance(new Vector2f(x + xa, y + ya), e);
-			if (d <= 70) return true;
+			if (d <= 75) return true;
 		}
 		return solid;
 	}

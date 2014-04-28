@@ -18,8 +18,8 @@ public class State {
 	
 	public static void setState(int state) {
 		if (state == INTRO) {
-			Main.menu.play();
 			Main.menu = new Sound("res/sound/themes/back1.mp3");
+			Main.menu.play();
 		} else if (state == GAME) {
 			Main.game = new Sound("res/sound/themes/back2.mp3");
 			Main.game.play();

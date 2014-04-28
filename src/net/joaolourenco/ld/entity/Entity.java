@@ -135,6 +135,13 @@ public abstract class Entity {
 		return speed;
 	}
 	
+	public void getSide(float xa, float ya) {
+		if (xa > 0) this.side = 0;
+		else if (xa < 0) this.side = 1;
+		if (ya > 0) this.side = 2;
+		else if (ya < 0) this.side = 3;
+	}
+	
 	protected void adjustLight() {
 		if (light != null) {
 			light.x = (int) (x + 32);
@@ -143,11 +150,11 @@ public abstract class Entity {
 	}
 	
 	public int getX() {
-		return (int) x;
+		return (int) this.x;
 	}
 	
 	public int getY() {
-		return (int) y;
+		return (int) this.y;
 	}
 	
 }
