@@ -16,6 +16,7 @@ public abstract class Entity {
 	protected int state; // 0 - Normal; 1 - with bandages; 2 - hurt;
 	protected float x, y;
 	protected int side;
+	public int dir;
 	protected int texture;
 	protected int vao, vbo, vio, vto;
 	protected Shader shader;
@@ -23,6 +24,7 @@ public abstract class Entity {
 	public Light light;
 	private boolean removed = false;
 	protected boolean frozen = false;
+	protected boolean inBed = false;
 	protected Random random = new Random();
 	
 	protected float[] vertices = new float[] {
@@ -62,8 +64,8 @@ public abstract class Entity {
 		float[] intensities = new float[10];
 		
 		for (int i = 0; i < lights.size() * 2; i += 2) {
-			positions[i] = lights.get(i >> 1).x - lights.get(i >> 1).getXOffset();
-			positions[i + 1] = GameSettings.height - lights.get(i >> 1).y + lights.get(i >> 1).getYOffset();
+			positions[i] = lights.get(i >> 1).getX() - lights.get(i >> 1).getXOffset();
+			positions[i + 1] = GameSettings.height - lights.get(i >> 1).getY() + lights.get(i >> 1).getYOffset();
 		}
 		
 		for (int i = 0; i < lights.size(); i++) {
@@ -143,9 +145,17 @@ public abstract class Entity {
 	}
 	
 	protected void adjustLight() {
-		if (light != null) {
-			light.x = (int) (x + 32);
-			light.y = (int) (y + 32);
+		if (light != null && !inBed) {
+			if (side == 1 || side == 0) {
+				light.setX((int) (x + 5));
+				light.setY((int) (y + 45));
+			} else if (side == 2) {
+				light.setX((int) (x + 5));
+				light.setY((int) (y + 45));
+			} else if (side == 3) {
+				light.setX((int) (x + 60));
+				light.setY((int) (y + 45));
+			}
 		}
 	}
 	
@@ -155,6 +165,38 @@ public abstract class Entity {
 	
 	public int getY() {
 		return (int) this.y;
+	}
+	
+	public void setX(float x) {
+		this.x = x;
+	}
+	
+	public void setY(float y) {
+		this.y = y;
+	}
+	
+	public void setLightX(int x) {
+		if (this.light != null) this.light.setX(x);
+	}
+	
+	public void setLightY(int y) {
+		if (this.light != null) this.light.setY(y);
+	}
+	
+	public boolean inBed() {
+		return this.inBed;
+	}
+	
+	public void inBed(boolean a) {
+		this.inBed = a;
+	}
+	
+	public void setState(int i) {
+		this.state = i;
+	}
+	
+	public int getState() {
+		return this.state;
 	}
 	
 }

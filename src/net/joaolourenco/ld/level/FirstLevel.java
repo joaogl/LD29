@@ -1,6 +1,7 @@
 package net.joaolourenco.ld.level;
 
 import net.joaolourenco.ld.State;
+import net.joaolourenco.ld.util.MathUtil;
 
 public class FirstLevel extends Level {
 	
@@ -21,7 +22,7 @@ public class FirstLevel extends Level {
 			reset();
 			State.setState(State.MENU);
 		}
-		// SincreaseExtraLevels();
+		// increaseExtraLevels();
 		
 		if (timer == 0) {
 			if (player.light.intensity >= 2f) player.light.intensity -= 0.005f;
@@ -33,6 +34,13 @@ public class FirstLevel extends Level {
 		} else if (timer == 1) {
 			if (player.light.intensity <= 3f) player.light.intensity += 0.005f;
 			else stage = 3;
+		} else if (stage == 4) {
+			if (player.light.intensity >= 2f) player.light.intensity -= 0.005f;
+			else if (player.light.intensity >= 0f) player.light.intensity -= 0.1f;
+			else stage = 5;
+		} else if (stage == 6) {
+			if (player.light.intensity <= 3f) player.light.intensity += 0.005f;
+			else stage = 7;
 		}
 	}
 	
@@ -42,6 +50,27 @@ public class FirstLevel extends Level {
 		if (stage == 1) {
 			if (timer == 1) stage = 2;
 			else timer++;
+		} else if (stage == 3) {
+			if (MathUtil.getDistance(entities.get(0), entities.get(1)) <= 120) {
+				stage = 4;
+				timer++;
+			}
+		} else if (stage == 5) {
+			if (getBed(0).laydownEntity(getPlayer())) {
+				stage = 6;
+				entities.get(0).setState(1);
+				entities.get(1).setX(2112);
+				entities.get(1).setY(1792);
+			}
+		} else if (stage == 7) {
+			if (timer == 5) {
+				if (getBed(0).getUpEntity(getPlayer())) {
+					stage = 8;
+					getPlayer().setX(2018);
+					getPlayer().setY(1792);
+					getPlayer().unFreeze();
+				}
+			} else timer++;
 		}
 	}
 	

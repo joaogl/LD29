@@ -7,6 +7,8 @@ uniform vec2 lightPosition[10];
 uniform vec3 lightColor[10];
 uniform float lightIntensity[10];
 
+uniform float isProtected;
+
 void main() {
 	vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
 	vec4 tex = texture2D(texture, texCoords);
@@ -30,5 +32,6 @@ void main() {
 		color /= (distance / (ints * falloff));
 	}
 	color *= 30.0 * pow(166.0, float(num - 1)) + 1;
-	gl_FragColor = color; 
+	if (isProtected == 1) gl_FragColor = color;
+	else gl_FragColor = color; 
 }

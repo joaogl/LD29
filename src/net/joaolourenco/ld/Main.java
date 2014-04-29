@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.joaolourenco.ld.graphics.Display;
+import net.joaolourenco.ld.graphics.Gui;
 import net.joaolourenco.ld.input.Keyboard;
 import net.joaolourenco.ld.level.FirstLevel;
 import net.joaolourenco.ld.level.Level;
@@ -51,6 +52,7 @@ public class Main implements Runnable {
 		menus.add(new AboutMenu());
 		menu = new Sound("res/sound/themes/back1.mp3");
 		State.setState(State.INTRO);
+		Gui.create();
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -86,20 +88,27 @@ public class Main implements Runnable {
 	}
 	
 	public void tick() {
-		if (State.getState() == State.GAME) level.tick();
+		if (State.getState() == State.GAME) {
+			level.tick();
+			Gui.tick();
+		}
 	}
 	
 	public void render() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		if (State.getState() == State.GAME) level.render();
-		else if (State.getState() == State.MENU) menus.get(State.MENU).render();
+		if (State.getState() == State.GAME) {
+			level.render();
+			// Gui.render();
+		} else if (State.getState() == State.MENU) menus.get(State.MENU).render();
 		else if (State.getState() == State.INTRO) menus.get(State.INTRO).render();
 		else if (State.getState() == State.ABOUT) menus.get(State.ABOUT).render();
 	}
 	
 	public void update() {
-		if (State.getState() == State.GAME) level.update();
-		else if (State.getState() == State.MENU) menus.get(State.MENU).update();
+		if (State.getState() == State.GAME) {
+			level.update();
+			Gui.update();
+		} else if (State.getState() == State.MENU) menus.get(State.MENU).update();
 		else if (State.getState() == State.INTRO) menus.get(State.INTRO).update();
 		else if (State.getState() == State.ABOUT) menus.get(State.ABOUT).update();
 		Keyboard.update();

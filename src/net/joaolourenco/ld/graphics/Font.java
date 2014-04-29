@@ -18,7 +18,14 @@ public class Font {
 			"abcdefghijklm" + //
 			"nopqrstuvwxyz" + //
 			"0123456789?!." + //
-			"-,_%";
+			"-,_% #$&'[]*+" + //
+			":;<=>/^´`";
+	// private String chars = "ABCDEFGHIJKLM" + //
+	// "NOPQRSTUVWXYZ" + //
+	// "abcdefghijklm" + //
+	// "nopqrstuvwxyz" + //
+	// "0123456789?!." + //
+	// "-,_%";
 	
 	protected int vao, vbo, vio, vto;
 	
@@ -44,7 +51,7 @@ public class Font {
 	};
 	
 	public Font() {
-		texIDs = Texture.loadFont("res/font.png", 13, 6, size);
+		texIDs = Texture.loadFont("res/font.png", 13, 7, size);
 		compile();
 		shader = new Shader("shaders/font.vert", "shaders/font.frag");
 		shader.bind();

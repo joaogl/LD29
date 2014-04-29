@@ -17,6 +17,7 @@ import net.joaolourenco.ld.entity.mob.Medic;
 import net.joaolourenco.ld.entity.mob.Player;
 import net.joaolourenco.ld.graphics.Light;
 import net.joaolourenco.ld.graphics.Shader;
+import net.joaolourenco.ld.level.tile.BedTile;
 import net.joaolourenco.ld.level.tile.CollidableGround;
 import net.joaolourenco.ld.level.tile.ForeTile;
 import net.joaolourenco.ld.level.tile.LavaTile;
@@ -47,7 +48,9 @@ public class Level {
 	protected List<Light> lights = new ArrayList<Light>();
 	protected List<Entity> entities = new ArrayList<Entity>();
 	
-	public Tile[] ids = new Tile[5];
+	protected List<Bed> beds = new ArrayList<Bed>();
+	
+	public Tile[] ids = new Tile[9];
 	
 	public float[] extraLevels, extraIncreaseRate;
 	
@@ -85,6 +88,10 @@ public class Level {
 		ids[ForeTile.LAVA] = new LavaTile();
 		ids[ForeTile.GROUND] = new Tile(Texture.Ground, ForeTile.GROUND);
 		ids[ForeTile.GROUND_COLLIDABLE] = new CollidableGround();
+		ids[ForeTile.BED1] = new BedTile(Texture.Bed1);
+		ids[ForeTile.BED2] = new BedTile(Texture.Bed2);
+		ids[ForeTile.BED3] = new BedTile(Texture.Bed3);
+		ids[ForeTile.BED4] = new BedTile(Texture.Bed4);
 		
 		Light l = new Light(0xffFFFFC2);
 		lights.add(l);
@@ -149,6 +156,12 @@ public class Level {
 			else if (pixels[i] == 0xFFFF3200) createBackgroundTile(i % width, i / width, ForeTile.LAVA);
 			else if (pixels[i] == 0xFFCDB76D) createBackgroundTile(i % width, i / width, ForeTile.GROUND);
 			else if (pixels[i] == 0xFF90CC6E) createBackgroundTile(i % width, i / width, ForeTile.GROUND_COLLIDABLE);
+			else if (pixels[i] == 0xFFC6FFA3) {
+				beds.add(new Bed(i % width, i / width, 2));
+				createBackgroundTile(i % width, i / width, ForeTile.BED1);
+			} else if (pixels[i] == 0xFFC6FFB2) createBackgroundTile(i % width, i / width, ForeTile.BED2);
+			else if (pixels[i] == 0xFFC6FF80) createBackgroundTile(i % width, i / width, ForeTile.BED3);
+			else if (pixels[i] == 0xFFC6FF6D) createBackgroundTile(i % width, i / width, ForeTile.BED4);
 			else createBackgroundTile(i % width, i / width, ForeTile.VOID);
 		}
 	}
@@ -158,10 +171,10 @@ public class Level {
 		int dir = 0;
 		for (int i = 0; i < this.lights.size(); i++) {
 			Light light = this.lights.get(i);
-			float e0 = light.y - 20;
-			float e1 = light.x + 20;
-			float e2 = light.y + 20;
-			float e3 = light.x - 20;
+			float e0 = light.getY() - 20;
+			float e1 = light.getX() + 20;
+			float e2 = light.getY() + 20;
+			float e3 = light.getX() - 20;
 			if (e3 < x + 64) {
 				if (e1 > x) {
 					if (e0 < y + 64) {
@@ -169,7 +182,46 @@ public class Level {
 					}
 				}
 			}
-			Vector2f lightPos = new Vector2f(light.x, light.y);
+			Vector2f lightPos = new Vector2f(light.getX(), light.getY());
+			
+			float distance = 20.0f;
+			if (MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y + 64.0F)) < distance) {
+				distance = MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y + 64.0F));
+				dir = 2;
+			}
+			if (MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y)) < distance) {
+				distance = MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y));
+				dir = 0;
+			}
+			if (MathUtil.getDistance(lightPos, new Vector2f(x, y + 32.0F)) < distance) {
+				distance = MathUtil.getDistance(lightPos, new Vector2f(x, y + 32.0F));
+				dir = 3;
+			}
+			if (MathUtil.getDistance(lightPos, new Vector2f(x + 64.0F, y + 32.0F)) < distance) {
+				dir = 1;
+			}
+			light.dir = dir;
+		}
+		return lights;
+	}
+	
+	public List<Entity> getEntities(int x, int y, int dira) {
+		List<Entity> lights = new ArrayList<Entity>();
+		int dir = 0;
+		for (int i = 0; i < this.lights.size(); i++) {
+			Entity light = this.entities.get(i);
+			float e0 = light.getY() - 20;
+			float e1 = light.getX() + 20;
+			float e2 = light.getY() + 20;
+			float e3 = light.getX() - 20;
+			if (e3 < x + 64) {
+				if (e1 > x) {
+					if (e0 < y + 64) {
+						if (e2 > y) lights.add(light);
+					}
+				}
+			}
+			Vector2f lightPos = new Vector2f(light.getX(), light.getY());
 			
 			float distance = 20.0f;
 			if (MathUtil.getDistance(lightPos, new Vector2f(x + 32.0F, y + 64.0F)) < distance) {
@@ -201,6 +253,18 @@ public class Level {
 			if (dist < 100) target.add(entity);
 		}
 		return target;
+	}
+	
+	public Bed getBeds(Entity e) {
+		return beds.get(0);
+	}
+	
+	public Bed getBed(int id) {
+		return beds.get(id);
+	}
+	
+	public Entity getEntity(int id) {
+		return entities.get(id);
 	}
 	
 	protected void createLevel() {

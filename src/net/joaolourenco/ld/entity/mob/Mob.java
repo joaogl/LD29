@@ -26,6 +26,13 @@ public abstract class Mob extends Entity {
 			xa /= val;
 			ya /= val;
 		}
+		if (entity((int) xa, (int) ya, this.side)) {
+			int val = 2;
+			if ((xa <= 1f && xa != 0) || (ya <= 1f && ya != 0) || (xa <= 0f && xa != 0) || (ya <= 0f && ya != 0)) val = 2;
+			else val = 4;
+			xa /= val;
+			ya /= val;
+		}
 		if (!collision(xa, ya) && !frozen) {
 			x += xa;
 			y += ya;
@@ -40,10 +47,24 @@ public abstract class Mob extends Entity {
 		Light light = lights.get(0);
 		if (light != this.light) {
 			if (light.intensity > 30) return false;
-			if (light.dir == 3) light.x--;
-			else if (light.dir == 1) light.x++;
-			else if (light.dir == 0) light.y--;
-			else if (light.dir == 2) light.y++;
+			if (light.dir == 3) light.setX(light.getX() - 1);
+			else if (light.dir == 1) light.setX(light.getX() + 1);
+			else if (light.dir == 0) light.setY(light.getY() - 1);
+			else if (light.dir == 2) light.setY(light.getY() + 1);
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean entity(int xa, int ya, int dir) {
+		List<Entity> lights = level.getEntities((int) x, (int) y, dir);
+		if (lights.size() <= 0) return false;
+		Entity light = lights.get(0);
+		if (light != this) {
+			if (light.dir == 3) light.setX(light.getX() - 1);
+			else if (light.dir == 1) light.setX(light.getX() + 1);
+			else if (light.dir == 0) light.setY(light.getY() - 1);
+			else if (light.dir == 2) light.setY(light.getY() + 1);
 			return true;
 		}
 		return false;
@@ -63,8 +84,19 @@ public abstract class Mob extends Entity {
 		for (int j = 0; j < ent.size(); j++) {
 			e = ent.get(j);
 			d = MathUtil.getDistance(new Vector2f(x + xa, y + ya), e);
-			if (d <= 75) return true;
+			if (d <= 70) return true;
 		}
 		return solid;
 	}
+	
+	public void getSide(float xa, float ya) {
+		if (inBed) this.side = 2;
+		else {
+			if (xa > 0) this.side = 0;
+			else if (xa < 0) this.side = 1;
+			if (ya > 0) this.side = 2;
+			else if (ya < 0) this.side = 3;
+		}
+	}
+	
 }

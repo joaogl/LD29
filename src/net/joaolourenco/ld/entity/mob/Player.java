@@ -92,7 +92,6 @@ public class Player extends Mob {
 	}
 	
 	public void update() {
-		light.intensity = 5f;
 		float xa = 0;
 		float ya = 0;
 		float speed = 0;
@@ -106,27 +105,29 @@ public class Player extends Mob {
 		else if (Keyboard.keyPressed(Keyboard.RIGHT) || Keyboard.keyPressed(Keyboard.D)) xa += speed;
 		if (Keyboard.keyPressed(Keyboard.ESCAPE)) State.setState(State.MENU);
 		
+		/*
+		if (Keyboard.keyTyped(Keyboard.ENTER)) {
+			if (!this.inBed) {
+				level.getBeds(this).laydownEntity(this);
+				level.getBeds(this).laydownEntity(level.getEntity(1));
+			} else {
+				level.getBeds(this).getUpEntity(this);
+				level.getBeds(this).getUpEntity(level.getEntity(1));
+			}
+		}*/
+		
+		if (Keyboard.keyTyped(Keyboard.R)) {
+			this.light.intensity = 5f;
+			this.frozen = false;
+			this.state = 0;
+		}
+		
 		getSide(xa, ya);
 		changeTexture(0);
 		
 		if (xa != 0 || ya != 0) move(xa, ya);
 		level.setOffset((int) (x - GameSettings.width / 2), (int) (y - GameSettings.height / 2));
 		adjustLight();
-	}
-	
-	protected void adjustLight() {
-		if (light != null) {
-			if (side == 1 || side == 0) {
-				light.x = (int) (x + 5);
-				light.y = (int) (y + 45);
-			} else if (side == 2) {
-				light.x = (int) (x + 5);
-				light.y = (int) (y + 45);
-			} else if (side == 3) {
-				light.x = (int) (x + 60);
-				light.y = (int) (y + 45);
-			}
-		}
 	}
 	
 }

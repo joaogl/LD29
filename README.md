@@ -64,8 +64,7 @@ Builds for testing
 
 TO-DO
 ====
-- Add goto function on entities. [HALF-DONE]
-- Add Beds.
+- Add Beds. [HALF-DONE]
 - Add Dialogs.
 - Add action dialogs.
 - Add all entities and their talks.
@@ -93,4 +92,5 @@ TO-DO
 28 - from 12:56 to 13:59 <br>
 28 - from 12:56 to 13:59 <br>
 28 - from 14:37 to 15:57 <br>
-28 - from 16:24 to   <br>
+28 - from 16:24 to 20:04 <br>
+28 - from 23:03 to <br>

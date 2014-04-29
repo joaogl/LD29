@@ -21,11 +21,16 @@ public class Tile {
 	public static final byte LAVA = 0x2;
 	public static final byte GROUND = 0x3;
 	public static final byte GROUND_COLLIDABLE = 0x4;
+	public static final byte BED1 = 0x5;
+	public static final byte BED2 = 0x6;
+	public static final byte BED3 = 0x7;
+	public static final byte BED4 = 0x8;
 	
 	protected static final float SIZE = GameSettings.TILE_SIZE;
 	protected int vao, vbo, vio, vto, bugValue;
 	protected Shader shader;
 	protected int texture, tileInUse;
+	protected float isLightProtected = 0f;
 	protected Random random = new Random();
 	
 	private float extraLevel = 0.0f;
@@ -117,6 +122,8 @@ public class Tile {
 		shader.bind();
 		int uniform = shader.getUniform("tileInUse");
 		shader.setUniformf(uniform, tileInUse);
+		uniform = shader.getUniform("isProtected");
+		shader.setUniformf(uniform, isLightProtected);
 		shader.release();
 		/*
 		 * float sub = (float) random.nextFloat(); int div = random.nextInt(50); if (this.extraLevel < 1f && this.extraLevel >= 0f && (sub / div) > 0f && (sub / div) < 1f) this.extraLevel += sub / div; else this.extraLevel = 0.0f;
@@ -151,8 +158,8 @@ public class Tile {
 		float[] intensities = new float[10];
 		
 		for (int i = 0; i < lights.size() * 2; i += 2) {
-			positions[i] = lights.get(i >> 1).x - lights.get(i >> 1).getXOffset();
-			positions[i + 1] = GameSettings.height - lights.get(i >> 1).y + lights.get(i >> 1).getYOffset();
+			positions[i] = lights.get(i >> 1).getX() - lights.get(i >> 1).getXOffset();
+			positions[i + 1] = GameSettings.height - lights.get(i >> 1).getY() + lights.get(i >> 1).getYOffset();
 		}
 		
 		for (int i = 0; i < lights.size(); i++) {

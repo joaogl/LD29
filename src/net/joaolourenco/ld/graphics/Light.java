@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class Light {
 	
-	public int x, y;
+	private int x, y;
 	private int xOffset, yOffset;
 	public Vector3f vc;
 	private int color;
@@ -173,5 +173,21 @@ public class Light {
 	
 	public int getYOffset() {
 		return this.yOffset;
+	}
+	
+	public void setX(int x) {
+		this.x = x;
+	}
+	
+	public void setY(int y) {
+		this.y = y;
+	}
+	
+	public int getX() {
+		return this.x;
+	}
+	
+	public int getY() {
+		return this.y;
 	}
 }

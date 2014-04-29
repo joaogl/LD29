@@ -18,11 +18,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Texture {
 	
-	public static int Void = 0, RockCliff = 0, Lava = 0, Ground = 0;
+	public static int Void = 0, RockCliff = 0, Lava = 0, Ground = 0, Bed1 = 0, Bed2 = 0, Bed3 = 0, Bed4 = 0;
 	public static int Intro1 = 0, Intro2 = 0, Intro3 = 0, Menu = 0;
 	public static int Play = 0, PlayH = 0;
 	public static int About = 0, AboutH = 0;
 	public static int Quit = 0, QuitH = 0;
+	public static int Hud = 0, Dialog = 0;
 	
 	public static int[][][] Player = new int[3][4][3];
 	
@@ -46,6 +47,13 @@ public class Texture {
 		RockCliff = loadTexture("res/textures/rock.png", false);
 		Lava = loadTexture("res/textures/lava.png", false);
 		Ground = loadTexture("res/textures/ground.png", false);
+		Bed1 = loadTexture("res/textures/bed1.png", false);
+		Bed2 = loadTexture("res/textures/bed2.png", false);
+		Bed3 = loadTexture("res/textures/bed3.png", false);
+		Bed4 = loadTexture("res/textures/bed4.png", false);
+		
+		Hud = loadTexture("res/textures/gui/HUD.png", false);
+		Dialog = loadTexture("res/textures/gui/DialogBox.png", false);
 		
 		String begin = null;
 		for (int s = 0; s < 3; s++) {

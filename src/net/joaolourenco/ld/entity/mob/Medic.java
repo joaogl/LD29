@@ -8,6 +8,7 @@ import net.joaolourenco.ld.level.Node;
 import net.joaolourenco.ld.resources.Texture;
 import net.joaolourenco.ld.settings.GameSettings;
 import net.joaolourenco.ld.util.Buffer;
+import net.joaolourenco.ld.util.MathUtil;
 import net.joaolourenco.ld.util.Vector;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.*;
@@ -112,14 +113,16 @@ public class Medic extends Mob {
 		
 		Vector start = new Vector((int) this.x >> GameSettings.TILE_SIZE_MASK, (int) this.y >> GameSettings.TILE_SIZE_MASK);
 		Vector destination = new Vector(this.level.getPlayer().getX() >> GameSettings.TILE_SIZE_MASK, this.level.getPlayer().getY() >> GameSettings.TILE_SIZE_MASK);
-		if (time % 3 == 0) path = level.findPath(start, destination);
-		if (path != null) {
-			if (path.size() > 0) {
-				Vector vec = path.get(path.size() - 1).tile;
-				if (x < (int) vec.getX() << GameSettings.TILE_SIZE_MASK) xa += speed;
-				if (x > (int) vec.getX() << GameSettings.TILE_SIZE_MASK) xa -= speed;
-				if (y < (int) vec.getY() << GameSettings.TILE_SIZE_MASK) ya += speed;
-				if (y > (int) vec.getY() << GameSettings.TILE_SIZE_MASK) ya -= speed;
+		if (MathUtil.getDistance(new Vector(this.x, this.y), new Vector(this.level.getPlayer().getX(), this.level.getPlayer().getY())) > 120) {
+			if (time % 3 == 0) path = level.findPath(start, destination);
+			if (path != null) {
+				if (path.size() > 0) {
+					Vector vec = path.get(path.size() - 1).tile;
+					if (x < (int) vec.getX() << GameSettings.TILE_SIZE_MASK) xa += speed;
+					if (x > (int) vec.getX() << GameSettings.TILE_SIZE_MASK) xa -= speed;
+					if (y < (int) vec.getY() << GameSettings.TILE_SIZE_MASK) ya += speed;
+					if (y > (int) vec.getY() << GameSettings.TILE_SIZE_MASK) ya -= speed;
+				}
 			}
 		}
 		
@@ -136,21 +139,6 @@ public class Medic extends Mob {
 		else if (Mside == 1) Mside = 0;
 		else if (Mside == 2) Mside = 3;
 		else if (Mside == 3) Mside = 2;
-	}
-	
-	protected void adjustLight() {
-		if (light != null) {
-			if (side == 1 || side == 0) {
-				light.x = (int) (x + 5);
-				light.y = (int) (y + 45);
-			} else if (side == 2) {
-				light.x = (int) (x + 5);
-				light.y = (int) (y + 45);
-			} else if (side == 3) {
-				light.x = (int) (x + 60);
-				light.y = (int) (y + 45);
-			}
-		}
 	}
 	
 }
